@@ -3,7 +3,7 @@ import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/models/furniture.dart';
 import 'package:rangement/data/models/shelf.dart';
 import 'package:rangement/presentation/screens/shelf_screen.dart';
-import 'package:rangement/presentation/widgets/storage_card.dart';
+import 'package:rangement/presentation/widgets/cards/storage_card.dart';
 
 class FurnitureScreen extends StatefulWidget {
   final Furniture furniture;

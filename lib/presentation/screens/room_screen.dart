@@ -3,7 +3,7 @@ import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/models/furniture.dart';
 import 'package:rangement/data/models/room.dart';
 import 'package:rangement/presentation/screens/furniture_screen.dart';
-import 'package:rangement/presentation/widgets/storage_card.dart';
+import 'package:rangement/presentation/widgets/cards/storage_card.dart';
 
 class RoomScreen extends StatefulWidget {
   final Room room;

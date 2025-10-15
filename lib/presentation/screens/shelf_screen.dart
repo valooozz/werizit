@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/models/item.dart';
 import 'package:rangement/data/models/shelf.dart';
-import 'package:rangement/presentation/widgets/item_card.dart';
+import 'package:rangement/presentation/widgets/cards/item_card.dart';
 
 class ShelfScreen extends StatefulWidget {
   final Shelf shelf;
