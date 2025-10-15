@@ -60,13 +60,13 @@ class DAO {
   }
 
   // ---------- ITEM ----------
-  Future<int> insertObject(Item obj) async =>
+  Future<int> insertItem(Item obj) async =>
       await dbHelper.insert('ObjectItem', obj.toMap());
 
-  Future<List<Item>> getObjectsByShelf(int shelfId) async {
+  Future<List<Item>> getItemsByShelf(int shelfId) async {
     final db = await dbHelper.database;
     final maps = await db.query(
-      'ObjectItem',
+      'Item',
       where: 'shelf = ?',
       whereArgs: [shelfId],
     );
