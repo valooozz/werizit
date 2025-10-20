@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rangement/data/models/storage.dart';
+import 'package:rangement/presentation/screens/search_screen.dart';
 import 'package:rangement/presentation/widgets/cards/storage_card.dart';
 
 class StorageScreen<T extends Storage> extends StatefulWidget {
@@ -7,6 +8,7 @@ class StorageScreen<T extends Storage> extends StatefulWidget {
   final Future<List<T>> Function() fetchItems;
   final Future<void> Function(String name) onAdd;
   final void Function(T item)? onTap;
+  final void Function()? onBack;
 
   const StorageScreen({
     super.key,
@@ -14,6 +16,7 @@ class StorageScreen<T extends Storage> extends StatefulWidget {
     required this.fetchItems,
     required this.onAdd,
     this.onTap,
+    this.onBack,
   });
 
   @override
@@ -41,7 +44,7 @@ class _StorageScreenState<T extends Storage> extends State<StorageScreen<T>> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Ajouter ${widget.title.toLowerCase()}"),
+        title: Text("Ajouter dans '${widget.title}'"),
         content: TextField(
           controller: controller,
           decoration: const InputDecoration(hintText: "Nom"),
@@ -65,10 +68,28 @@ class _StorageScreenState<T extends Storage> extends State<StorageScreen<T>> {
     );
   }
 
+  void _openSearchScreen() {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => SearchScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(
+        leading: widget.onBack != null
+            ? IconButton(
+                onPressed: widget.onBack,
+                icon: const Icon(Icons.arrow_back),
+              )
+            : null,
+        title: Text(widget.title),
+        actions: [
+          IconButton(
+            onPressed: _openSearchScreen,
+            icon: const Icon(Icons.search),
+          ),
+        ],
+      ),
       body: FutureBuilder<List<T>>(
         future: _futureItems,
         builder: (context, snapshot) {
@@ -84,7 +105,14 @@ class _StorageScreenState<T extends Storage> extends State<StorageScreen<T>> {
             return const Center(child: Text("Aucun élément pour le moment."));
           }
 
-          return ListView.builder(
+          return GridView.builder(
+            padding: const EdgeInsets.all(8),
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 300, // largeur max d'une carte
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              childAspectRatio: 2, // ratio largeur/hauteur
+            ),
             itemCount: items.length,
             itemBuilder: (context, index) {
               final item = items[index];

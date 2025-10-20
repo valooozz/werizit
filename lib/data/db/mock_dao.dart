@@ -8,22 +8,30 @@ import '../models/shelf.dart';
 
 class MockDAO implements BaseDAO {
   // Stockage en mémoire
-  final List<House> _houses = [House(id: 1, name: 'Maison Test')];
+  final List<House> _houses = [
+    House(id: 1, name: 'Paris'),
+    House(id: 2, name: 'Yvré'),
+  ];
 
   final Map<int, List<Room>> _rooms = {
-    1: [Room(id: 1, name: 'Salon', house: 1)],
+    1: [Room(id: 1, name: 'Chambre', house: 1)],
+    2: [
+      Room(id: 2, name: 'Chambre', house: 2),
+      Room(id: 3, name: 'Salle de bain', house: 2),
+    ],
   };
 
   final Map<int, List<Furniture>> _furniture = {
-    1: [Furniture(id: 1, name: 'Canapé', room: 1)],
+    1: [Furniture(id: 1, name: 'Bureau', room: 1)],
+    2: [Furniture(id: 2, name: 'Armoire', room: 2)],
   };
 
   final Map<int, List<Shelf>> _shelves = {
-    1: [Shelf(id: 1, name: 'Étagère 1', furniture: 1)],
+    1: [Shelf(id: 1, name: 'Tiroir 1', furniture: 1)],
   };
 
   final Map<int, List<Item>> _items = {
-    1: [Item(id: 1, name: 'Livre', shelf: 1)],
+    1: [Item(id: 1, name: 'Casque Bose', shelf: 1)],
   };
 
   // ---------- HOUSE ----------
@@ -79,4 +87,9 @@ class MockDAO implements BaseDAO {
   @override
   Future<List<Item>> getItemsByShelf(int shelfId) async =>
       _items[shelfId] ?? [];
+
+  @override
+  Future<List<Item>> searchItems(String searchText) async {
+    return _items[1] ?? [];
+  }
 }

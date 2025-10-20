@@ -15,6 +15,7 @@ class DAO implements BaseDAO {
   Future<int> insertHouse(House house) async =>
       await dbHelper.insert('House', house.toMap());
 
+  @override
   Future<List<House>> getHouses() async {
     final maps = await dbHelper.queryAll('House');
     return maps.map((m) => House.fromMap(m)).toList();
@@ -80,6 +81,17 @@ class DAO implements BaseDAO {
       'Item',
       where: 'shelf = ?',
       whereArgs: [shelfId],
+    );
+    return maps.map((m) => Item.fromMap(m)).toList();
+  }
+
+  @override
+  Future<List<Item>> searchItems(String searchText) async {
+    final db = await dbHelper.database;
+    final maps = await db.query(
+      'Item',
+      where: 'name LIKE ?',
+      whereArgs: ['%$searchText%'],
     );
     return maps.map((m) => Item.fromMap(m)).toList();
   }

@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StorageScreen<House>(
-      title: "Maisons",
+      title: "Accueil",
       fetchItems: dao.getHouses,
       onAdd: (name) => dao.insertHouse(House(id: 0, name: name)),
       onTap: (house) {

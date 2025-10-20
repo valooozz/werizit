@@ -4,7 +4,7 @@ import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/item.dart';
 import 'package:rangement/data/models/shelf.dart';
-import 'package:rangement/presentation/widgets/cards/item_card.dart';
+import 'package:rangement/presentation/widgets/display/items_display.dart';
 
 class ShelfScreen extends StatefulWidget {
   final Shelf shelf;
@@ -33,13 +33,7 @@ class _ShelfScreenState extends State<ShelfScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.shelf.name)),
-      body: ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          final item = items[index];
-          return ItemCard(item: item);
-        },
-      ),
+      body: ItemsDisplay(items: items),
     );
   }
 }

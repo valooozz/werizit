@@ -17,7 +17,7 @@ class RoomScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StorageScreen<Furniture>(
-      title: "Meubles de ${room.name}",
+      title: room.name,
       fetchItems: () => dao.getFurnitureByRoom(room.id),
       onAdd: (name) =>
           dao.insertFurniture(Furniture(id: 0, name: name, room: room.id)),

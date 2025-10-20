@@ -4,6 +4,7 @@ import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/house.dart';
 import 'package:rangement/data/models/room.dart';
+import 'package:rangement/presentation/screens/home_screen.dart';
 import 'package:rangement/presentation/screens/storage_screen.dart';
 
 import 'room_screen.dart';
@@ -17,7 +18,7 @@ class HouseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StorageScreen<Room>(
-      title: "Pièces de ${house.name}",
+      title: house.name,
       fetchItems: () => dao.getRoomsByHouse(house.id),
       onAdd: (name) => dao.insertRoom(Room(id: 0, name: name, house: house.id)),
       onTap: (room) {
@@ -25,6 +26,9 @@ class HouseScreen extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (_) => RoomScreen(room: room)),
         );
+      },
+      onBack: () {
+        Navigator.pop(context, MaterialPageRoute(builder: (_) => HomeScreen()));
       },
     );
   }
