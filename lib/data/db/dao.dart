@@ -1,14 +1,17 @@
-import 'database_helper.dart';
-import '../models/house.dart';
-import '../models/room.dart';
-import '../models/furniture.dart';
-import '../models/shelf.dart';
-import '../models/item.dart';
+import 'package:rangement/data/db/base_dao.dart';
 
-class DAO {
+import '../models/furniture.dart';
+import '../models/house.dart';
+import '../models/item.dart';
+import '../models/room.dart';
+import '../models/shelf.dart';
+import 'database_helper.dart';
+
+class DAO implements BaseDAO {
   final dbHelper = DatabaseHelper.instance;
 
   // ---------- HOUSE ----------
+  @override
   Future<int> insertHouse(House house) async =>
       await dbHelper.insert('House', house.toMap());
 
@@ -18,9 +21,11 @@ class DAO {
   }
 
   // ---------- ROOM ----------
+  @override
   Future<int> insertRoom(Room room) async =>
       await dbHelper.insert('Room', room.toMap());
 
+  @override
   Future<List<Room>> getRoomsByHouse(int houseId) async {
     final db = await dbHelper.database;
     final maps = await db.query(
@@ -32,9 +37,11 @@ class DAO {
   }
 
   // ---------- FURNITURE ----------
+  @override
   Future<int> insertFurniture(Furniture f) async =>
       await dbHelper.insert('Furniture', f.toMap());
 
+  @override
   Future<List<Furniture>> getFurnitureByRoom(int roomId) async {
     final db = await dbHelper.database;
     final maps = await db.query(
@@ -46,9 +53,11 @@ class DAO {
   }
 
   // ---------- SHELF ----------
+  @override
   Future<int> insertShelf(Shelf shelf) async =>
       await dbHelper.insert('Shelf', shelf.toMap());
 
+  @override
   Future<List<Shelf>> getShelvesByFurniture(int furnitureId) async {
     final db = await dbHelper.database;
     final maps = await db.query(
@@ -60,9 +69,11 @@ class DAO {
   }
 
   // ---------- ITEM ----------
+  @override
   Future<int> insertItem(Item obj) async =>
       await dbHelper.insert('ObjectItem', obj.toMap());
 
+  @override
   Future<List<Item>> getItemsByShelf(int shelfId) async {
     final db = await dbHelper.database;
     final maps = await db.query(

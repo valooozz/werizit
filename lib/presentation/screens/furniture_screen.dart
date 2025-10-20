@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rangement/data/db/dao.dart';
+import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/furniture.dart';
 import 'package:rangement/data/models/shelf.dart';
 import 'package:rangement/presentation/screens/shelf_screen.dart';
@@ -14,7 +16,7 @@ class FurnitureScreen extends StatefulWidget {
 }
 
 class _FurnitureScreenState extends State<FurnitureScreen> {
-  final dao = DAO();
+  final dao = kIsWeb ? MockDAO() : DAO();
   List<Shelf> shelves = [];
 
   @override

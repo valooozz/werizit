@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rangement/data/db/dao.dart';
+import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/house.dart';
 import 'package:rangement/data/models/room.dart';
 import 'package:rangement/presentation/screens/room_screen.dart';
@@ -15,7 +17,7 @@ class HouseScreen extends StatefulWidget {
 }
 
 class _HouseScreenState extends State<HouseScreen> {
-  final dao = DAO();
+  final dao = kIsWeb ? MockDAO() : DAO();
   List<Room> rooms = [];
 
   @override
