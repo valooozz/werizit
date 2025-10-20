@@ -4,7 +4,6 @@ import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/house.dart';
 import 'package:rangement/data/models/room.dart';
-import 'package:rangement/presentation/screens/home_screen.dart';
 import 'package:rangement/presentation/screens/storage_screen.dart';
 
 import 'room_screen.dart';
@@ -26,9 +25,6 @@ class HouseScreen extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (_) => RoomScreen(room: room)),
         );
-      },
-      onBack: () {
-        Navigator.pop(context, MaterialPageRoute(builder: (_) => HomeScreen()));
       },
     );
   }

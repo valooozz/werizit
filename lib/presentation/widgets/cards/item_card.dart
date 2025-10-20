@@ -7,10 +7,25 @@ class ItemCard extends StatelessWidget {
 
   const ItemCard({super.key, required this.item, this.onTap});
 
+  void _showInfoDialog() {
+    showDialog(
+      context: this.context,
+      builder: (context) => AlertDialog(
+        title: Text(item.name),
+        content: Column(children: [Text('Maison : ${item.name}')]),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ListTile(
         title: Text(

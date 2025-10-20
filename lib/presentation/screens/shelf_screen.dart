@@ -33,7 +33,10 @@ class _ShelfScreenState extends State<ShelfScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.shelf.name)),
-      body: ItemsDisplay(items: items),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: ItemsDisplay(items: items),
+      ),
     );
   }
 }

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:rangement/data/db/base_dao.dart';
+import 'package:rangement/data/models/item_info.dart';
 
 import '../models/furniture.dart';
 import '../models/house.dart';
@@ -89,7 +92,18 @@ class MockDAO implements BaseDAO {
       _items[shelfId] ?? [];
 
   @override
-  Future<List<Item>> searchItems(String searchText) async {
-    return _items[1] ?? [];
-  }
+  Future<List<Item>> searchItems(String searchText) async => _items[1] ?? [];
+
+  @override
+  Future<ItemInfo> getItemInfo(int itemId) async => Future.value(
+    {
+          "id": 0,
+          "name": "Casque Bose",
+          "house": "Paris",
+          "room": "Chambre",
+          "furniture": "Bureau",
+          "shelf": "Tiroir 1",
+        }
+        as FutureOr<ItemInfo>?,
+  );
 }

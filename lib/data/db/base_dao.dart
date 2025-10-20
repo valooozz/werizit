@@ -1,3 +1,5 @@
+import 'package:rangement/data/models/item_info.dart';
+
 import '../models/furniture.dart';
 import '../models/house.dart';
 import '../models/item.dart';
@@ -25,4 +27,5 @@ abstract class BaseDAO {
   Future<int> insertItem(Item obj);
   Future<List<Item>> getItemsByShelf(int shelfId);
   Future<List<Item>> searchItems(String searchText);
+  Future<ItemInfo> getItemInfo(int itemId);
 }

@@ -1,4 +1,5 @@
 import 'package:rangement/data/db/base_dao.dart';
+import 'package:rangement/data/models/item_info.dart';
 
 import '../models/furniture.dart';
 import '../models/house.dart';
@@ -94,5 +95,26 @@ class DAO implements BaseDAO {
       whereArgs: ['%$searchText%'],
     );
     return maps.map((m) => Item.fromMap(m)).toList();
+  }
+
+  @override
+  Future<ItemInfo> getItemInfo(int itemId) async {
+    final db = await dbHelper.database;
+    final maps = await db.rawQuery('''
+      SELECT 
+        I.id as id, 
+        I.name as name, 
+        H.name as house, 
+        R.name as room, 
+        F.name as furniture, 
+        S.name as shelf 
+      FROM Item I 
+      INNER JOIN Shelf S ON I.shelf = S.id
+      INNER JOIN Furniture F ON S.furniture = F.id 
+      INNER JOIN Room R ON F.room = R.id
+      INNER JOIN House H ON R.house = H.id
+      WHERE I.id = $itemId
+      ''');
+    return maps.map((m) => ItemInfo.fromMap(m)).toList().first;
   }
 }

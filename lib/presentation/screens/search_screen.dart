@@ -15,6 +15,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final dao = kIsWeb ? MockDAO() : DAO();
   late Future<List<Item>> _futureItems;
+  bool _emptySearch = true;
 
   @override
   void initState() {
@@ -22,25 +23,26 @@ class _SearchScreenState extends State<SearchScreen> {
     _futureItems = Future.value([]);
   }
 
+  void _refreshSearch(searchText) {
+    print(searchText);
+    setState(() {
+      _futureItems = searchText.isEmpty
+          ? Future.value([])
+          : (dao.searchItems(searchText));
+      _emptySearch = searchText == '';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Rechercher un objet')),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
+          spacing: 8,
           children: [
-            SearchBar(
-              hintText: 'Rechercher...',
-              onChanged: (searchText) {
-                setState(() {
-                  _futureItems = searchText.isEmpty
-                      ? Future.value([])
-                      : (dao.searchItems(searchText));
-                });
-              },
-            ),
-            SizedBox(height: 16),
+            SearchBar(hintText: 'Rechercher...', onChanged: _refreshSearch),
             Expanded(
               child: FutureBuilder<List<Item>>(
                 future: _futureItems,
@@ -53,6 +55,11 @@ class _SearchScreenState extends State<SearchScreen> {
                   }
 
                   final items = snapshot.data ?? [];
+                  if (_emptySearch) {
+                    return const Center(
+                      child: Text("Entre du texte pour rechercher un objet"),
+                    );
+                  }
                   if (items.isEmpty) {
                     return const Center(child: Text("Aucun élément trouvé"));
                   }
