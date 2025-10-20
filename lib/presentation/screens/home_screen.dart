@@ -3,48 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/house.dart';
-import 'package:rangement/presentation/screens/house_screen.dart';
-import 'package:rangement/presentation/widgets/cards/storage_card.dart';
+import 'package:rangement/presentation/screens/storage_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+import 'house_screen.dart';
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreen extends StatelessWidget {
   final dao = kIsWeb ? MockDAO() : DAO();
-  List<House> houses = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _loadHouses();
-  }
-
-  Future<void> _loadHouses() async {
-    final data = await dao.getHouses();
-    setState(() => houses = data);
-  }
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Maisons")),
-      body: ListView.builder(
-        itemCount: houses.length,
-        itemBuilder: (context, index) {
-          final house = houses[index];
-          return StorageCard(
-            storage: house,
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => HouseScreen(house: house)),
-            ),
-          );
-        },
-      ),
+    return StorageScreen<House>(
+      title: "Maisons",
+      fetchItems: dao.getHouses,
+      onAdd: (name) => dao.insertHouse(House(id: 0, name: name)),
+      onTap: (house) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => HouseScreen(house: house)),
+        );
+      },
     );
   }
 }
