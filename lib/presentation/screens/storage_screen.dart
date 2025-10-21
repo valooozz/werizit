@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rangement/core/utils/snackbar_utils.dart';
 import 'package:rangement/data/models/storage.dart';
 import 'package:rangement/presentation/screens/base_screen.dart';
 import 'package:rangement/presentation/screens/search_screen.dart';
@@ -60,6 +61,7 @@ class _StorageScreenState<T extends Storage> extends State<StorageScreen<T>> {
               await widget.onAdd(controller.text);
               if (!mounted) return;
               Navigator.pop(context);
+              showAppSnackBar('Élément de rangement ajouté !');
               _refresh();
             },
             child: const Text("Ajouter"),

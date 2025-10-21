@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:rangement/core/utils/snackbar_utils.dart';
 import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/item.dart';
@@ -54,6 +55,7 @@ class _ShelfScreenState extends State<ShelfScreen> {
               );
               if (!mounted) return;
               Navigator.pop(context);
+              showAppSnackBar('Objet ajouté !');
               _refresh();
             },
             child: const Text("Ajouter"),
