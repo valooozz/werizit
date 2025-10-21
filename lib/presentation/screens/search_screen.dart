@@ -24,7 +24,6 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _refreshSearch(searchText) {
-    print(searchText);
     setState(() {
       _futureItems = searchText.isEmpty
           ? Future.value([])

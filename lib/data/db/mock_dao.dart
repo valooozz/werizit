@@ -96,14 +96,13 @@ class MockDAO implements BaseDAO {
 
   @override
   Future<ItemInfo> getItemInfo(int itemId) async => Future.value(
-    {
-          "id": 0,
-          "name": "Casque Bose",
-          "house": "Paris",
-          "room": "Chambre",
-          "furniture": "Bureau",
-          "shelf": "Tiroir 1",
-        }
-        as FutureOr<ItemInfo>?,
+    ItemInfo(
+      id: 0,
+      name: "Casque Bose",
+      house: "Paris",
+      room: "Chambre",
+      furniture: "Bureau",
+      shelf: "Tiroir 1",
+    ),
   );
 }
