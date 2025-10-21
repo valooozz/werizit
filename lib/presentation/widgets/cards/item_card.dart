@@ -23,11 +23,10 @@ class _ItemCardState extends ConsumerState<ItemCard> {
   late ItemInfo _itemInfo;
 
   void _deleteItem() async {
+    Navigator.pop(context);
     await ref
         .read(itemsProvider.notifier)
         .deleteItem(widget.item.id!, widget.item.shelf);
-    if (!mounted) return;
-    Navigator.pop(context);
   }
 
   void _showInfoDialog() async {

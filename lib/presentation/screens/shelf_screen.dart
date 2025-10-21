@@ -44,13 +44,12 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
           TextButton(
             onPressed: () async {
               if (controller.text.isEmpty) return;
+              Navigator.pop(context);
               await ref
                   .read(itemsProvider.notifier)
                   .addItem(
                     Item(name: controller.text, shelf: widget.shelf.id!),
                   );
-              if (!mounted) return;
-              Navigator.pop(context);
               showAppSnackBar(LocaleKeys.item_added.tr());
             },
             child: Text(LocaleKeys.common_add.tr()),

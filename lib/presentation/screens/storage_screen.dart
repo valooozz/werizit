@@ -60,9 +60,8 @@ class _StorageScreenState<T extends Storage> extends State<StorageScreen<T>> {
           TextButton(
             onPressed: () async {
               if (controller.text.isEmpty) return;
-              await widget.onAdd(controller.text);
-              if (!mounted) return;
               Navigator.pop(context);
+              await widget.onAdd(controller.text);
               showAppSnackBar(LocaleKeys.storage_added.tr());
               _refresh();
             },
