@@ -6,6 +6,7 @@ import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/screens/base_screen.dart';
 import 'package:rangement/presentation/screens/search_screen.dart';
 import 'package:rangement/presentation/widgets/cards/storage_card.dart';
+import 'package:rangement/presentation/widgets/dialog/add_dialog.dart';
 
 class StorageScreen<T extends Storage> extends StatefulWidget {
   final String title;
@@ -43,32 +44,17 @@ class _StorageScreenState<T extends Storage> extends State<StorageScreen<T>> {
   }
 
   void _showAddDialog() {
-    final controller = TextEditingController();
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(LocaleKeys.common_addIn.tr(args: [widget.title])),
-        content: TextField(
-          controller: controller,
-          decoration: InputDecoration(hintText: LocaleKeys.common_name.tr()),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(LocaleKeys.common_cancel.tr()),
-          ),
-          TextButton(
-            onPressed: () async {
-              if (controller.text.isEmpty) return;
-              Navigator.pop(context);
-              await widget.onAdd(controller.text);
-              showAppSnackBar(LocaleKeys.storage_added.tr());
-              _refresh();
-            },
-            child: Text(LocaleKeys.common_add.tr()),
-          ),
-        ],
-      ),
+    AddDialog.show(
+      context,
+      title: LocaleKeys.common_addIn.tr(args: [widget.title]),
+      hintText: LocaleKeys.common_name.tr(),
+      cancelText: LocaleKeys.common_cancel.tr(),
+      confirmText: LocaleKeys.common_add.tr(),
+      onConfirm: (text) async {
+        await widget.onAdd(text);
+        showAppSnackBar(LocaleKeys.storage_added.tr());
+        _refresh();
+      },
     );
   }
 

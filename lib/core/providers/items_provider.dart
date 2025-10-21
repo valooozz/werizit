@@ -15,7 +15,8 @@ class ItemsNotifier extends StateNotifier<List<Item>> {
   ItemsNotifier(this.ref) : super([]);
 
   Future<void> loadItems(int shelfId) async {
-    state = await dao.getItemsByShelf(shelfId);
+    final fetched = await dao.getItemsByShelf(shelfId);
+    state = [...fetched];
   }
 
   Future<void> addItem(Item item) async {
