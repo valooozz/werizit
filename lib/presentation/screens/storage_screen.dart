@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rangement/data/models/storage.dart';
+import 'package:rangement/presentation/screens/base_screen.dart';
 import 'package:rangement/presentation/screens/search_screen.dart';
 import 'package:rangement/presentation/widgets/cards/storage_card.dart';
 
@@ -40,7 +41,6 @@ class _StorageScreenState<T extends Storage> extends State<StorageScreen<T>> {
 
   void _showAddDialog() {
     final controller = TextEditingController();
-
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -58,6 +58,7 @@ class _StorageScreenState<T extends Storage> extends State<StorageScreen<T>> {
             onPressed: () async {
               if (controller.text.isEmpty) return;
               await widget.onAdd(controller.text);
+              if (!mounted) return;
               Navigator.pop(context);
               _refresh();
             },
@@ -74,22 +75,11 @@ class _StorageScreenState<T extends Storage> extends State<StorageScreen<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: widget.onBack != null
-            ? IconButton(
-                onPressed: widget.onBack,
-                icon: const Icon(Icons.arrow_back),
-              )
-            : null,
-        title: Text(widget.title),
-        actions: [
-          IconButton(
-            onPressed: _openSearchScreen,
-            icon: const Icon(Icons.search),
-          ),
-        ],
-      ),
+    return BaseScreen(
+      title: widget.title,
+      onAdd: _showAddDialog,
+      onSearch: _openSearchScreen,
+      onBack: widget.onBack,
       body: FutureBuilder<List<T>>(
         future: _futureItems,
         builder: (context, snapshot) {
@@ -102,16 +92,16 @@ class _StorageScreenState<T extends Storage> extends State<StorageScreen<T>> {
 
           final items = snapshot.data ?? [];
           if (items.isEmpty) {
-            return const Center(child: Text("Aucun élément pour le moment."));
+            return const Center(child: Text("Aucun élément pour le moment"));
           }
 
           return GridView.builder(
             padding: const EdgeInsets.all(8),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 300, // largeur max d'une carte
+              maxCrossAxisExtent: 300,
               mainAxisSpacing: 8,
               crossAxisSpacing: 8,
-              childAspectRatio: 2, // ratio largeur/hauteur
+              childAspectRatio: 2,
             ),
             itemCount: items.length,
             itemBuilder: (context, index) {
@@ -123,10 +113,6 @@ class _StorageScreenState<T extends Storage> extends State<StorageScreen<T>> {
             },
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showAddDialog,
-        child: const Icon(Icons.add),
       ),
     );
   }

@@ -18,8 +18,8 @@ class HouseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return StorageScreen<Room>(
       title: house.name,
-      fetchItems: () => dao.getRoomsByHouse(house.id),
-      onAdd: (name) => dao.insertRoom(Room(id: 0, name: name, house: house.id)),
+      fetchItems: () => dao.getRoomsByHouse(house.id!),
+      onAdd: (name) => dao.insertRoom(Room(name: name, house: house.id!)),
       onTap: (room) {
         Navigator.push(
           context,

@@ -73,7 +73,7 @@ class DAO implements BaseDAO {
   // ---------- ITEM ----------
   @override
   Future<int> insertItem(Item obj) async =>
-      await dbHelper.insert('ObjectItem', obj.toMap());
+      await dbHelper.insert('Item', obj.toMap());
 
   @override
   Future<List<Item>> getItemsByShelf(int shelfId) async {

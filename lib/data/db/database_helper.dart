@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:sqflite/sqflite.dart';
+
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
   static const _databaseName = "storage.db";
@@ -60,7 +61,7 @@ class DatabaseHelper {
     ''');
 
     await db.execute('''
-      CREATE TABLE ObjectItem(
+      CREATE TABLE Item(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         shelf INTEGER,

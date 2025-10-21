@@ -41,7 +41,7 @@ class MockDAO implements BaseDAO {
   @override
   Future<int> insertHouse(House house) async {
     _houses.add(house);
-    return house.id;
+    return 0;
   }
 
   @override
@@ -51,7 +51,7 @@ class MockDAO implements BaseDAO {
   @override
   Future<int> insertRoom(Room room) async {
     _rooms.putIfAbsent(room.house, () => []).add(room);
-    return room.id;
+    return 0;
   }
 
   @override
@@ -62,7 +62,7 @@ class MockDAO implements BaseDAO {
   @override
   Future<int> insertFurniture(Furniture f) async {
     _furniture.putIfAbsent(f.room, () => []).add(f);
-    return f.id;
+    return 0;
   }
 
   @override
@@ -73,7 +73,7 @@ class MockDAO implements BaseDAO {
   @override
   Future<int> insertShelf(Shelf shelf) async {
     _shelves.putIfAbsent(shelf.furniture, () => []).add(shelf);
-    return shelf.id;
+    return 0;
   }
 
   @override
@@ -84,7 +84,7 @@ class MockDAO implements BaseDAO {
   @override
   Future<int> insertItem(Item obj) async {
     _items.putIfAbsent(obj.shelf, () => []).add(obj);
-    return obj.id;
+    return 0;
   }
 
   @override

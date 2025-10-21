@@ -26,7 +26,7 @@ class _ItemCardState extends State<ItemCard> {
       builder: (_) => const Center(child: CircularProgressIndicator()),
     );
 
-    _itemInfo = await dao.getItemInfo(widget.item.id);
+    _itemInfo = await dao.getItemInfo(widget.item.id!);
 
     if (!mounted) return;
 
