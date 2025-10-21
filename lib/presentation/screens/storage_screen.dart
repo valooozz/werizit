@@ -63,7 +63,7 @@ class _StorageScreenState<T extends Storage> extends State<StorageScreen<T>> {
               await widget.onAdd(controller.text);
               if (!mounted) return;
               Navigator.pop(context);
-              showAppSnackBar(LocaleKeys.storage_added);
+              showAppSnackBar(LocaleKeys.storage_added.tr());
               _refresh();
             },
             child: Text(LocaleKeys.common_add.tr()),

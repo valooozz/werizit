@@ -1,25 +1,34 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rangement/core/providers/items_provider.dart';
 import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/item.dart';
 import 'package:rangement/data/models/item_info.dart';
-import 'package:rangement/generated/locale_keys.g.dart';
+import 'package:rangement/presentation/widgets/dialog/item_info_dialog.dart';
 
-class ItemCard extends StatefulWidget {
+class ItemCard extends ConsumerStatefulWidget {
   final Item item;
   final VoidCallback? onTap;
 
   const ItemCard({super.key, required this.item, this.onTap});
 
   @override
-  State<ItemCard> createState() => _ItemCardState();
+  ConsumerState<ItemCard> createState() => _ItemCardState();
 }
 
-class _ItemCardState extends State<ItemCard> {
+class _ItemCardState extends ConsumerState<ItemCard> {
   final dao = kIsWeb ? MockDAO() : DAO();
   late ItemInfo _itemInfo;
+
+  void _deleteItem() async {
+    await ref
+        .read(itemsProvider.notifier)
+        .deleteItem(widget.item.id!, widget.item.shelf);
+    if (!mounted) return;
+    Navigator.pop(context);
+  }
 
   void _showInfoDialog() async {
     showDialog(
@@ -36,24 +45,15 @@ class _ItemCardState extends State<ItemCard> {
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(widget.item.name),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(_itemInfo.house, style: TextStyle(fontSize: 18)),
-            Icon(Icons.keyboard_double_arrow_down),
-            Text(_itemInfo.room, style: TextStyle(fontSize: 18)),
-            Icon(Icons.keyboard_double_arrow_down),
-            Text(_itemInfo.furniture, style: TextStyle(fontSize: 18)),
-            Icon(Icons.keyboard_double_arrow_down),
-            Text(_itemInfo.shelf, style: TextStyle(fontSize: 18)),
-          ],
-        ),
+      builder: (context) => ItemInfoDialog(
+        itemName: widget.item.name,
+        itemInfo: _itemInfo,
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(LocaleKeys.common_ok.tr()),
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              _deleteItem();
+            },
           ),
         ],
       ),

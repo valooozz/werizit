@@ -88,6 +88,12 @@ class MockDAO implements BaseDAO {
   }
 
   @override
+  Future<int> deleteItem(int itemId) async {
+    _items.clear();
+    return 0;
+  }
+
+  @override
   Future<List<Item>> getItemsByShelf(int shelfId) async =>
       _items[shelfId] ?? [];
 

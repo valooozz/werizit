@@ -1,9 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rangement/core/providers/items_provider.dart';
 import 'package:rangement/core/utils/snackbar_utils.dart';
-import 'package:rangement/data/db/dao.dart';
-import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/item.dart';
 import 'package:rangement/data/models/shelf.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
@@ -11,31 +10,24 @@ import 'package:rangement/presentation/screens/base_screen.dart';
 import 'package:rangement/presentation/screens/search_screen.dart';
 import 'package:rangement/presentation/widgets/display/items_display.dart';
 
-class ShelfScreen extends StatefulWidget {
+class ShelfScreen extends ConsumerStatefulWidget {
   final Shelf shelf;
   const ShelfScreen({super.key, required this.shelf});
 
   @override
-  State<ShelfScreen> createState() => _ShelfScreenState();
+  ConsumerState<ShelfScreen> createState() => _ShelfScreenState();
 }
 
-class _ShelfScreenState extends State<ShelfScreen> {
-  final dao = kIsWeb ? MockDAO() : DAO();
-  List<Item> items = [];
-
+class _ShelfScreenState extends ConsumerState<ShelfScreen> {
   @override
   void initState() {
     super.initState();
-    _refresh();
-  }
-
-  Future<void> _refresh() async {
-    final data = await dao.getItemsByShelf(widget.shelf.id!);
-    setState(() => items = data);
+    ref.read(itemsProvider.notifier).loadItems(widget.shelf.id!);
   }
 
   void _addItem() {
     final controller = TextEditingController();
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -52,13 +44,14 @@ class _ShelfScreenState extends State<ShelfScreen> {
           TextButton(
             onPressed: () async {
               if (controller.text.isEmpty) return;
-              await dao.insertItem(
-                Item(name: controller.text, shelf: widget.shelf.id!),
-              );
+              await ref
+                  .read(itemsProvider.notifier)
+                  .addItem(
+                    Item(name: controller.text, shelf: widget.shelf.id!),
+                  );
               if (!mounted) return;
               Navigator.pop(context);
-              showAppSnackBar(LocaleKeys.item_added);
-              _refresh();
+              showAppSnackBar(LocaleKeys.item_added.tr());
             },
             child: Text(LocaleKeys.common_add.tr()),
           ),
@@ -73,12 +66,13 @@ class _ShelfScreenState extends State<ShelfScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final items = ref.watch(itemsProvider);
     return BaseScreen(
       title: widget.shelf.name,
       onAdd: _addItem,
       onSearch: _search,
       body: items.isEmpty
-          ? Center(child: Text(LocaleKeys.storage_noItem))
+          ? Center(child: Text(LocaleKeys.storage_noItem.tr()))
           : Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: ItemsDisplay(items: items),

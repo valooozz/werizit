@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rangement/presentation/screens/home_screen.dart';
 
@@ -15,7 +16,7 @@ void main() async {
       supportedLocales: [Locale('en'), Locale('fr')],
       path: 'assets/translations',
       fallbackLocale: Locale('fr'),
-      child: MyApp(),
+      child: ProviderScope(child: MyApp()),
     ),
   );
 }

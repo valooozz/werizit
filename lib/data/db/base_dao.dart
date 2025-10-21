@@ -25,6 +25,7 @@ abstract class BaseDAO {
 
   // ITEM
   Future<int> insertItem(Item obj);
+  Future<int> deleteItem(int itemId);
   Future<List<Item>> getItemsByShelf(int shelfId);
   Future<List<Item>> searchItems(String searchText);
   Future<ItemInfo> getItemInfo(int itemId);
