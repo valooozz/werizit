@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/item.dart';
 import 'package:rangement/data/models/item_info.dart';
+import 'package:rangement/generated/locale_keys.g.dart';
 
 class ItemCard extends StatefulWidget {
   final Item item;
@@ -51,7 +53,7 @@ class _ItemCardState extends State<ItemCard> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("OK"),
+            child: Text(LocaleKeys.common_ok.tr()),
           ),
         ],
       ),

@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:rangement/core/utils/snackbar_utils.dart';
 import 'package:rangement/data/models/storage.dart';
+import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/screens/base_screen.dart';
 import 'package:rangement/presentation/screens/search_screen.dart';
 import 'package:rangement/presentation/widgets/cards/storage_card.dart';
@@ -45,15 +47,15 @@ class _StorageScreenState<T extends Storage> extends State<StorageScreen<T>> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Ajouter dans '${widget.title}'"),
+        title: Text(LocaleKeys.common_addIn.tr(args: [widget.title])),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(hintText: "Nom"),
+          decoration: InputDecoration(hintText: LocaleKeys.common_name.tr()),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Annuler"),
+            child: Text(LocaleKeys.common_cancel.tr()),
           ),
           TextButton(
             onPressed: () async {
@@ -61,10 +63,10 @@ class _StorageScreenState<T extends Storage> extends State<StorageScreen<T>> {
               await widget.onAdd(controller.text);
               if (!mounted) return;
               Navigator.pop(context);
-              showAppSnackBar('Élément de rangement ajouté !');
+              showAppSnackBar(LocaleKeys.storage_added);
               _refresh();
             },
-            child: const Text("Ajouter"),
+            child: Text(LocaleKeys.common_add.tr()),
           ),
         ],
       ),
@@ -89,12 +91,16 @@ class _StorageScreenState<T extends Storage> extends State<StorageScreen<T>> {
             return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
-            return Center(child: Text("Erreur : ${snapshot.error}"));
+            return Center(
+              child: Text(
+                LocaleKeys.common_error.tr(args: [snapshot.error.toString()]),
+              ),
+            );
           }
 
           final items = snapshot.data ?? [];
           if (items.isEmpty) {
-            return const Center(child: Text("Aucun élément pour le moment"));
+            return const Center(child: Text(LocaleKeys.storage_noElement));
           }
 
           return GridView.builder(

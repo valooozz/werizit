@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rangement/core/utils/snackbar_utils.dart';
@@ -5,6 +6,7 @@ import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/item.dart';
 import 'package:rangement/data/models/shelf.dart';
+import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/screens/base_screen.dart';
 import 'package:rangement/presentation/screens/search_screen.dart';
 import 'package:rangement/presentation/widgets/display/items_display.dart';
@@ -37,15 +39,15 @@ class _ShelfScreenState extends State<ShelfScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Ajouter dans '${widget.shelf.name}'"),
+        title: Text(LocaleKeys.common_addIn.tr(args: [widget.shelf.name])),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(hintText: "Nom"),
+          decoration: InputDecoration(hintText: LocaleKeys.common_name.tr()),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Annuler"),
+            child: Text(LocaleKeys.common_cancel.tr()),
           ),
           TextButton(
             onPressed: () async {
@@ -55,10 +57,10 @@ class _ShelfScreenState extends State<ShelfScreen> {
               );
               if (!mounted) return;
               Navigator.pop(context);
-              showAppSnackBar('Objet ajouté !');
+              showAppSnackBar(LocaleKeys.item_added);
               _refresh();
             },
-            child: const Text("Ajouter"),
+            child: Text(LocaleKeys.common_add.tr()),
           ),
         ],
       ),
@@ -76,7 +78,7 @@ class _ShelfScreenState extends State<ShelfScreen> {
       onAdd: _addItem,
       onSearch: _search,
       body: items.isEmpty
-          ? Center(child: Text("Aucun objet à cet étage"))
+          ? Center(child: Text(LocaleKeys.storage_noItem))
           : Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: ItemsDisplay(items: items),

@@ -1,0 +1,25 @@
+{
+    "common": {
+        "home": "Accueil",
+        "add": "Ajouter",
+        "addIn": "Ajouter dans '{}'",
+        "error": "Erreur : {}",
+        "name": "Nom",
+        "cancel": "Annuler",
+        "ok": "OK"
+    },
+    "storage": {
+        "noElement": "Aucun élément pour le moment",
+        "noItem": "Aucun objet par ici",
+        "added": "Élément de rangement ajouté !"
+    },
+    "item": {
+        "added": "Objet ajouté !"
+    },
+    "search": {
+        "title": "Rechercher un objet",
+        "hintText": "Rechercher...",
+        "emptySearch": "Entre du texte pour rechercher un objet",
+        "noItem": "Aucun élément trouvé"
+    }
+}
