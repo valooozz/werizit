@@ -47,6 +47,12 @@ class MockDAO implements BaseDAO {
   @override
   Future<List<House>> getHouses() async => _houses;
 
+  @override
+  Future<int> deleteHouse(int houseId) async {
+    _houses.clear();
+    return 0;
+  }
+
   // ---------- ROOM ----------
   @override
   Future<int> insertRoom(Room room) async {
@@ -57,6 +63,12 @@ class MockDAO implements BaseDAO {
   @override
   Future<List<Room>> getRoomsByHouse(int houseId) async =>
       _rooms[houseId] ?? [];
+
+  @override
+  Future<int> deleteRoom(int roomId) async {
+    _rooms.clear();
+    return 0;
+  }
 
   // ---------- FURNITURE ----------
   @override
@@ -69,6 +81,12 @@ class MockDAO implements BaseDAO {
   Future<List<Furniture>> getFurnitureByRoom(int roomId) async =>
       _furniture[roomId] ?? [];
 
+  @override
+  Future<int> deleteFurniture(int furnitureId) async {
+    _furniture.clear();
+    return 0;
+  }
+
   // ---------- SHELF ----------
   @override
   Future<int> insertShelf(Shelf shelf) async {
@@ -79,6 +97,12 @@ class MockDAO implements BaseDAO {
   @override
   Future<List<Shelf>> getShelvesByFurniture(int furnitureId) async =>
       _shelves[furnitureId] ?? [];
+
+  @override
+  Future<int> deleteShelf(int shelfId) async {
+    _shelves.clear();
+    return 0;
+  }
 
   // ---------- ITEM ----------
   @override

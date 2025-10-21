@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rangement/core/providers/rooms_provider.dart';
 import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/house.dart';
@@ -18,7 +20,9 @@ class HouseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return StorageScreen<Room>(
       title: house.name,
-      fetchItems: () => dao.getRoomsByHouse(house.id!),
+      provider: StateNotifierProvider<RoomsNotifier, List<Room>>(
+        (ref) => RoomsNotifier(ref)..loadAll(house.id),
+      ),
       onAdd: (name) => dao.insertRoom(Room(name: name, house: house.id!)),
       onTap: (room) {
         Navigator.push(

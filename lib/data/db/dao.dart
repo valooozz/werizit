@@ -22,6 +22,11 @@ class DAO implements BaseDAO {
     return maps.map((m) => House.fromMap(m)).toList();
   }
 
+  @override
+  Future<int> deleteHouse(int houseId) async {
+    return await dbHelper.delete('House', houseId);
+  }
+
   // ---------- ROOM ----------
   @override
   Future<int> insertRoom(Room room) async =>
@@ -36,6 +41,11 @@ class DAO implements BaseDAO {
       whereArgs: [houseId],
     );
     return maps.map((m) => Room.fromMap(m)).toList();
+  }
+
+  @override
+  Future<int> deleteRoom(int roomId) async {
+    return await dbHelper.delete('Room', roomId);
   }
 
   // ---------- FURNITURE ----------
@@ -54,6 +64,11 @@ class DAO implements BaseDAO {
     return maps.map((m) => Furniture.fromMap(m)).toList();
   }
 
+  @override
+  Future<int> deleteFurniture(int furnitureId) async {
+    return await dbHelper.delete('Furniture', furnitureId);
+  }
+
   // ---------- SHELF ----------
   @override
   Future<int> insertShelf(Shelf shelf) async =>
@@ -70,14 +85,15 @@ class DAO implements BaseDAO {
     return maps.map((m) => Shelf.fromMap(m)).toList();
   }
 
+  @override
+  Future<int> deleteShelf(int shelfId) async {
+    return await dbHelper.delete('Shelf', shelfId);
+  }
+
   // ---------- ITEM ----------
   @override
   Future<int> insertItem(Item obj) async =>
       await dbHelper.insert('Item', obj.toMap());
-
-  @override
-  Future<int> deleteItem(int itemId) async =>
-      await dbHelper.delete('Item', itemId);
 
   @override
   Future<List<Item>> getItemsByShelf(int shelfId) async {
@@ -89,6 +105,10 @@ class DAO implements BaseDAO {
     );
     return maps.map((m) => Item.fromMap(m)).toList();
   }
+
+  @override
+  Future<int> deleteItem(int itemId) async =>
+      await dbHelper.delete('Item', itemId);
 
   @override
   Future<List<Item>> searchItems(String searchText) async {
