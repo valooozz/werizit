@@ -26,6 +26,11 @@ class ItemsNotifier extends StateNotifier<ItemsState> {
     await loadItems(item.shelf ?? 0);
   }
 
+  Future<void> renameItem(int itemId, String newName, int shelfId) async {
+    await dao.renameItem(itemId, newName);
+    await loadItems(shelfId);
+  }
+
   Future<void> deleteItem(int itemId, int shelfId) async {
     await dao.deleteItem(itemId);
     await loadItems(shelfId);

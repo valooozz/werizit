@@ -16,8 +16,10 @@ abstract class  LocaleKeys {
   static const storage_noElement = 'storage.noElement';
   static const storage_noItem = 'storage.noItem';
   static const storage_added = 'storage.added';
+  static const storage_renamed = 'storage.renamed';
   static const storage = 'storage';
   static const item_added = 'item.added';
+  static const item_renamed = 'item.renamed';
   static const item = 'item';
   static const search_title = 'search.title';
   static const search_hintText = 'search.hintText';

@@ -13,10 +13,12 @@
     "storage": {
         "noElement": "Aucun élément pour le moment",
         "noItem": "Aucun objet par ici",
-        "added": "Élément de rangement ajouté !"
+        "added": "Élément de rangement ajouté !",
+        "renamed": "Élément de rangement renommé !"
     },
     "item": {
-        "added": "Objet ajouté !"
+        "added": "Objet ajouté !",
+        "renamed": "Objet renommé !"
     },
     "search": {
         "title": "Rechercher un objet",

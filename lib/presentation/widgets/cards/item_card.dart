@@ -1,12 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rangement/core/providers/items_provider.dart';
+import 'package:rangement/core/utils/snackbar_utils.dart';
 import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/item.dart';
 import 'package:rangement/data/models/item_info.dart';
+import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/widgets/dialog/item_info_dialog.dart';
+import 'package:rangement/presentation/widgets/dialog/text_field_dialog.dart';
 
 class ItemCard extends ConsumerStatefulWidget {
   final Item item;
@@ -49,13 +53,33 @@ class _ItemCardState extends ConsumerState<ItemCard> {
         itemInfo: _itemInfo,
         actions: [
           IconButton(
-            icon: const Icon(Icons.delete),
+            onPressed: _showRenameDialog,
+            icon: const Icon(Icons.edit),
+          ),
+          IconButton(
             onPressed: () {
               _deleteItem();
             },
+            icon: const Icon(Icons.delete),
           ),
         ],
       ),
+    );
+  }
+
+  void _showRenameDialog() {
+    TextFieldDialog.show(
+      context,
+      title: LocaleKeys.common_renameOf.tr(args: [widget.item.name]),
+      hintText: LocaleKeys.common_rename.tr(),
+      cancelText: LocaleKeys.common_cancel.tr(),
+      confirmText: LocaleKeys.common_add.tr(),
+      onConfirm: (text) async {
+        await ref
+            .read(itemsProvider.notifier)
+            .renameItem(widget.item.id!, text, widget.item.shelf!);
+        showAppSnackBar(LocaleKeys.item_renamed.tr());
+      },
     );
   }
 
