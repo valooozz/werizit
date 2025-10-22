@@ -14,11 +14,7 @@ class FurnituresNotifier extends StorageNotifier<Furniture> {
 
   @override
   Future<List<Furniture>> loadFromDb(int? parentId) async {
-    if (parentId != null) {
-      return await dao.getFurnitureByRoom(parentId);
-    } else {
-      return [];
-    }
+    return await dao.getFurnitureByRoom(parentId!);
   }
 
   @override

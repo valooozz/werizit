@@ -13,11 +13,7 @@ class RoomsNotifier extends StorageNotifier<Room> {
 
   @override
   Future<List<Room>> loadFromDb(int? parentId) async {
-    if (parentId != null) {
-      return await dao.getRoomsByHouse(parentId);
-    } else {
-      return [];
-    }
+    return await dao.getRoomsByHouse(parentId!);
   }
 
   @override

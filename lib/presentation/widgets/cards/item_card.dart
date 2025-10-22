@@ -28,9 +28,7 @@ class _ItemCardState extends ConsumerState<ItemCard> {
 
   void _deleteItem() async {
     Navigator.pop(context);
-    await ref
-        .read(itemsProvider.notifier)
-        .deleteItem(widget.item.id!, widget.item.shelf!);
+    await ref.read(itemsProvider.notifier).deleteItem(widget.item.id!);
   }
 
   void _showInfoDialog() async {
@@ -77,7 +75,7 @@ class _ItemCardState extends ConsumerState<ItemCard> {
       onConfirm: (text) async {
         await ref
             .read(itemsProvider.notifier)
-            .renameItem(widget.item.id!, text, widget.item.shelf!);
+            .renameItem(widget.item.id!, text);
         showAppSnackBar(LocaleKeys.item_renamed.tr());
       },
     );

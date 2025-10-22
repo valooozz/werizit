@@ -13,11 +13,7 @@ class ShelvesNotifier extends StorageNotifier<Shelf> {
 
   @override
   Future<List<Shelf>> loadFromDb(int? parentId) async {
-    if (parentId != null) {
-      return await dao.getShelvesByFurniture(parentId);
-    } else {
-      return [];
-    }
+    return await dao.getShelvesByFurniture(parentId!);
   }
 
   @override

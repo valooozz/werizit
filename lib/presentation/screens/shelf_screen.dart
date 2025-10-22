@@ -26,14 +26,15 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
   void initState() {
     super.initState();
     Future.microtask(
-      () => ref.read(itemsProvider.notifier).loadItems(widget.shelf.id!),
+      () =>
+          ref.read(itemsProvider.notifier).loadItems(shelfId: widget.shelf.id),
     );
   }
 
   Future<void> _addItem(String name) async {
     await ref
         .read(itemsProvider.notifier)
-        .addItem(Item(name: name, shelf: widget.shelf.id!));
+        .addItem(Item(name: name, shelf: widget.shelf.id));
     showAppSnackBar(LocaleKeys.item_added.tr());
   }
 
@@ -80,7 +81,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
       await ref
           .read(itemsProvider.notifier)
-          .putItemsIntoBox(selectedItemIds, widget.shelf.id!);
+          .putItemsIntoBox(selectedItemIds, shelfId: widget.shelf.id);
     }
   }
 
@@ -93,14 +94,18 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
       await ref
           .read(itemsProvider.notifier)
-          .dropItemsFromBox(selectedItemIds, widget.shelf.id!);
+          .dropItemsFromBox(selectedItemIds, shelfId: widget.shelf.id);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final shelfItems = ref.watch(itemsProvider).shelfItems;
-    final boxItems = ref.watch(itemsProvider).boxItems;
+    // Filtrer les items pour cette étagère ou la boîte
+    final allItems = ref.watch(itemsProvider);
+    final shelfItems = allItems
+        .where((i) => i.shelf == widget.shelf.id)
+        .toList();
+    final boxItems = allItems.where((i) => i.shelf == -1).toList();
 
     return BaseScreen(
       title: widget.shelf.name,

@@ -285,13 +285,13 @@ class MockDAO implements BaseDAO {
   Future<void> putItemsIntoBox(List<int> itemIds) async {
     for (final id in itemIds) {
       final i = _items[id];
-      if (i != null) _items[id] = i.copyWith(shelf: null);
+      if (i != null) _items[id] = i.copyWith(shelf: -1);
     }
   }
 
   @override
   Future<List<Item>> getItemsFromBox() async =>
-      _items.values.where((i) => i.shelf == null).toList();
+      _items.values.where((i) => i.shelf == -1).toList();
 
   @override
   Future<void> dropItemsFromBox(List<int> itemIds, int shelfId) async {
