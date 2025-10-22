@@ -142,4 +142,16 @@ class MockDAO implements BaseDAO {
     Item newItem = Item(id: 1, name: 'Casque Bose', shelf: null);
     _items[1] = [newItem];
   }
+
+  @override
+  Future<List<Item>> getItemsFromBox() async {
+    final items = _items[1] ?? [];
+    return items.where((item) => item.shelf == null).toList();
+  }
+
+  @override
+  Future<void> dropItemsFromBox(List<int> itemIds, int shelfId) async {
+    Item newItem = Item(id: 1, name: 'Casque Bose', shelf: 1);
+    _items[1] = [newItem];
+  }
 }

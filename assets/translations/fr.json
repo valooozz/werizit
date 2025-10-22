@@ -24,6 +24,7 @@
     },
     "box": {
         "title": "Sélectionne des objets",
-        "validate": "Ajouter au carton"
+        "add": "Ajouter au carton",
+        "drop": "Déposer"
     }
 }

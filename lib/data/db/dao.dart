@@ -152,4 +152,22 @@ class DAO implements BaseDAO {
       whereArgs: itemIds,
     );
   }
+
+  @override
+  Future<List<Item>> getItemsFromBox() async {
+    final db = await dbHelper.database;
+    final maps = await db.query('Item', where: 'shelf IS NULL');
+    return maps.map((m) => Item.fromMap(m)).toList();
+  }
+
+  @override
+  Future<void> dropItemsFromBox(List<int> itemIds, int shelfId) async {
+    final db = await dbHelper.database;
+    await db.update(
+      'Item',
+      {'shelf': shelfId},
+      where: 'id IN ?',
+      whereArgs: itemIds,
+    );
+  }
 }

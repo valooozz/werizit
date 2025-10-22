@@ -72,20 +72,35 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     }
   }
 
+  void _dropItemsFromBox(List<Item> items) async {
+    final selectedItemIds = await showDialog(
+      context: context,
+      builder: (_) => SelectItemsDialog(items: items),
+    );
+
+    if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
+      ref
+          .read(itemsProvider.notifier)
+          .dropItemsFromBox(selectedItemIds, widget.shelf.id!);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final items = ref.watch(itemsProvider);
+    final shelfItems = ref.watch(itemsProvider).shelfItems;
+    final boxItems = ref.watch(itemsProvider).boxItems;
     return BaseScreen(
       title: widget.shelf.name,
       onAdd: _showAddDialog,
       onSearch: _openSearchScreen,
       onDelete: _deleteShelf,
-      onBox: () => _addItemsToBox(items),
-      body: items.isEmpty
+      onAddToBox: () => _addItemsToBox(shelfItems),
+      onDropFromBox: () => _dropItemsFromBox(boxItems),
+      body: shelfItems.isEmpty
           ? Center(child: Text(LocaleKeys.storage_noItem.tr()))
           : Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: ItemsDisplay(items: items),
+              child: ItemsDisplay(items: shelfItems),
             ),
     );
   }

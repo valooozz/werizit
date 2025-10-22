@@ -27,6 +27,10 @@ class _SelectItemsDialogState extends State<SelectItemsDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final valideButtonLabel =
+        widget.items.isNotEmpty && widget.items[0].shelf == null
+        ? LocaleKeys.box_drop.tr()
+        : LocaleKeys.box_add.tr();
     return AlertDialog(
       title: Text(LocaleKeys.box_title.tr()),
       content: SizedBox(
@@ -51,12 +55,12 @@ class _SelectItemsDialogState extends State<SelectItemsDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context), // Ferme sans rien renvoyer
+          onPressed: () => Navigator.pop(context),
           child: Text(LocaleKeys.common_cancel.tr()),
         ),
         ElevatedButton(
           onPressed: () => Navigator.pop(context, _selectedIds.toList()),
-          child: Text(LocaleKeys.box_validate.tr()),
+          child: Text(valideButtonLabel),
         ),
       ],
     );
