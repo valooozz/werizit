@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rangement/core/providers/furnitures_provider.dart';
+import 'package:rangement/core/providers/rooms_provider.dart';
 import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/furniture.dart';
@@ -24,6 +25,9 @@ class RoomScreen extends ConsumerWidget {
       onAdd: (name) async => await ref
           .read(furnituresProvider(room.id!).notifier)
           .add(Furniture(name: name, room: room.id!)),
+      onDelete: () async => await ref
+          .read(roomsProvider(room.id!).notifier)
+          .delete(room.id!, room.house),
       onTap: (furniture) {
         Navigator.push(
           context,

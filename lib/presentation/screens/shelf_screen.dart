@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rangement/core/providers/items_provider.dart';
+import 'package:rangement/core/providers/shelves_provider.dart';
 import 'package:rangement/core/utils/snackbar_utils.dart';
 import 'package:rangement/data/models/item.dart';
 import 'package:rangement/data/models/shelf.dart';
@@ -46,8 +47,15 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     );
   }
 
-  void _search() {
+  void _openSearchScreen() {
     Navigator.push(context, MaterialPageRoute(builder: (_) => SearchScreen()));
+  }
+
+  void _deleteShelf() {
+    Navigator.pop(context);
+    ref
+        .read(shelvesProvider(widget.shelf.id!).notifier)
+        .delete(widget.shelf.id!, widget.shelf.furniture);
   }
 
   @override
@@ -56,7 +64,8 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     return BaseScreen(
       title: widget.shelf.name,
       onAdd: _showAddDialog,
-      onSearch: _search,
+      onSearch: _openSearchScreen,
+      onDelete: _deleteShelf,
       body: items.isEmpty
           ? Center(child: Text(LocaleKeys.storage_noItem.tr()))
           : Padding(

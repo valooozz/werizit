@@ -10,7 +10,6 @@ import '../models/room.dart';
 import '../models/shelf.dart';
 
 class MockDAO implements BaseDAO {
-  // Stockage en mémoire
   final List<House> _houses = [
     House(id: 1, name: 'Paris'),
     House(id: 2, name: 'Yvré'),

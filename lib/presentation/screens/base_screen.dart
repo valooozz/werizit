@@ -5,6 +5,7 @@ class BaseScreen extends StatelessWidget {
   final Widget body;
   final VoidCallback? onAdd;
   final VoidCallback? onSearch;
+  final VoidCallback? onDelete;
   final VoidCallback? onBack;
 
   const BaseScreen({
@@ -13,6 +14,7 @@ class BaseScreen extends StatelessWidget {
     required this.body,
     this.onAdd,
     this.onSearch,
+    this.onDelete,
     this.onBack,
   });
 
@@ -27,6 +29,8 @@ class BaseScreen extends StatelessWidget {
         actions: [
           if (onSearch != null)
             IconButton(onPressed: onSearch, icon: const Icon(Icons.search)),
+          if (onDelete != null)
+            IconButton(onPressed: onDelete, icon: const Icon(Icons.delete)),
         ],
       ),
       body: body,

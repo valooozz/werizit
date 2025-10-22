@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rangement/core/providers/houses_provider.dart';
 import 'package:rangement/core/providers/rooms_provider.dart';
 import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/db/mock_dao.dart';
@@ -24,6 +25,8 @@ class HouseScreen extends ConsumerWidget {
       onAdd: (name) async => await ref
           .read(roomsProvider(house.id!).notifier)
           .add(Room(name: name, house: house.id!)),
+      onDelete: () async =>
+          await ref.read(housesProvider.notifier).delete(house.id!, 0),
       onTap: (room) {
         Navigator.push(
           context,

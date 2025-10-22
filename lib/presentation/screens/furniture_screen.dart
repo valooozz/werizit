@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rangement/core/providers/furnitures_provider.dart';
 import 'package:rangement/core/providers/shelves_provider.dart';
 import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/db/mock_dao.dart';
@@ -23,6 +24,9 @@ class FurnitureScreen extends ConsumerWidget {
       onAdd: (name) async => await ref
           .read(shelvesProvider(furniture.id!).notifier)
           .add(Shelf(name: name, furniture: furniture.id!)),
+      onDelete: () async => await ref
+          .read(furnituresProvider(furniture.id!).notifier)
+          .delete(furniture.id!, furniture.room),
       onTap: (shelf) {
         Navigator.push(
           context,
