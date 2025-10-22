@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class AddDialog extends StatefulWidget {
+class TextFieldDialog extends StatefulWidget {
   final String title;
   final String hintText;
   final Future<void> Function(String text) onConfirm;
   final String cancelText;
   final String confirmText;
 
-  const AddDialog({
+  const TextFieldDialog({
     super.key,
     required this.title,
     required this.hintText,
@@ -26,7 +26,7 @@ class AddDialog extends StatefulWidget {
   }) {
     return showDialog(
       context: context,
-      builder: (_) => AddDialog(
+      builder: (_) => TextFieldDialog(
         title: title,
         hintText: hintText,
         onConfirm: onConfirm,
@@ -37,10 +37,10 @@ class AddDialog extends StatefulWidget {
   }
 
   @override
-  State<AddDialog> createState() => _AddDialogState();
+  State<TextFieldDialog> createState() => _TextFieldDialogState();
 }
 
-class _AddDialogState extends State<AddDialog> {
+class _TextFieldDialogState extends State<TextFieldDialog> {
   final _controller = TextEditingController();
   bool _isSubmitting = false;
 

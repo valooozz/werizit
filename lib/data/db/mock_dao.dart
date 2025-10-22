@@ -47,6 +47,12 @@ class MockDAO implements BaseDAO {
   Future<List<House>> getHouses() async => _houses;
 
   @override
+  Future<int> renameHouse(int houseId, String newName) async {
+    print('renameHouse: $houseId to $newName');
+    return 0;
+  }
+
+  @override
   Future<int> deleteHouse(int houseId) async {
     _houses.clear();
     return 0;
@@ -62,6 +68,12 @@ class MockDAO implements BaseDAO {
   @override
   Future<List<Room>> getRoomsByHouse(int houseId) async =>
       _rooms[houseId] ?? [];
+
+  @override
+  Future<int> renameRoom(int roomId, String newName) async {
+    print('renameRoom: $roomId to $newName');
+    return 0;
+  }
 
   @override
   Future<int> deleteRoom(int roomId) async {
@@ -81,6 +93,12 @@ class MockDAO implements BaseDAO {
       _furniture[roomId] ?? [];
 
   @override
+  Future<int> renameFurniture(int furnitureId, String newName) async {
+    print('renameFurniture: $furnitureId to $newName');
+    return 0;
+  }
+
+  @override
   Future<int> deleteFurniture(int furnitureId) async {
     _furniture.clear();
     return 0;
@@ -98,6 +116,12 @@ class MockDAO implements BaseDAO {
       _shelves[furnitureId] ?? [];
 
   @override
+  Future<int> renameShelf(int shelfId, String newName) async {
+    print('renameShelf: $shelfId to $newName');
+    return 0;
+  }
+
+  @override
   Future<int> deleteShelf(int shelfId) async {
     _shelves.clear();
     return 0;
@@ -113,6 +137,12 @@ class MockDAO implements BaseDAO {
   @override
   Future<int> deleteItem(int itemId) async {
     _items.clear();
+    return 0;
+  }
+
+  @override
+  Future<int> renameItem(int itemId, String newName) async {
+    print('renameItem: $itemId to $newName');
     return 0;
   }
 

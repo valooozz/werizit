@@ -26,6 +26,12 @@ class ShelvesNotifier extends BaseStorageNotifier<Shelf> {
   }
 
   @override
+  Future<void> rename(int shelfId, String newName, int? furnitureId) async {
+    await dao.renameShelf(shelfId, newName);
+    await loadAll(furnitureId);
+  }
+
+  @override
   Future<void> delete(int shelfId, int? furnitureId) async {
     await dao.deleteShelf(shelfId);
     await loadAll(furnitureId);

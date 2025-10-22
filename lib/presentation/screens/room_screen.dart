@@ -28,6 +28,9 @@ class RoomScreen extends ConsumerWidget {
       onDelete: () async => await ref
           .read(roomsProvider(room.id!).notifier)
           .delete(room.id!, room.house),
+      onRename: (newName) async => await ref
+          .read(roomsProvider(room.id!).notifier)
+          .rename(room.id!, newName, room.house),
       onTap: (furniture) {
         Navigator.push(
           context,

@@ -27,6 +27,9 @@ class FurnitureScreen extends ConsumerWidget {
       onDelete: () async => await ref
           .read(furnituresProvider(furniture.id!).notifier)
           .delete(furniture.id!, furniture.room),
+      onRename: (newName) async => await ref
+          .read(furnituresProvider(furniture.id!).notifier)
+          .rename(furniture.id!, newName, furniture.room),
       onTap: (shelf) {
         Navigator.push(
           context,

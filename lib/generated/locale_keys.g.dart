@@ -10,6 +10,8 @@ abstract class  LocaleKeys {
   static const common_name = 'common.name';
   static const common_cancel = 'common.cancel';
   static const common_ok = 'common.ok';
+  static const common_rename = 'common.rename';
+  static const common_renameOf = 'common.renameOf';
   static const common = 'common';
   static const storage_noElement = 'storage.noElement';
   static const storage_noItem = 'storage.noItem';

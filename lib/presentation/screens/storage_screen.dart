@@ -8,12 +8,13 @@ import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/screens/base_screen.dart';
 import 'package:rangement/presentation/screens/search_screen.dart';
 import 'package:rangement/presentation/widgets/cards/storage_card.dart';
-import 'package:rangement/presentation/widgets/dialog/add_dialog.dart';
+import 'package:rangement/presentation/widgets/dialog/text_field_dialog.dart';
 
 class StorageScreen<T extends Storage> extends ConsumerWidget {
   final String title;
   final StateNotifierProvider<BaseStorageNotifier<T>, List<T>> provider;
   final Future<void> Function(String name) onAdd;
+  final Future<void> Function(String newName)? onRename;
   final void Function()? onDelete;
   final void Function(T item)? onTap;
   final void Function()? onBack;
@@ -23,13 +24,14 @@ class StorageScreen<T extends Storage> extends ConsumerWidget {
     required this.title,
     required this.provider,
     required this.onAdd,
+    this.onRename,
     this.onDelete,
     this.onTap,
     this.onBack,
   });
 
   void _showAddDialog(BuildContext context) {
-    AddDialog.show(
+    TextFieldDialog.show(
       context,
       title: LocaleKeys.common_addIn.tr(args: [title]),
       hintText: LocaleKeys.common_name.tr(),
@@ -37,6 +39,20 @@ class StorageScreen<T extends Storage> extends ConsumerWidget {
       confirmText: LocaleKeys.common_add.tr(),
       onConfirm: (text) async {
         await onAdd(text);
+        showAppSnackBar(LocaleKeys.storage_added.tr());
+      },
+    );
+  }
+
+  void _showRenameDialog(BuildContext context) {
+    TextFieldDialog.show(
+      context,
+      title: LocaleKeys.common_renameOf.tr(args: [title]),
+      hintText: LocaleKeys.common_rename.tr(),
+      cancelText: LocaleKeys.common_cancel.tr(),
+      confirmText: LocaleKeys.common_add.tr(),
+      onConfirm: (text) async {
+        await onRename!(text);
         showAppSnackBar(LocaleKeys.storage_added.tr());
       },
     );
@@ -61,6 +77,7 @@ class StorageScreen<T extends Storage> extends ConsumerWidget {
       onAdd: () => _showAddDialog(context),
       onSearch: () => _openSearchScreen(context),
       onDelete: onDelete == null ? null : () => _deleteStorage(context),
+      onRename: onRename == null ? null : () => _showRenameDialog(context),
       onBack: onBack,
       body: storages.isEmpty
           ? Center(child: Text(LocaleKeys.storage_noElement.tr()))

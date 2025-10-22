@@ -26,6 +26,12 @@ class RoomsNotifier extends BaseStorageNotifier<Room> {
   }
 
   @override
+  Future<void> rename(int roomId, String newName, int? parentId) async {
+    await dao.renameRoom(roomId, newName);
+    await loadAll(parentId);
+  }
+
+  @override
   Future<void> delete(int roomId, int? houseId) async {
     await dao.deleteRoom(roomId);
     await loadAll(houseId);

@@ -23,6 +23,11 @@ class DAO implements BaseDAO {
   }
 
   @override
+  Future<int> renameHouse(int houseId, String newName) async {
+    return await dbHelper.update('House', {'name': newName}, houseId);
+  }
+
+  @override
   Future<int> deleteHouse(int houseId) async {
     return await dbHelper.delete('House', houseId);
   }
@@ -41,6 +46,11 @@ class DAO implements BaseDAO {
       whereArgs: [houseId],
     );
     return maps.map((m) => Room.fromMap(m)).toList();
+  }
+
+  @override
+  Future<int> renameRoom(int roomId, String newName) async {
+    return await dbHelper.update('Room', {'name': newName}, roomId);
   }
 
   @override
@@ -65,6 +75,11 @@ class DAO implements BaseDAO {
   }
 
   @override
+  Future<int> renameFurniture(int furnitureId, String newName) async {
+    return await dbHelper.update('Furniture', {'name': newName}, furnitureId);
+  }
+
+  @override
   Future<int> deleteFurniture(int furnitureId) async {
     return await dbHelper.delete('Furniture', furnitureId);
   }
@@ -86,6 +101,11 @@ class DAO implements BaseDAO {
   }
 
   @override
+  Future<int> renameShelf(int shelfId, String newName) async {
+    return await dbHelper.update('Shelf', {'name': newName}, shelfId);
+  }
+
+  @override
   Future<int> deleteShelf(int shelfId) async {
     return await dbHelper.delete('Shelf', shelfId);
   }
@@ -104,6 +124,11 @@ class DAO implements BaseDAO {
       whereArgs: [shelfId],
     );
     return maps.map((m) => Item.fromMap(m)).toList();
+  }
+
+  @override
+  Future<int> renameItem(int itemId, String newName) async {
+    return await dbHelper.update('Item', {'name': newName}, itemId);
   }
 
   @override

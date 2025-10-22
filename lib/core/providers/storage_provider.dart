@@ -16,5 +16,7 @@ abstract class BaseStorageNotifier<T extends Storage>
 
   Future<void> add(T storage);
 
+  Future<void> rename(int storageId, String newName, int? parentId);
+
   Future<void> delete(int storageId, int? parentId);
 }

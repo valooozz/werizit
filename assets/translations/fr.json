@@ -6,7 +6,9 @@
         "error": "Erreur : {}",
         "name": "Nom",
         "cancel": "Annuler",
-        "ok": "OK"
+        "ok": "OK",
+        "rename": "Renommer",
+        "renameOf": "Renommer '{}'"
     },
     "storage": {
         "noElement": "Aucun élément pour le moment",

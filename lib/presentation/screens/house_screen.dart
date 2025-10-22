@@ -27,6 +27,8 @@ class HouseScreen extends ConsumerWidget {
           .add(Room(name: name, house: house.id!)),
       onDelete: () async =>
           await ref.read(housesProvider.notifier).delete(house.id!, 0),
+      onRename: (newName) async =>
+          await ref.read(housesProvider.notifier).rename(house.id!, newName, 0),
       onTap: (room) {
         Navigator.push(
           context,

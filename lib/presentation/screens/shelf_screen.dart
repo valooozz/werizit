@@ -9,8 +9,8 @@ import 'package:rangement/data/models/shelf.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/screens/base_screen.dart';
 import 'package:rangement/presentation/screens/search_screen.dart';
-import 'package:rangement/presentation/widgets/dialog/add_dialog.dart';
 import 'package:rangement/presentation/widgets/dialog/select_items_dialog.dart';
+import 'package:rangement/presentation/widgets/dialog/text_field_dialog.dart';
 import 'package:rangement/presentation/widgets/display/items_display.dart';
 
 class ShelfScreen extends ConsumerStatefulWidget {
@@ -38,13 +38,29 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
   }
 
   void _showAddDialog() {
-    AddDialog.show(
+    TextFieldDialog.show(
       context,
       title: LocaleKeys.common_addIn.tr(args: [widget.shelf.name]),
       hintText: LocaleKeys.common_name.tr(),
       cancelText: LocaleKeys.common_cancel.tr(),
       confirmText: LocaleKeys.common_add.tr(),
       onConfirm: _addItem,
+    );
+  }
+
+  void _showRenameDialog() {
+    TextFieldDialog.show(
+      context,
+      title: LocaleKeys.common_renameOf.tr(args: [widget.shelf.name]),
+      hintText: LocaleKeys.common_rename.tr(),
+      cancelText: LocaleKeys.common_cancel.tr(),
+      confirmText: LocaleKeys.common_add.tr(),
+      onConfirm: (text) async {
+        await ref
+            .read(shelvesProvider(widget.shelf.id!).notifier)
+            .rename(widget.shelf.id!, text, widget.shelf.furniture);
+        showAppSnackBar(LocaleKeys.storage_added.tr());
+      },
     );
   }
 
@@ -94,6 +110,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
       onAdd: _showAddDialog,
       onSearch: _openSearchScreen,
       onDelete: _deleteShelf,
+      onRename: _showRenameDialog,
       onAddToBox: () => _addItemsToBox(shelfItems),
       onDropFromBox: () => _dropItemsFromBox(boxItems),
       body: shelfItems.isEmpty
