@@ -1,10 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rangement/core/providers/houses_provider.dart';
-import 'package:rangement/core/providers/rooms_provider.dart';
-import 'package:rangement/data/db/dao.dart';
-import 'package:rangement/data/db/mock_dao.dart';
+import 'package:rangement/core/providers/house_provider.dart';
+import 'package:rangement/core/providers/room_provider.dart';
 import 'package:rangement/data/models/house.dart';
 import 'package:rangement/data/models/room.dart';
 import 'package:rangement/presentation/screens/storage_screen.dart';
@@ -13,22 +10,32 @@ import 'room_screen.dart';
 
 class HouseScreen extends ConsumerWidget {
   final House house;
-  final dao = kIsWeb ? MockDAO() : DAO();
 
-  HouseScreen({super.key, required this.house});
+  const HouseScreen({super.key, required this.house});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final roomsNotifier = ref.read(roomsProvider.notifier);
+    final houseNotifier = ref.read(housesProvider.notifier);
+
+    final rooms = ref
+        .watch(roomsProvider)
+        .values
+        .where((room) => room.house == house.id)
+        .toList();
+
+    if (rooms.isEmpty) {
+      roomsNotifier.load(house.id);
+    }
+
     return StorageScreen<Room>(
-      title: house.name,
-      provider: roomsProvider(house.id!),
-      onAdd: (name) async => await ref
-          .read(roomsProvider(house.id!).notifier)
-          .add(Room(name: name, house: house.id!)),
-      onDelete: () async =>
-          await ref.read(housesProvider.notifier).delete(house.id!, 0),
+      parentStorage: house,
+      storages: rooms,
+      onAdd: (name) async =>
+          await roomsNotifier.add(Room(name: name, house: house.id!)),
       onRename: (newName) async =>
-          await ref.read(housesProvider.notifier).rename(house.id!, newName, 0),
+          await houseNotifier.rename(house.id!, newName),
+      onDelete: () async => await houseNotifier.remove(house.id!),
       onTap: (room) {
         Navigator.push(
           context,

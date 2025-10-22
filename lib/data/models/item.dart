@@ -9,4 +9,12 @@ class Item {
       Item(id: map['id'], name: map['name'], shelf: map['shelf']);
 
   Map<String, dynamic> toMap() => {'name': name, 'shelf': shelf};
+
+  Item copyWith({int? id, String? name, int? shelf}) {
+    return Item(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      shelf: shelf ?? this.shelf,
+    );
+  }
 }

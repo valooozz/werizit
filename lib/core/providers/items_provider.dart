@@ -13,12 +13,18 @@ class ItemsNotifier extends StateNotifier<ItemsState> {
   final Ref ref;
   final dao = kIsWeb ? MockDAO() : DAO();
 
-  ItemsNotifier(this.ref) : super(ItemsState(shelfItems: [], boxItems: []));
+  ItemsNotifier(this.ref)
+    : super(ItemsState(shelfItems: [], boxItems: [], shelfName: ''));
 
   Future<void> loadItems(int shelfId) async {
     final fetched = await dao.getItemsByShelf(shelfId);
     final boxItems = await dao.getItemsFromBox();
-    state = state.copyWith(shelfItems: fetched, boxItems: boxItems);
+    final shelfName = await dao.getShelfName(shelfId);
+    state = state.copyWith(
+      shelfItems: fetched,
+      boxItems: boxItems,
+      shelfName: shelfName,
+    );
   }
 
   Future<void> addItem(Item item) async {
@@ -28,6 +34,11 @@ class ItemsNotifier extends StateNotifier<ItemsState> {
 
   Future<void> renameItem(int itemId, String newName, int shelfId) async {
     await dao.renameItem(itemId, newName);
+    await loadItems(shelfId);
+  }
+
+  Future<void> renameShelf(int shelfId, String newName) async {
+    await dao.renameShelf(shelfId, newName);
     await loadItems(shelfId);
   }
 

@@ -1,7 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rangement/core/providers/storage_provider.dart';
 import 'package:rangement/core/utils/snackbar_utils.dart';
 import 'package:rangement/data/models/storage.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
@@ -10,9 +8,9 @@ import 'package:rangement/presentation/screens/search_screen.dart';
 import 'package:rangement/presentation/widgets/cards/storage_card.dart';
 import 'package:rangement/presentation/widgets/dialog/text_field_dialog.dart';
 
-class StorageScreen<T extends Storage> extends ConsumerWidget {
-  final String title;
-  final StateNotifierProvider<BaseStorageNotifier<T>, List<T>> provider;
+class StorageScreen<T extends Storage> extends StatelessWidget {
+  final Storage? parentStorage;
+  final List<T> storages;
   final Future<void> Function(String name) onAdd;
   final Future<void> Function(String newName)? onRename;
   final void Function()? onDelete;
@@ -21,8 +19,8 @@ class StorageScreen<T extends Storage> extends ConsumerWidget {
 
   const StorageScreen({
     super.key,
-    required this.title,
-    required this.provider,
+    this.parentStorage,
+    required this.storages,
     required this.onAdd,
     this.onRename,
     this.onDelete,
@@ -33,7 +31,9 @@ class StorageScreen<T extends Storage> extends ConsumerWidget {
   void _showAddDialog(BuildContext context) {
     TextFieldDialog.show(
       context,
-      title: LocaleKeys.common_addIn.tr(args: [title]),
+      title: LocaleKeys.common_addIn.tr(
+        args: [parentStorage?.name ?? LocaleKeys.common_home.tr()],
+      ),
       hintText: LocaleKeys.common_name.tr(),
       cancelText: LocaleKeys.common_cancel.tr(),
       confirmText: LocaleKeys.common_add.tr(),
@@ -47,12 +47,14 @@ class StorageScreen<T extends Storage> extends ConsumerWidget {
   void _showRenameDialog(BuildContext context) {
     TextFieldDialog.show(
       context,
-      title: LocaleKeys.common_renameOf.tr(args: [title]),
+      title: LocaleKeys.common_renameOf.tr(
+        args: [parentStorage?.name ?? LocaleKeys.common_home.tr()],
+      ),
       hintText: LocaleKeys.common_rename.tr(),
       cancelText: LocaleKeys.common_cancel.tr(),
       confirmText: LocaleKeys.common_add.tr(),
       onConfirm: (text) async {
-        await onRename!(text);
+        if (onRename != null) await onRename!(text);
         showAppSnackBar(LocaleKeys.storage_added.tr());
       },
     );
@@ -69,11 +71,9 @@ class StorageScreen<T extends Storage> extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final storages = ref.watch(provider);
-
+  Widget build(BuildContext context) {
     return BaseScreen(
-      title: title,
+      title: parentStorage?.name ?? LocaleKeys.common_home.tr(),
       onAdd: () => _showAddDialog(context),
       onSearch: () => _openSearchScreen(context),
       onDelete: onDelete == null ? null : () => _deleteStorage(context),

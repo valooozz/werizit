@@ -1,39 +1,35 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rangement/core/providers/storage_provider.dart';
+import 'package:rangement/core/providers/dao_provider.dart';
 import 'package:rangement/data/models/shelf.dart';
 
-final shelvesProvider =
-    StateNotifierProvider.family<ShelvesNotifier, List<Shelf>, int>(
-      (ref, furnitureId) => ShelvesNotifier(ref, furnitureId),
-    );
+import 'storage_provider.dart';
 
-class ShelvesNotifier extends BaseStorageNotifier<Shelf> {
-  final int furnitureId;
-  ShelvesNotifier(super.ref, this.furnitureId) {
-    loadAll(furnitureId);
+final shelvesProvider = StateNotifierProvider<ShelvesNotifier, Map<int, Shelf>>(
+  (ref) => ShelvesNotifier(dao: ref.read(daoProvider)),
+);
+
+class ShelvesNotifier extends StorageNotifier<Shelf> {
+  ShelvesNotifier({required super.dao});
+
+  @override
+  Future<List<Shelf>> loadFromDb(int? parentId) async {
+    if (parentId != null) {
+      return await dao.getShelvesByFurniture(parentId);
+    } else {
+      return [];
+    }
   }
 
   @override
-  Future<void> loadAll(int? furnitureId) async {
-    final list = await dao.getShelvesByFurniture(furnitureId!);
-    state = [...list];
-  }
+  Future<int> insertToDb(Shelf item) => dao.insertShelf(item);
 
   @override
-  Future<void> add(Shelf shelf) async {
-    await dao.insertShelf(shelf);
-    await loadAll(shelf.furniture);
-  }
+  Future<void> renameInDb(int id, String newName) =>
+      dao.renameShelf(id, newName);
 
   @override
-  Future<void> rename(int shelfId, String newName, int? furnitureId) async {
-    await dao.renameShelf(shelfId, newName);
-    await loadAll(furnitureId);
-  }
+  Future<void> deleteFromDb(int id) => dao.deleteShelf(id);
 
-  @override
-  Future<void> delete(int shelfId, int? furnitureId) async {
-    await dao.deleteShelf(shelfId);
-    await loadAll(furnitureId);
-  }
+  List<Shelf> shelvesForFurniture(int furnitureId) =>
+      state.values.where((s) => s.furniture == furnitureId).toList();
 }

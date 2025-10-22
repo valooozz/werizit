@@ -9,4 +9,13 @@ class Room extends Storage {
 
   @override
   Map<String, dynamic> toMap() => {...super.toMap(), 'house': house};
+
+  @override
+  Room copyWith({int? id, String? name, int? parentId}) {
+    return Room(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      house: parentId ?? house,
+    );
+  }
 }

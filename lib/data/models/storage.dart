@@ -5,4 +5,6 @@ abstract class Storage {
   const Storage({this.id, required this.name});
 
   Map<String, dynamic> toMap() => {'name': name};
+
+  Storage copyWith({int? id, String? name, int? parentId});
 }

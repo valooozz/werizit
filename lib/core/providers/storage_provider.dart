@@ -1,22 +1,43 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rangement/data/db/base_dao.dart';
-import 'package:rangement/data/db/dao.dart';
-import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/storage.dart';
 
-abstract class BaseStorageNotifier<T extends Storage>
-    extends StateNotifier<List<T>> {
-  final Ref ref;
-  final BaseDAO dao = kIsWeb ? MockDAO() : DAO();
+abstract class StorageNotifier<T extends Storage>
+    extends StateNotifier<Map<int, T>> {
+  final BaseDAO dao;
 
-  BaseStorageNotifier(this.ref) : super([]);
+  StorageNotifier({required this.dao}) : super({});
 
-  Future<void> loadAll(int? parentId);
+  /// Charge tous les items ou, si parentId est fourni, ceux du parent
+  Future<void> load(int? parentId) async {
+    final storages = await loadFromDb(parentId);
+    state = {for (var storage in storages) storage.id!: storage};
+  }
 
-  Future<void> add(T storage);
+  /// Doit être implémentée par chaque type pour charger depuis la DB
+  Future<List<T>> loadFromDb(int? parentId);
 
-  Future<void> rename(int storageId, String newName, int? parentId);
+  Future<void> add(T item) async {
+    final newId = await insertToDb(item);
+    final newItem = item.copyWith(id: newId) as T;
+    state = {...state, newId: newItem};
+  }
 
-  Future<void> delete(int storageId, int? parentId);
+  Future<void> rename(int id, String newName) async {
+    final item = state[id];
+    if (item != null) {
+      await renameInDb(id, newName);
+      state = {...state, id: item.copyWith(name: newName) as T};
+    }
+  }
+
+  Future<void> remove(int id) async {
+    await deleteFromDb(id);
+    final newState = {...state}..remove(id);
+    state = newState;
+  }
+
+  Future<int> insertToDb(T item);
+  Future<void> renameInDb(int id, String newName);
+  Future<void> deleteFromDb(int id);
 }

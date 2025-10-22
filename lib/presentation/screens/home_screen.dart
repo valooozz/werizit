@@ -1,24 +1,25 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rangement/core/providers/houses_provider.dart';
-import 'package:rangement/data/db/dao.dart';
-import 'package:rangement/data/db/mock_dao.dart';
+import 'package:rangement/core/providers/house_provider.dart';
 import 'package:rangement/data/models/house.dart';
 import 'package:rangement/presentation/screens/storage_screen.dart';
 
 import 'house_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
-  final dao = kIsWeb ? MockDAO() : DAO();
-
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final housesNotifier = ref.read(housesProvider.notifier);
+    final houses = ref.watch(housesProvider).values.toList();
+
+    if (houses.isEmpty) {
+      housesNotifier.load(null);
+    }
+
     return StorageScreen<House>(
-      title: "Accueil",
-      provider: housesProvider,
+      storages: houses,
       onAdd: (name) async =>
           await ref.read(housesProvider.notifier).add(House(name: name)),
       onTap: (house) {

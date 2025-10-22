@@ -32,6 +32,17 @@ class DAO implements BaseDAO {
     return await dbHelper.delete('House', houseId);
   }
 
+  @override
+  Future<String> getHouseName(int houseId) async {
+    final db = await dbHelper.database;
+    final result = await db.query(
+      'House',
+      where: 'id = ?',
+      whereArgs: [houseId],
+    );
+    return House.fromMap(result.first).name;
+  }
+
   // ---------- ROOM ----------
   @override
   Future<int> insertRoom(Room room) async =>
@@ -56,6 +67,13 @@ class DAO implements BaseDAO {
   @override
   Future<int> deleteRoom(int roomId) async {
     return await dbHelper.delete('Room', roomId);
+  }
+
+  @override
+  Future<String> getRoomName(int roomId) async {
+    final db = await dbHelper.database;
+    final result = await db.query('Room', where: 'id = ?', whereArgs: [roomId]);
+    return Room.fromMap(result.first).name;
   }
 
   // ---------- FURNITURE ----------
@@ -84,6 +102,17 @@ class DAO implements BaseDAO {
     return await dbHelper.delete('Furniture', furnitureId);
   }
 
+  @override
+  Future<String> getFurnitureName(int furnitureId) async {
+    final db = await dbHelper.database;
+    final result = await db.query(
+      'Furniture',
+      where: 'id = ?',
+      whereArgs: [furnitureId],
+    );
+    return Room.fromMap(result.first).name;
+  }
+
   // ---------- SHELF ----------
   @override
   Future<int> insertShelf(Shelf shelf) async =>
@@ -108,6 +137,17 @@ class DAO implements BaseDAO {
   @override
   Future<int> deleteShelf(int shelfId) async {
     return await dbHelper.delete('Shelf', shelfId);
+  }
+
+  @override
+  Future<String> getShelfName(int shelfId) async {
+    final db = await dbHelper.database;
+    final result = await db.query(
+      'Shelf',
+      where: 'id = ?',
+      whereArgs: [shelfId],
+    );
+    return Room.fromMap(result.first).name;
   }
 
   // ---------- ITEM ----------

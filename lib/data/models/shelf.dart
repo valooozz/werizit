@@ -9,4 +9,13 @@ class Shelf extends Storage {
 
   @override
   Map<String, dynamic> toMap() => {...super.toMap(), 'furniture': furniture};
+
+  @override
+  Shelf copyWith({int? id, String? name, int? parentId}) {
+    return Shelf(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      furniture: parentId ?? furniture,
+    );
+  }
 }

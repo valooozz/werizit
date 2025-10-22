@@ -30,10 +30,10 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     );
   }
 
-  Future<void> _addItem(String text) async {
+  Future<void> _addItem(String name) async {
     await ref
         .read(itemsProvider.notifier)
-        .addItem(Item(name: text, shelf: widget.shelf.id!));
+        .addItem(Item(name: name, shelf: widget.shelf.id!));
     showAppSnackBar(LocaleKeys.item_added.tr());
   }
 
@@ -48,7 +48,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     );
   }
 
-  void _showRenameDialog() {
+  void _showRenameDialog() async {
     TextFieldDialog.show(
       context,
       title: LocaleKeys.common_renameOf.tr(args: [widget.shelf.name]),
@@ -56,46 +56,42 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
       cancelText: LocaleKeys.common_cancel.tr(),
       confirmText: LocaleKeys.common_add.tr(),
       onConfirm: (text) async {
-        await ref
-            .read(shelvesProvider(widget.shelf.id!).notifier)
-            .rename(widget.shelf.id!, text, widget.shelf.furniture);
+        await ref.read(shelvesProvider.notifier).rename(widget.shelf.id!, text);
         showAppSnackBar(LocaleKeys.storage_added.tr());
       },
     );
+  }
+
+  void _deleteShelf() async {
+    Navigator.pop(context);
+    await ref.read(shelvesProvider.notifier).remove(widget.shelf.id!);
   }
 
   void _openSearchScreen() {
     Navigator.push(context, MaterialPageRoute(builder: (_) => SearchScreen()));
   }
 
-  void _deleteShelf() {
-    Navigator.pop(context);
-    ref
-        .read(shelvesProvider(widget.shelf.id!).notifier)
-        .delete(widget.shelf.id!, widget.shelf.furniture);
-  }
-
-  void _addItemsToBox(List<Item> items) async {
+  Future<void> _addItemsToBox(List<Item> items) async {
     final selectedItemIds = await showDialog<List<int>>(
       context: context,
       builder: (_) => SelectItemsDialog(items: items),
     );
 
     if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
-      ref
+      await ref
           .read(itemsProvider.notifier)
           .putItemsIntoBox(selectedItemIds, widget.shelf.id!);
     }
   }
 
-  void _dropItemsFromBox(List<Item> items) async {
-    final selectedItemIds = await showDialog(
+  Future<void> _dropItemsFromBox(List<Item> items) async {
+    final selectedItemIds = await showDialog<List<int>>(
       context: context,
       builder: (_) => SelectItemsDialog(items: items),
     );
 
     if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
-      ref
+      await ref
           .read(itemsProvider.notifier)
           .dropItemsFromBox(selectedItemIds, widget.shelf.id!);
     }
@@ -105,12 +101,13 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
   Widget build(BuildContext context) {
     final shelfItems = ref.watch(itemsProvider).shelfItems;
     final boxItems = ref.watch(itemsProvider).boxItems;
+
     return BaseScreen(
       title: widget.shelf.name,
       onAdd: _showAddDialog,
-      onSearch: _openSearchScreen,
-      onDelete: _deleteShelf,
       onRename: _showRenameDialog,
+      onDelete: _deleteShelf,
+      onSearch: _openSearchScreen,
       onAddToBox: () => _addItemsToBox(shelfItems),
       onDropFromBox: () => _dropItemsFromBox(boxItems),
       body: shelfItems.isEmpty
