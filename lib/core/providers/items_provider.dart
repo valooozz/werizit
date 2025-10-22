@@ -21,11 +21,16 @@ class ItemsNotifier extends StateNotifier<List<Item>> {
 
   Future<void> addItem(Item item) async {
     await dao.insertItem(item);
-    await loadItems(item.shelf);
+    await loadItems(item.shelf!);
   }
 
   Future<void> deleteItem(int itemId, int shelfId) async {
     await dao.deleteItem(itemId);
+    await loadItems(shelfId);
+  }
+
+  Future<void> putItemsIntoBox(List<int> itemIds, int shelfId) async {
+    await dao.putItemsIntoBox(itemIds);
     await loadItems(shelfId);
   }
 }

@@ -106,7 +106,7 @@ class MockDAO implements BaseDAO {
   // ---------- ITEM ----------
   @override
   Future<int> insertItem(Item obj) async {
-    _items.putIfAbsent(obj.shelf, () => []).add(obj);
+    _items.putIfAbsent(obj.shelf!, () => []).add(obj);
     return 0;
   }
 
@@ -117,8 +117,10 @@ class MockDAO implements BaseDAO {
   }
 
   @override
-  Future<List<Item>> getItemsByShelf(int shelfId) async =>
-      _items[shelfId] ?? [];
+  Future<List<Item>> getItemsByShelf(int shelfId) async {
+    final items = _items[shelfId] ?? [];
+    return items.where((item) => item.shelf != null).toList();
+  }
 
   @override
   Future<List<Item>> searchItems(String searchText) async => _items[1] ?? [];
@@ -134,4 +136,10 @@ class MockDAO implements BaseDAO {
       shelf: "Tiroir 1",
     ),
   );
+
+  @override
+  Future<void> putItemsIntoBox(List<int> itemIds) async {
+    Item newItem = Item(id: 1, name: 'Casque Bose', shelf: null);
+    _items[1] = [newItem];
+  }
 }

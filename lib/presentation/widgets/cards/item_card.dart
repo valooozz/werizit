@@ -26,7 +26,7 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     Navigator.pop(context);
     await ref
         .read(itemsProvider.notifier)
-        .deleteItem(widget.item.id!, widget.item.shelf);
+        .deleteItem(widget.item.id!, widget.item.shelf!);
   }
 
   void _showInfoDialog() async {

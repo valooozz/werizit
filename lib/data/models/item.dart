@@ -1,7 +1,7 @@
 class Item {
   final int? id;
   final String name;
-  final int shelf;
+  final int? shelf;
 
   const Item({this.id, required this.name, required this.shelf});
 

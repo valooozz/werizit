@@ -22,5 +22,8 @@ abstract class  LocaleKeys {
   static const search_emptySearch = 'search.emptySearch';
   static const search_noItem = 'search.noItem';
   static const search = 'search';
+  static const box_title = 'box.title';
+  static const box_validate = 'box.validate';
+  static const box = 'box';
 
 }

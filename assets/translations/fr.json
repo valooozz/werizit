@@ -21,5 +21,9 @@
         "hintText": "Rechercher...",
         "emptySearch": "Entre du texte pour rechercher un objet",
         "noItem": "Aucun élément trouvé"
+    },
+    "box": {
+        "title": "Sélectionne des objets",
+        "validate": "Ajouter au carton"
     }
 }

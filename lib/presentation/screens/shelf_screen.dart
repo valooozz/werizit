@@ -10,6 +10,7 @@ import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/screens/base_screen.dart';
 import 'package:rangement/presentation/screens/search_screen.dart';
 import 'package:rangement/presentation/widgets/dialog/add_dialog.dart';
+import 'package:rangement/presentation/widgets/dialog/select_items_dialog.dart';
 import 'package:rangement/presentation/widgets/display/items_display.dart';
 
 class ShelfScreen extends ConsumerStatefulWidget {
@@ -58,6 +59,19 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
         .delete(widget.shelf.id!, widget.shelf.furniture);
   }
 
+  void _addItemsToBox(List<Item> items) async {
+    final selectedItemIds = await showDialog<List<int>>(
+      context: context,
+      builder: (_) => SelectItemsDialog(items: items),
+    );
+
+    if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
+      ref
+          .read(itemsProvider.notifier)
+          .putItemsIntoBox(selectedItemIds, widget.shelf.id!);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final items = ref.watch(itemsProvider);
@@ -66,6 +80,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
       onAdd: _showAddDialog,
       onSearch: _openSearchScreen,
       onDelete: _deleteShelf,
+      onBox: () => _addItemsToBox(items),
       body: items.isEmpty
           ? Center(child: Text(LocaleKeys.storage_noItem.tr()))
           : Padding(

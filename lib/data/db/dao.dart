@@ -141,4 +141,15 @@ class DAO implements BaseDAO {
       ''');
     return maps.map((m) => ItemInfo.fromMap(m)).toList().first;
   }
+
+  @override
+  Future<void> putItemsIntoBox(List<int> itemIds) async {
+    final db = await dbHelper.database;
+    await db.update(
+      'Item',
+      {'shelf': null},
+      where: 'id IN ?',
+      whereArgs: itemIds,
+    );
+  }
 }

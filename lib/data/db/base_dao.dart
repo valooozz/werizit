@@ -33,4 +33,5 @@ abstract class BaseDAO {
   Future<int> deleteItem(int itemId);
   Future<List<Item>> searchItems(String searchText);
   Future<ItemInfo> getItemInfo(int itemId);
+  Future<void> putItemsIntoBox(List<int> itemIds);
 }
