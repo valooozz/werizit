@@ -12,7 +12,7 @@ final housesProvider = StateNotifierProvider<HousesNotifier, List<House>>(
 );
 
 class HousesNotifier extends BaseStorageNotifier<House> {
-  HousesNotifier(Ref ref) : super(ref) {
+  HousesNotifier(super.ref) {
     loadAll(0);
   }
 

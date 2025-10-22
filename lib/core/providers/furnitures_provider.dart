@@ -3,12 +3,15 @@ import 'package:rangement/core/providers/storage_provider.dart';
 import 'package:rangement/data/models/furniture.dart';
 
 final furnituresProvider =
-    StateNotifierProvider<FurnituresNotifier, List<Furniture>>(
-      (ref) => FurnituresNotifier(ref),
+    StateNotifierProvider.family<FurnituresNotifier, List<Furniture>, int>(
+      (ref, roomId) => FurnituresNotifier(ref, roomId),
     );
 
 class FurnituresNotifier extends BaseStorageNotifier<Furniture> {
-  FurnituresNotifier(Ref ref) : super(ref);
+  final int roomId;
+  FurnituresNotifier(super.ref, this.roomId) {
+    loadAll(roomId);
+  }
 
   @override
   Future<void> loadAll(int? roomId) async {

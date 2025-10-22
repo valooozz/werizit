@@ -2,12 +2,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rangement/core/providers/storage_provider.dart';
 import 'package:rangement/data/models/shelf.dart';
 
-final shelvesProvider = StateNotifierProvider<ShelvesNotifier, List<Shelf>>(
-  (ref) => ShelvesNotifier(ref),
-);
+final shelvesProvider =
+    StateNotifierProvider.family<ShelvesNotifier, List<Shelf>, int>(
+      (ref, furnitureId) => ShelvesNotifier(ref, furnitureId),
+    );
 
 class ShelvesNotifier extends BaseStorageNotifier<Shelf> {
-  ShelvesNotifier(Ref ref) : super(ref);
+  final int furnitureId;
+  ShelvesNotifier(super.ref, this.furnitureId) {
+    loadAll(furnitureId);
+  }
 
   @override
   Future<void> loadAll(int? furnitureId) async {

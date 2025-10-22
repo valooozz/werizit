@@ -2,12 +2,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rangement/core/providers/storage_provider.dart';
 import 'package:rangement/data/models/room.dart';
 
-final roomsProvider = StateNotifierProvider<RoomsNotifier, List<Room>>(
-  (ref) => RoomsNotifier(ref),
-);
+final roomsProvider =
+    StateNotifierProvider.family<RoomsNotifier, List<Room>, int>(
+      (ref, houseId) => RoomsNotifier(ref, houseId),
+    );
 
 class RoomsNotifier extends BaseStorageNotifier<Room> {
-  RoomsNotifier(Ref ref) : super(ref);
+  final int houseId;
+  RoomsNotifier(super.ref, this.houseId) {
+    loadAll(houseId);
+  }
 
   @override
   Future<void> loadAll(int? houseId) async {

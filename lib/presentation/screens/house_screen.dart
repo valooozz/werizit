@@ -10,20 +10,20 @@ import 'package:rangement/presentation/screens/storage_screen.dart';
 
 import 'room_screen.dart';
 
-class HouseScreen extends StatelessWidget {
+class HouseScreen extends ConsumerWidget {
   final House house;
   final dao = kIsWeb ? MockDAO() : DAO();
 
   HouseScreen({super.key, required this.house});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return StorageScreen<Room>(
       title: house.name,
-      provider: StateNotifierProvider<RoomsNotifier, List<Room>>(
-        (ref) => RoomsNotifier(ref)..loadAll(house.id),
-      ),
-      onAdd: (name) => dao.insertRoom(Room(name: name, house: house.id!)),
+      provider: roomsProvider(house.id!),
+      onAdd: (name) async => await ref
+          .read(roomsProvider(house.id!).notifier)
+          .add(Room(name: name, house: house.id!)),
       onTap: (room) {
         Navigator.push(
           context,

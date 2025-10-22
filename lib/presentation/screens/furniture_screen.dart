@@ -19,11 +19,10 @@ class FurnitureScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return StorageScreen<Shelf>(
       title: furniture.name,
-      provider: StateNotifierProvider<ShelvesNotifier, List<Shelf>>(
-        (ref) => ShelvesNotifier(ref)..loadAll(furniture.id!),
-      ),
-      onAdd: (name) =>
-          dao.insertShelf(Shelf(name: name, furniture: furniture.id!)),
+      provider: shelvesProvider(furniture.id!),
+      onAdd: (name) async => await ref
+          .read(shelvesProvider(furniture.id!).notifier)
+          .add(Shelf(name: name, furniture: furniture.id!)),
       onTap: (shelf) {
         Navigator.push(
           context,
