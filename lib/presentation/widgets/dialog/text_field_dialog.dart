@@ -58,7 +58,7 @@ class _TextFieldDialogState extends State<TextFieldDialog> {
           onPressed: _isSubmitting ? null : () => Navigator.pop(context),
           child: Text(widget.cancelText),
         ),
-        TextButton(
+        ElevatedButton(
           onPressed: _isSubmitting
               ? null
               : () async {

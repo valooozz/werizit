@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:rangement/generated/locale_keys.g.dart';
+import 'package:rangement/presentation/widgets/dialog/confirm_dialog.dart';
 
-class BaseScreen extends StatelessWidget {
+class BaseScreen extends StatefulWidget {
   final String title;
   final Widget body;
   final VoidCallback? onAdd;
@@ -25,35 +28,64 @@ class BaseScreen extends StatelessWidget {
   });
 
   @override
+  State<BaseScreen> createState() => _BaseScreenState();
+}
+
+class _BaseScreenState extends State<BaseScreen> {
+  void _delete() async {
+    final confirmed = await ConfirmDialog.show(
+      context,
+      title: LocaleKeys.common_confirm_delete.tr(args: [widget.title]),
+      message: LocaleKeys.storage_delete_warning.tr(),
+    );
+
+    if (confirmed != true || !mounted) return;
+
+    widget.onDelete!();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: onBack != null
-            ? IconButton(onPressed: onBack, icon: const Icon(Icons.arrow_back))
+        leading: widget.onBack != null
+            ? IconButton(
+                onPressed: widget.onBack,
+                icon: const Icon(Icons.arrow_back),
+              )
             : null,
-        title: Text(title),
+        title: Text(widget.title),
         actions: [
-          if (onSearch != null)
-            IconButton(onPressed: onSearch, icon: const Icon(Icons.search)),
-          if (onAddToBox != null)
+          if (widget.onSearch != null)
             IconButton(
-              onPressed: onAddToBox,
+              onPressed: widget.onSearch,
+              icon: const Icon(Icons.search),
+            ),
+          if (widget.onAddToBox != null)
+            IconButton(
+              onPressed: widget.onAddToBox,
               icon: const Icon(Icons.move_to_inbox),
             ),
-          if (onDropFromBox != null)
+          if (widget.onDropFromBox != null)
             IconButton(
-              onPressed: onDropFromBox,
+              onPressed: widget.onDropFromBox,
               icon: const Icon(Icons.outbox),
             ),
-          if (onRename != null)
-            IconButton(onPressed: onRename, icon: const Icon(Icons.edit)),
-          if (onDelete != null)
-            IconButton(onPressed: onDelete, icon: const Icon(Icons.delete)),
+          if (widget.onRename != null)
+            IconButton(
+              onPressed: widget.onRename,
+              icon: const Icon(Icons.edit),
+            ),
+          if (widget.onDelete != null)
+            IconButton(onPressed: _delete, icon: const Icon(Icons.delete)),
         ],
       ),
-      body: body,
-      floatingActionButton: onAdd != null
-          ? FloatingActionButton(onPressed: onAdd, child: const Icon(Icons.add))
+      body: widget.body,
+      floatingActionButton: widget.onAdd != null
+          ? FloatingActionButton(
+              onPressed: widget.onAdd,
+              child: const Icon(Icons.add),
+            )
           : null,
     );
   }

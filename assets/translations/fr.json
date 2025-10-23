@@ -8,19 +8,23 @@
         "cancel": "Annuler",
         "ok": "OK",
         "rename": "Renommer",
-        "renameOf": "Renommer '{}'"
+        "renameOf": "Renommer '{}'",
+        "confirm": "Confirmer",
+        "confirm_delete": "Supprimer '{}' ?"
     },
     "storage": {
         "noElement": "Aucun élément pour le moment",
         "noItem": "Aucun objet par ici",
         "added": "Élément de rangement ajouté !",
         "renamed": "Élément de rangement renommé !",
-        "deleted": "Élément de rangement supprimé !"
+        "deleted": "Élément de rangement supprimé !",
+        "delete_warning": "Supprimer un élément de rangement supprimera tous les rangements et les objets qu'il contient. Veux-tu continuer ?"
     },
     "item": {
         "added": "Objet ajouté !",
         "renamed": "Objet renommé !",
-        "deleted": "Objet supprimé !"
+        "deleted": "Objet supprimé !",
+        "delete_warning": "Cette action est irréversible. Veux-tu continuer ?"
     },
     "search": {
         "title": "Rechercher un objet",

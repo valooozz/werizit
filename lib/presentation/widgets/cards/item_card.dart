@@ -9,6 +9,7 @@ import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/item.dart';
 import 'package:rangement/data/models/item_info.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
+import 'package:rangement/presentation/widgets/dialog/confirm_dialog.dart';
 import 'package:rangement/presentation/widgets/dialog/item_info_dialog.dart';
 import 'package:rangement/presentation/widgets/dialog/text_field_dialog.dart';
 
@@ -27,6 +28,14 @@ class _ItemCardState extends ConsumerState<ItemCard> {
   late ItemInfo _itemInfo;
 
   void _deleteItem() async {
+    final confirmed = await ConfirmDialog.show(
+      context,
+      title: LocaleKeys.common_confirm_delete.tr(args: [widget.item.name]),
+      message: LocaleKeys.item_delete_warning.tr(),
+    );
+
+    if (confirmed != true || !mounted) return;
+
     Navigator.pop(context);
     await ref.read(itemsProvider.notifier).deleteItem(widget.item.id!);
     showAppSnackBar(LocaleKeys.item_deleted.tr());
