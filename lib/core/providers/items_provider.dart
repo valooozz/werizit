@@ -13,32 +13,32 @@ class ItemsNotifier extends StateNotifier<List<Item>> {
 
   ItemsNotifier() : super([]);
 
-  Future<void> loadItems({int? shelfId}) async {
-    state = await dao.getItemsByShelf(shelfId!);
+  Future<void> loadItems() async {
+    state = await dao.getItems();
   }
 
   Future<void> addItem(Item item) async {
     await dao.insertItem(item);
-    await loadItems(shelfId: item.shelf);
+    await loadItems();
   }
 
-  Future<void> renameItem(int itemId, String newName, {int? shelfId}) async {
+  Future<void> renameItem(int itemId, String newName) async {
     await dao.renameItem(itemId, newName);
-    await loadItems(shelfId: shelfId);
+    await loadItems();
   }
 
-  Future<void> deleteItem(int itemId, {int? shelfId}) async {
+  Future<void> deleteItem(int itemId) async {
     await dao.deleteItem(itemId);
-    await loadItems(shelfId: shelfId);
+    await loadItems();
   }
 
-  Future<void> putItemsIntoBox(List<int> itemIds, {int? shelfId}) async {
+  Future<void> putItemsIntoBox(List<int> itemIds) async {
     await dao.putItemsIntoBox(itemIds);
-    await loadItems(shelfId: shelfId);
+    await loadItems();
   }
 
-  Future<void> dropItemsFromBox(List<int> itemIds, {int? shelfId}) async {
-    await dao.dropItemsFromBox(itemIds, shelfId!);
-    await loadItems(shelfId: shelfId);
+  Future<void> dropItemsFromBox(List<int> itemIds, int shelfId) async {
+    await dao.dropItemsFromBox(itemIds, shelfId);
+    await loadItems();
   }
 }

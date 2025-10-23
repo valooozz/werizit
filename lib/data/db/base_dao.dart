@@ -16,6 +16,7 @@ abstract class BaseDAO {
 
   // ROOM
   Future<int> insertRoom(Room room);
+  Future<List<Room>> getRooms();
   Future<List<Room>> getRoomsByHouse(int houseId);
   Future<int> renameRoom(int roomId, String newName);
   Future<int> deleteRoom(int roomId);
@@ -23,13 +24,15 @@ abstract class BaseDAO {
 
   // FURNITURE
   Future<int> insertFurniture(Furniture f);
-  Future<List<Furniture>> getFurnitureByRoom(int roomId);
+  Future<List<Furniture>> getFurnitures();
+  Future<List<Furniture>> getFurnituresByRoom(int roomId);
   Future<int> renameFurniture(int furnitureId, String newName);
   Future<int> deleteFurniture(int furnitureId);
   Future<String> getFurnitureName(int furnitureId);
 
   // SHELF
   Future<int> insertShelf(Shelf shelf);
+  Future<List<Shelf>> getShelves();
   Future<List<Shelf>> getShelvesByFurniture(int furnitureId);
   Future<int> renameShelf(int shelfId, String newName);
   Future<int> deleteShelf(int shelfId);
@@ -37,6 +40,7 @@ abstract class BaseDAO {
 
   // ITEM
   Future<int> insertItem(Item obj);
+  Future<List<Item>> getItems();
   Future<List<Item>> getItemsByShelf(int shelfId);
   Future<int> renameItem(int itemId, String newName);
   Future<int> deleteItem(int itemId);

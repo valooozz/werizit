@@ -28,7 +28,7 @@ class _SelectItemsDialogState extends State<SelectItemsDialog> {
   @override
   Widget build(BuildContext context) {
     final valideButtonLabel =
-        widget.items.isNotEmpty && widget.items[0].shelf == null
+        widget.items.isNotEmpty && widget.items[0].shelf == -1
         ? LocaleKeys.box_drop.tr()
         : LocaleKeys.box_add.tr();
     return AlertDialog(

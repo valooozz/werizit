@@ -25,10 +25,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-      () =>
-          ref.read(itemsProvider.notifier).loadItems(shelfId: widget.shelf.id),
-    );
+    Future.microtask(() => ref.read(itemsProvider.notifier).loadItems());
   }
 
   Future<void> _addItem(String name) async {
@@ -79,9 +76,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     );
 
     if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
-      await ref
-          .read(itemsProvider.notifier)
-          .putItemsIntoBox(selectedItemIds, shelfId: widget.shelf.id);
+      await ref.read(itemsProvider.notifier).putItemsIntoBox(selectedItemIds);
     }
   }
 
@@ -94,13 +89,12 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
       await ref
           .read(itemsProvider.notifier)
-          .dropItemsFromBox(selectedItemIds, shelfId: widget.shelf.id);
+          .dropItemsFromBox(selectedItemIds, widget.shelf.id!);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Filtrer les items pour cette étagère ou la boîte
     final allItems = ref.watch(itemsProvider);
     final shelfItems = allItems
         .where((i) => i.shelf == widget.shelf.id)

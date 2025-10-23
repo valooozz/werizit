@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rangement/core/providers/furniture_provider.dart';
+import 'package:rangement/core/providers/furnitures_provider.dart';
 import 'package:rangement/core/providers/shelves_provider.dart';
 import 'package:rangement/data/models/furniture.dart';
 import 'package:rangement/data/models/shelf.dart';
@@ -24,7 +24,7 @@ class FurnitureScreen extends ConsumerWidget {
         .toList();
 
     if (shelves.isEmpty) {
-      shelvesNotifier.load(furniture.id);
+      shelvesNotifier.load();
     }
 
     return StorageScreen<Shelf>(

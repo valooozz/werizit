@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rangement/core/providers/dao_provider.dart';
 import 'package:rangement/data/models/shelf.dart';
 
-import 'storage_provider.dart';
+import 'storages_provider.dart';
 
 final shelvesProvider = StateNotifierProvider<ShelvesNotifier, Map<int, Shelf>>(
   (ref) => ShelvesNotifier(dao: ref.read(daoProvider)),
@@ -12,8 +12,8 @@ class ShelvesNotifier extends StorageNotifier<Shelf> {
   ShelvesNotifier({required super.dao});
 
   @override
-  Future<List<Shelf>> loadFromDb(int? parentId) async {
-    return await dao.getShelvesByFurniture(parentId!);
+  Future<List<Shelf>> loadFromDb() async {
+    return await dao.getShelves();
   }
 
   @override

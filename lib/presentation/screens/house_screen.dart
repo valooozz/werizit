@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rangement/core/providers/house_provider.dart';
-import 'package:rangement/core/providers/room_provider.dart';
+import 'package:rangement/core/providers/houses_provider.dart';
+import 'package:rangement/core/providers/rooms_provider.dart';
 import 'package:rangement/data/models/house.dart';
 import 'package:rangement/data/models/room.dart';
 import 'package:rangement/presentation/screens/storage_screen.dart';
@@ -25,7 +25,7 @@ class HouseScreen extends ConsumerWidget {
         .toList();
 
     if (rooms.isEmpty) {
-      roomsNotifier.load(house.id);
+      roomsNotifier.load();
     }
 
     return StorageScreen<Room>(

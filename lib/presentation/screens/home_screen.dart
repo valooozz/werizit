@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rangement/core/providers/house_provider.dart';
+import 'package:rangement/core/providers/houses_provider.dart';
 import 'package:rangement/data/models/house.dart';
 import 'package:rangement/presentation/screens/storage_screen.dart';
 
@@ -15,7 +15,7 @@ class HomeScreen extends ConsumerWidget {
     final houses = ref.watch(housesProvider).values.toList();
 
     if (houses.isEmpty) {
-      housesNotifier.load(null);
+      housesNotifier.load();
     }
 
     return StorageScreen<House>(

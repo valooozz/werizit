@@ -142,6 +142,9 @@ class MockDAO implements BaseDAO {
   }
 
   @override
+  Future<List<Room>> getRooms() async => _rooms.values.toList();
+
+  @override
   Future<List<Room>> getRoomsByHouse(int houseId) async {
     return _rooms.values.where((r) => r.house == houseId).toList();
   }
@@ -176,7 +179,10 @@ class MockDAO implements BaseDAO {
   }
 
   @override
-  Future<List<Furniture>> getFurnitureByRoom(int roomId) async =>
+  Future<List<Furniture>> getFurnitures() async => _furniture.values.toList();
+
+  @override
+  Future<List<Furniture>> getFurnituresByRoom(int roomId) async =>
       _furniture.values.where((f) => f.room == roomId).toList();
 
   @override
@@ -208,6 +214,9 @@ class MockDAO implements BaseDAO {
   }
 
   @override
+  Future<List<Shelf>> getShelves() async => _shelves.values.toList();
+
+  @override
   Future<List<Shelf>> getShelvesByFurniture(int furnitureId) async =>
       _shelves.values.where((s) => s.furniture == furnitureId).toList();
 
@@ -237,6 +246,9 @@ class MockDAO implements BaseDAO {
     _items[id] = obj.copyWith(id: id);
     return id;
   }
+
+  @override
+  Future<List<Item>> getItems() async => _items.values.toList();
 
   @override
   Future<List<Item>> getItemsByShelf(int shelfId) async =>

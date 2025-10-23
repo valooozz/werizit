@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rangement/core/providers/dao_provider.dart';
 import 'package:rangement/data/models/furniture.dart';
 
-import 'storage_provider.dart';
+import 'storages_provider.dart';
 
 final furnituresProvider =
     StateNotifierProvider<FurnituresNotifier, Map<int, Furniture>>(
@@ -13,8 +13,8 @@ class FurnituresNotifier extends StorageNotifier<Furniture> {
   FurnituresNotifier({required super.dao});
 
   @override
-  Future<List<Furniture>> loadFromDb(int? parentId) async {
-    return await dao.getFurnitureByRoom(parentId!);
+  Future<List<Furniture>> loadFromDb() async {
+    return await dao.getFurnitures();
   }
 
   @override

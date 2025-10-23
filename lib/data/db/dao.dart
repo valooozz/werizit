@@ -49,6 +49,12 @@ class DAO implements BaseDAO {
       await dbHelper.insert('Room', room.toMap());
 
   @override
+  Future<List<Room>> getRooms() async {
+    final maps = await dbHelper.queryAll('Room');
+    return maps.map((m) => Room.fromMap(m)).toList();
+  }
+
+  @override
   Future<List<Room>> getRoomsByHouse(int houseId) async {
     final db = await dbHelper.database;
     final maps = await db.query(
@@ -82,7 +88,13 @@ class DAO implements BaseDAO {
       await dbHelper.insert('Furniture', f.toMap());
 
   @override
-  Future<List<Furniture>> getFurnitureByRoom(int roomId) async {
+  Future<List<Furniture>> getFurnitures() async {
+    final maps = await dbHelper.queryAll('Furniture');
+    return maps.map((m) => Furniture.fromMap(m)).toList();
+  }
+
+  @override
+  Future<List<Furniture>> getFurnituresByRoom(int roomId) async {
     final db = await dbHelper.database;
     final maps = await db.query(
       'Furniture',
@@ -117,6 +129,12 @@ class DAO implements BaseDAO {
   @override
   Future<int> insertShelf(Shelf shelf) async =>
       await dbHelper.insert('Shelf', shelf.toMap());
+
+  @override
+  Future<List<Shelf>> getShelves() async {
+    final maps = await dbHelper.queryAll('Shelf');
+    return maps.map((m) => Shelf.fromMap(m)).toList();
+  }
 
   @override
   Future<List<Shelf>> getShelvesByFurniture(int furnitureId) async {
@@ -154,6 +172,12 @@ class DAO implements BaseDAO {
   @override
   Future<int> insertItem(Item obj) async =>
       await dbHelper.insert('Item', obj.toMap());
+
+  @override
+  Future<List<Item>> getItems() async {
+    final maps = await dbHelper.queryAll('Item');
+    return maps.map((m) => Item.fromMap(m)).toList();
+  }
 
   @override
   Future<List<Item>> getItemsByShelf(int shelfId) async {
