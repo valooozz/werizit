@@ -32,6 +32,12 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     showAppSnackBar(LocaleKeys.item_deleted.tr());
   }
 
+  void _addItemToBox() async {
+    Navigator.pop(context);
+    await ref.read(itemsProvider.notifier).putItemsIntoBox([widget.item.id!]);
+    showAppSnackBar(LocaleKeys.box_added.tr(args: ['1']));
+  }
+
   void _showInfoDialog() async {
     showDialog(
       context: context,
@@ -51,6 +57,10 @@ class _ItemCardState extends ConsumerState<ItemCard> {
         itemId: widget.item.id!,
         itemInfo: _itemInfo,
         actions: [
+          IconButton(
+            onPressed: _addItemToBox,
+            icon: const Icon(Icons.move_to_inbox),
+          ),
           IconButton(
             onPressed: _showRenameDialog,
             icon: const Icon(Icons.edit),
