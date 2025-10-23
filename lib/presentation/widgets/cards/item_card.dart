@@ -47,7 +47,7 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     showDialog(
       context: context,
       builder: (context) => ItemInfoDialog(
-        itemName: widget.item.name,
+        itemId: widget.item.id!,
         itemInfo: _itemInfo,
         actions: [
           IconButton(

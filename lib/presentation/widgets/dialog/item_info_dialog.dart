@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rangement/core/providers/items_provider.dart';
 import 'package:rangement/data/models/item_info.dart';
 
-class ItemInfoDialog extends StatelessWidget {
-  final String itemName;
+class ItemInfoDialog extends ConsumerWidget {
+  final int itemId;
   final ItemInfo itemInfo;
   final List<Widget>? actions;
 
   const ItemInfoDialog({
     super.key,
-    required this.itemName,
+    required this.itemId,
     required this.itemInfo,
     this.actions,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final allItems = ref.watch(itemsProvider);
+    final item = allItems.where((i) => i.id == itemId).first;
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ConstrainedBox(
@@ -29,7 +33,7 @@ class ItemInfoDialog extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      itemName,
+                      item.name,
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
