@@ -1,21 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:rangement/data/db/dao.dart';
-import 'package:rangement/data/db/mock_dao.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rangement/core/providers/dao_provider.dart';
 import 'package:rangement/data/models/item.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/widgets/display/items_display.dart';
 
-class SearchScreen extends StatefulWidget {
+class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  ConsumerState<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
-  final dao = kIsWeb ? MockDAO() : DAO();
+class _SearchScreenState extends ConsumerState<SearchScreen> {
   late Future<List<Item>> _futureItems;
   bool _emptySearch = true;
 
@@ -25,12 +23,17 @@ class _SearchScreenState extends State<SearchScreen> {
     _futureItems = Future.value([]);
   }
 
-  void _refreshSearch(searchText) {
+  void _refreshSearch(String searchText) {
+    final dao = ref.read(daoProvider); // ✅ utilise l’unique DAO global
+
     setState(() {
-      _futureItems = searchText.isEmpty
-          ? Future.value([])
-          : (dao.searchItems(searchText));
-      _emptySearch = searchText == '';
+      if (searchText.isEmpty) {
+        _futureItems = Future.value([]);
+        _emptySearch = true;
+      } else {
+        _futureItems = dao.searchItems(searchText);
+        _emptySearch = false;
+      }
     });
   }
 
@@ -54,6 +57,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   }
+
                   if (snapshot.hasError) {
                     return Center(
                       child: Text(
@@ -65,11 +69,13 @@ class _SearchScreenState extends State<SearchScreen> {
                   }
 
                   final items = snapshot.data ?? [];
+
                   if (_emptySearch) {
                     return Center(
                       child: Text(LocaleKeys.search_emptySearch.tr()),
                     );
                   }
+
                   if (items.isEmpty) {
                     return Center(child: Text(LocaleKeys.search_noItem.tr()));
                   }

@@ -51,15 +51,18 @@ class _ItemCardState extends ConsumerState<ItemCard> {
 
     Navigator.pop(context);
 
+    print(widget.item.shelf);
+
     showDialog(
       context: context,
       builder: (context) => ItemInfoDialog(
         itemId: widget.item.id!,
         actions: [
-          IconButton(
-            onPressed: _addItemToBox,
-            icon: const Icon(Icons.move_to_inbox),
-          ),
+          if (widget.item.shelf != -1)
+            IconButton(
+              onPressed: _addItemToBox,
+              icon: const Icon(Icons.move_to_inbox),
+            ),
           IconButton(
             onPressed: _showRenameDialog,
             icon: const Icon(Icons.edit),
