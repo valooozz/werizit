@@ -7,7 +7,6 @@ import 'package:rangement/core/utils/snackbar_utils.dart';
 import 'package:rangement/data/db/dao.dart';
 import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/item.dart';
-import 'package:rangement/data/models/item_info.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/widgets/dialog/confirm_dialog.dart';
 import 'package:rangement/presentation/widgets/dialog/item_info_dialog.dart';
@@ -25,7 +24,6 @@ class ItemCard extends ConsumerStatefulWidget {
 
 class _ItemCardState extends ConsumerState<ItemCard> {
   final dao = kIsWeb ? MockDAO() : DAO();
-  late ItemInfo _itemInfo;
 
   void _deleteItem() async {
     final confirmed = await ConfirmDialog.show(
@@ -54,8 +52,6 @@ class _ItemCardState extends ConsumerState<ItemCard> {
       builder: (_) => const Center(child: CircularProgressIndicator()),
     );
 
-    _itemInfo = await dao.getItemInfo(widget.item.id!);
-
     if (!mounted) return;
 
     Navigator.pop(context);
@@ -64,7 +60,6 @@ class _ItemCardState extends ConsumerState<ItemCard> {
       context: context,
       builder: (context) => ItemInfoDialog(
         itemId: widget.item.id!,
-        itemInfo: _itemInfo,
         actions: [
           IconButton(
             onPressed: _addItemToBox,

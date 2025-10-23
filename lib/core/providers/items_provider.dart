@@ -1,17 +1,16 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rangement/data/db/dao.dart';
-import 'package:rangement/data/db/mock_dao.dart';
+import 'package:rangement/core/providers/dao_provider.dart';
+import 'package:rangement/data/db/base_dao.dart';
 import 'package:rangement/data/models/item.dart';
 
-final itemsProvider = StateNotifierProvider<ItemsNotifier, List<Item>>((ref) {
-  return ItemsNotifier();
-});
+final itemsProvider = StateNotifierProvider<ItemsNotifier, List<Item>>(
+  (ref) => ItemsNotifier(dao: ref.read(daoProvider)),
+);
 
 class ItemsNotifier extends StateNotifier<List<Item>> {
-  final dao = kIsWeb ? MockDAO() : DAO();
+  final BaseDAO dao;
 
-  ItemsNotifier() : super([]);
+  ItemsNotifier({required this.dao}) : super([]);
 
   Future<void> loadItems() async {
     state = await dao.getItems();
