@@ -3,20 +3,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rangement/core/providers/furnitures_provider.dart';
 import 'package:rangement/core/providers/rooms_provider.dart';
 import 'package:rangement/data/models/furniture.dart';
-import 'package:rangement/data/models/room.dart';
 import 'package:rangement/presentation/screens/storage_screen.dart';
 
 import 'furniture_screen.dart';
 
 class RoomScreen extends ConsumerWidget {
-  final Room room;
+  final int roomId;
 
-  const RoomScreen({super.key, required this.room});
+  const RoomScreen({super.key, required this.roomId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final furnituresNotifier = ref.read(furnituresProvider.notifier);
     final roomsNotifier = ref.read(roomsProvider.notifier);
+
+    final room = ref
+        .watch(roomsProvider)
+        .values
+        .where((r) => r.id == roomId)
+        .first;
 
     final furnitures = ref
         .watch(furnituresProvider)
@@ -40,7 +45,7 @@ class RoomScreen extends ConsumerWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => FurnitureScreen(furniture: furniture),
+            builder: (_) => FurnitureScreen(furnitureId: furniture.id!),
           ),
         );
       },

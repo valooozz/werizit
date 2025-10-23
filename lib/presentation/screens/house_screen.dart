@@ -2,21 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rangement/core/providers/houses_provider.dart';
 import 'package:rangement/core/providers/rooms_provider.dart';
-import 'package:rangement/data/models/house.dart';
 import 'package:rangement/data/models/room.dart';
 import 'package:rangement/presentation/screens/storage_screen.dart';
 
 import 'room_screen.dart';
 
 class HouseScreen extends ConsumerWidget {
-  final House house;
+  final int houseId;
 
-  const HouseScreen({super.key, required this.house});
+  const HouseScreen({super.key, required this.houseId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final roomsNotifier = ref.read(roomsProvider.notifier);
     final houseNotifier = ref.read(housesProvider.notifier);
+
+    final house = ref
+        .watch(housesProvider)
+        .values
+        .where((h) => h.id == houseId)
+        .first;
 
     final rooms = ref
         .watch(roomsProvider)
@@ -39,7 +44,7 @@ class HouseScreen extends ConsumerWidget {
       onTap: (room) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => RoomScreen(room: room)),
+          MaterialPageRoute(builder: (_) => RoomScreen(roomId: room.id!)),
         );
       },
     );

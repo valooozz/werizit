@@ -2,20 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rangement/core/providers/furnitures_provider.dart';
 import 'package:rangement/core/providers/shelves_provider.dart';
-import 'package:rangement/data/models/furniture.dart';
 import 'package:rangement/data/models/shelf.dart';
 import 'package:rangement/presentation/screens/shelf_screen.dart';
 import 'package:rangement/presentation/screens/storage_screen.dart';
 
 class FurnitureScreen extends ConsumerWidget {
-  final Furniture furniture;
+  final int furnitureId;
 
-  const FurnitureScreen({super.key, required this.furniture});
+  const FurnitureScreen({super.key, required this.furnitureId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final shelvesNotifier = ref.read(shelvesProvider.notifier);
     final furnituresNotifier = ref.read(furnituresProvider.notifier);
+
+    final furniture = ref
+        .watch(furnituresProvider)
+        .values
+        .where((f) => f.id == furnitureId)
+        .first;
 
     final shelves = ref
         .watch(shelvesProvider)
@@ -39,7 +44,7 @@ class FurnitureScreen extends ConsumerWidget {
       onTap: (shelf) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => ShelfScreen(shelf: shelf)),
+          MaterialPageRoute(builder: (_) => ShelfScreen(shelfId: shelf.id!)),
         );
       },
     );

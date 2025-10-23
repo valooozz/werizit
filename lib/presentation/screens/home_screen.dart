@@ -25,7 +25,7 @@ class HomeScreen extends ConsumerWidget {
       onTap: (house) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => HouseScreen(house: house)),
+          MaterialPageRoute(builder: (_) => HouseScreen(houseId: house.id!)),
         );
       },
     );

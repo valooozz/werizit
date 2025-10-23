@@ -5,7 +5,6 @@ import 'package:rangement/core/providers/items_provider.dart';
 import 'package:rangement/core/providers/shelves_provider.dart';
 import 'package:rangement/core/utils/snackbar_utils.dart';
 import 'package:rangement/data/models/item.dart';
-import 'package:rangement/data/models/shelf.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/screens/base_screen.dart';
 import 'package:rangement/presentation/screens/search_screen.dart';
@@ -14,8 +13,8 @@ import 'package:rangement/presentation/widgets/dialog/text_field_dialog.dart';
 import 'package:rangement/presentation/widgets/display/items_display.dart';
 
 class ShelfScreen extends ConsumerStatefulWidget {
-  final Shelf shelf;
-  const ShelfScreen({super.key, required this.shelf});
+  final int shelfId;
+  const ShelfScreen({super.key, required this.shelfId});
 
   @override
   ConsumerState<ShelfScreen> createState() => _ShelfScreenState();
@@ -31,14 +30,14 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
   Future<void> _addItem(String name) async {
     await ref
         .read(itemsProvider.notifier)
-        .addItem(Item(name: name, shelf: widget.shelf.id));
+        .addItem(Item(name: name, shelf: widget.shelfId));
     showAppSnackBar(LocaleKeys.item_added.tr());
   }
 
-  void _showAddDialog() {
+  void _showAddDialog(String shelfName) {
     TextFieldDialog.show(
       context,
-      title: LocaleKeys.common_addIn.tr(args: [widget.shelf.name]),
+      title: LocaleKeys.common_addIn.tr(args: [shelfName]),
       hintText: LocaleKeys.common_name.tr(),
       cancelText: LocaleKeys.common_cancel.tr(),
       confirmText: LocaleKeys.common_add.tr(),
@@ -46,15 +45,15 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     );
   }
 
-  void _showRenameDialog() async {
+  void _showRenameDialog(String shelfName) async {
     TextFieldDialog.show(
       context,
-      title: LocaleKeys.common_renameOf.tr(args: [widget.shelf.name]),
+      title: LocaleKeys.common_renameOf.tr(args: [shelfName]),
       hintText: LocaleKeys.common_rename.tr(),
       cancelText: LocaleKeys.common_cancel.tr(),
       confirmText: LocaleKeys.common_add.tr(),
       onConfirm: (text) async {
-        await ref.read(shelvesProvider.notifier).rename(widget.shelf.id!, text);
+        await ref.read(shelvesProvider.notifier).rename(widget.shelfId, text);
         showAppSnackBar(LocaleKeys.storage_added.tr());
       },
     );
@@ -62,7 +61,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
 
   void _deleteShelf() async {
     Navigator.pop(context);
-    await ref.read(shelvesProvider.notifier).remove(widget.shelf.id!);
+    await ref.read(shelvesProvider.notifier).remove(widget.shelfId);
   }
 
   void _openSearchScreen() {
@@ -89,22 +88,26 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
       await ref
           .read(itemsProvider.notifier)
-          .dropItemsFromBox(selectedItemIds, widget.shelf.id!);
+          .dropItemsFromBox(selectedItemIds, widget.shelfId);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final shelf = ref
+        .watch(shelvesProvider)
+        .values
+        .where((s) => s.id == widget.shelfId)
+        .first;
+
     final allItems = ref.watch(itemsProvider);
-    final shelfItems = allItems
-        .where((i) => i.shelf == widget.shelf.id)
-        .toList();
+    final shelfItems = allItems.where((i) => i.shelf == shelf.id).toList();
     final boxItems = allItems.where((i) => i.shelf == -1).toList();
 
     return BaseScreen(
-      title: widget.shelf.name,
-      onAdd: _showAddDialog,
-      onRename: _showRenameDialog,
+      title: shelf.name,
+      onAdd: () => _showAddDialog(shelf.name),
+      onRename: () => _showRenameDialog(shelf.name),
       onDelete: _deleteShelf,
       onSearch: _openSearchScreen,
       onAddToBox: () => _addItemsToBox(shelfItems),
