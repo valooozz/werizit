@@ -1,11 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rangement/core/providers/items_provider.dart';
 import 'package:rangement/core/utils/snackbar_utils.dart';
-import 'package:rangement/data/db/dao.dart';
-import 'package:rangement/data/db/mock_dao.dart';
 import 'package:rangement/data/models/item.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/widgets/dialog/confirm_dialog.dart';
@@ -23,8 +20,6 @@ class ItemCard extends ConsumerStatefulWidget {
 }
 
 class _ItemCardState extends ConsumerState<ItemCard> {
-  final dao = kIsWeb ? MockDAO() : DAO();
-
   void _deleteItem() async {
     final confirmed = await ConfirmDialog.show(
       context,

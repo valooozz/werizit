@@ -24,7 +24,8 @@
         "added": "Objet ajouté !",
         "renamed": "Objet renommé !",
         "deleted": "Objet supprimé !",
-        "delete_warning": "Cette action est irréversible. Veux-tu continuer ?"
+        "delete_warning": "Cette action est irréversible. Veux-tu continuer ?",
+        "inBox": "Objet rangé dans le carton"
     },
     "search": {
         "title": "Rechercher un objet",

@@ -26,6 +26,7 @@ abstract class  LocaleKeys {
   static const item_renamed = 'item.renamed';
   static const item_deleted = 'item.deleted';
   static const item_delete_warning = 'item.delete_warning';
+  static const item_inBox = 'item.inBox';
   static const item = 'item';
   static const search_title = 'search.title';
   static const search_hintText = 'search.hintText';
