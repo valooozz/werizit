@@ -49,12 +49,12 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     TextFieldDialog.show(
       context,
       title: LocaleKeys.common_renameOf.tr(args: [shelfName]),
-      hintText: LocaleKeys.common_rename.tr(),
+      hintText: LocaleKeys.common_name.tr(),
       cancelText: LocaleKeys.common_cancel.tr(),
-      confirmText: LocaleKeys.common_add.tr(),
+      confirmText: LocaleKeys.common_rename.tr(),
       onConfirm: (text) async {
         await ref.read(shelvesProvider.notifier).rename(widget.shelfId, text);
-        showAppSnackBar(LocaleKeys.storage_added.tr());
+        showAppSnackBar(LocaleKeys.storage_renamed.tr());
       },
     );
   }

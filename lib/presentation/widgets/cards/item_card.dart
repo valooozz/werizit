@@ -69,9 +69,9 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     TextFieldDialog.show(
       context,
       title: LocaleKeys.common_renameOf.tr(args: [widget.item.name]),
-      hintText: LocaleKeys.common_rename.tr(),
+      hintText: LocaleKeys.common_name.tr(),
       cancelText: LocaleKeys.common_cancel.tr(),
-      confirmText: LocaleKeys.common_add.tr(),
+      confirmText: LocaleKeys.common_rename.tr(),
       onConfirm: (text) async {
         await ref
             .read(itemsProvider.notifier)
