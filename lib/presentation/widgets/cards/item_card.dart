@@ -11,9 +11,19 @@ import 'package:rangement/presentation/widgets/dialog/text_field_dialog.dart';
 
 class ItemCard extends ConsumerStatefulWidget {
   final Item item;
-  final VoidCallback? onTap;
+  final bool isSelected;
+  final bool isSelectionMode;
+  final VoidCallback? onToggleSelection;
+  final VoidCallback? onLongPress;
 
-  const ItemCard({super.key, required this.item, this.onTap});
+  const ItemCard({
+    super.key,
+    required this.item,
+    this.isSelected = false,
+    this.isSelectionMode = false,
+    this.onToggleSelection,
+    this.onLongPress,
+  });
 
   @override
   ConsumerState<ItemCard> createState() => _ItemCardState();
@@ -38,6 +48,14 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     Navigator.pop(context);
     await ref.read(itemsProvider.notifier).putItemsIntoBox([widget.item.id!]);
     showAppSnackBar(LocaleKeys.box_added.tr(args: ['1']));
+  }
+
+  void _handleTap() async {
+    if (widget.isSelectionMode) {
+      widget.onToggleSelection!();
+    } else {
+      _showInfoDialog();
+    }
   }
 
   void _showInfoDialog() async {
@@ -96,15 +114,44 @@ class _ItemCardState extends ConsumerState<ItemCard> {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      color: widget.isSelected ? Theme.of(context).colorScheme.primary : null,
+      elevation: widget.isSelected ? 5 : 1,
       child: InkWell(
-        onTap: _showInfoDialog,
+        onTap: _handleTap,
+        onLongPress: widget.onLongPress,
         borderRadius: BorderRadius.circular(12),
-        child: ListTile(
-          title: Text(
-            widget.item.name,
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
-          onTap: widget.onTap,
+        child: Stack(
+          children: [
+            ListTile(
+              title: Text(
+                widget.item.name,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: widget.isSelected
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : null,
+                ),
+              ),
+            ),
+
+            if (widget.isSelected)
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Container(
+                  padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.check,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    size: 16,
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
     );

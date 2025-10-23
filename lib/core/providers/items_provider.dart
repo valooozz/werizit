@@ -26,6 +26,13 @@ class ItemsNotifier extends StateNotifier<List<Item>> {
     await loadItems();
   }
 
+  Future<void> deleteItems(List<int> itemIds) async {
+    for (final itemId in itemIds) {
+      await dao.deleteItem(itemId);
+    }
+    await loadItems();
+  }
+
   Future<void> deleteItem(int itemId) async {
     await dao.deleteItem(itemId);
     await loadItems();

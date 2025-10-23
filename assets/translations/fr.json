@@ -10,7 +10,9 @@
         "rename": "Renommer",
         "renameOf": "Renommer '{}'",
         "confirm": "Confirmer",
-        "confirm_delete": "Supprimer '{}' ?"
+        "confirm_delete": "Supprimer '{}' ?",
+        "confirm_delete_multiple": "Supprimer {} éléments ?",
+        "selected": "{} sélectionné(s)"
     },
     "storage": {
         "noElement": "Aucun élément pour le moment",
@@ -25,6 +27,7 @@
         "renamed": "Objet renommé !",
         "deleted": "Objet supprimé !",
         "delete_warning": "Cette action est irréversible.",
+        "deleted_multiple": "{} objet(s) supprimé(s) !",
         "inBox": "Objet rangé dans le carton"
     },
     "search": {

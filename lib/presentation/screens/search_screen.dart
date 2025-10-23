@@ -80,7 +80,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     return Center(child: Text(LocaleKeys.search_noItem.tr()));
                   }
 
-                  return ItemsDisplay(items: items);
+                  return ItemsDisplay(items: items, isSelectionMode: false);
                 },
               ),
             ),
