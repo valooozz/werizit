@@ -113,7 +113,6 @@ class _ItemCardState extends ConsumerState<ItemCard> {
             widget.item.name,
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
-          subtitle: Text("ID: ${widget.item.id}"),
           onTap: widget.onTap,
         ),
       ),
