@@ -1,4 +1,4 @@
-import 'package:rangement/data/db/base_dao.dart';
+import 'package:rangement/data/dao/base_dao.dart';
 import 'package:rangement/data/models/furniture.dart';
 import 'package:rangement/data/models/house.dart';
 import 'package:rangement/data/models/item.dart';

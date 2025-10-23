@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rangement/data/db/base_dao.dart';
+import 'package:rangement/data/dao/base_dao.dart';
 import 'package:rangement/data/models/storage.dart';
 
 abstract class StorageNotifier<T extends Storage>

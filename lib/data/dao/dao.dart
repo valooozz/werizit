@@ -1,12 +1,12 @@
-import 'package:rangement/data/db/base_dao.dart';
+import 'package:rangement/data/dao/base_dao.dart';
 import 'package:rangement/data/models/item_info.dart';
 
+import '../db/database_helper.dart';
 import '../models/furniture.dart';
 import '../models/house.dart';
 import '../models/item.dart';
 import '../models/room.dart';
 import '../models/shelf.dart';
-import 'database_helper.dart';
 
 class DAO implements BaseDAO {
   final dbHelper = DatabaseHelper.instance;

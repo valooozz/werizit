@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rangement/core/providers/dao_provider.dart';
-import 'package:rangement/data/db/base_dao.dart';
+import 'package:rangement/data/dao/base_dao.dart';
 import 'package:rangement/data/models/item.dart';
 
 final itemsProvider = StateNotifierProvider<ItemsNotifier, List<Item>>(

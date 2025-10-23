@@ -51,8 +51,6 @@ class _ItemCardState extends ConsumerState<ItemCard> {
 
     Navigator.pop(context);
 
-    print(widget.item.shelf);
-
     showDialog(
       context: context,
       builder: (context) => ItemInfoDialog(

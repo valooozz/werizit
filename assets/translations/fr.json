@@ -18,13 +18,13 @@
         "added": "Élément de rangement ajouté !",
         "renamed": "Élément de rangement renommé !",
         "deleted": "Élément de rangement supprimé !",
-        "delete_warning": "Supprimer un élément de rangement supprimera tous les rangements et les objets qu'il contient. Veux-tu continuer ?"
+        "delete_warning": "Supprimer un élément de rangement supprimera tous les rangements et les objets qu'il contient."
     },
     "item": {
         "added": "Objet ajouté !",
         "renamed": "Objet renommé !",
         "deleted": "Objet supprimé !",
-        "delete_warning": "Cette action est irréversible. Veux-tu continuer ?",
+        "delete_warning": "Cette action est irréversible.",
         "inBox": "Objet rangé dans le carton"
     },
     "search": {
