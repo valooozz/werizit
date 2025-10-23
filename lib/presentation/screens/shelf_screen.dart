@@ -62,6 +62,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
   void _deleteShelf() async {
     Navigator.pop(context);
     await ref.read(shelvesProvider.notifier).remove(widget.shelfId);
+    showAppSnackBar(LocaleKeys.storage_deleted.tr());
   }
 
   void _openSearchScreen() {
@@ -76,6 +77,9 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
 
     if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
       await ref.read(itemsProvider.notifier).putItemsIntoBox(selectedItemIds);
+      showAppSnackBar(
+        LocaleKeys.box_added.tr(args: [selectedItemIds.length.toString()]),
+      );
     }
   }
 
@@ -89,6 +93,9 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
       await ref
           .read(itemsProvider.notifier)
           .dropItemsFromBox(selectedItemIds, widget.shelfId);
+      showAppSnackBar(
+        LocaleKeys.box_dropped.tr(args: [selectedItemIds.length.toString()]),
+      );
     }
   }
 

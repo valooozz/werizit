@@ -17,9 +17,11 @@ abstract class  LocaleKeys {
   static const storage_noItem = 'storage.noItem';
   static const storage_added = 'storage.added';
   static const storage_renamed = 'storage.renamed';
+  static const storage_deleted = 'storage.deleted';
   static const storage = 'storage';
   static const item_added = 'item.added';
   static const item_renamed = 'item.renamed';
+  static const item_deleted = 'item.deleted';
   static const item = 'item';
   static const search_title = 'search.title';
   static const search_hintText = 'search.hintText';
@@ -29,6 +31,8 @@ abstract class  LocaleKeys {
   static const box_title = 'box.title';
   static const box_add = 'box.add';
   static const box_drop = 'box.drop';
+  static const box_added = 'box.added';
+  static const box_dropped = 'box.dropped';
   static const box = 'box';
 
 }

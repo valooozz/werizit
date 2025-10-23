@@ -68,6 +68,7 @@ class StorageScreen<T extends Storage> extends StatelessWidget {
     if (onDelete == null) return;
     Navigator.pop(context);
     onDelete!();
+    showAppSnackBar(LocaleKeys.storage_deleted.tr());
   }
 
   @override

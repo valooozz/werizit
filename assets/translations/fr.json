@@ -14,11 +14,13 @@
         "noElement": "Aucun élément pour le moment",
         "noItem": "Aucun objet par ici",
         "added": "Élément de rangement ajouté !",
-        "renamed": "Élément de rangement renommé !"
+        "renamed": "Élément de rangement renommé !",
+        "deleted": "Élément de rangement supprimé !"
     },
     "item": {
         "added": "Objet ajouté !",
-        "renamed": "Objet renommé !"
+        "renamed": "Objet renommé !",
+        "deleted": "Objet supprimé !"
     },
     "search": {
         "title": "Rechercher un objet",
@@ -29,6 +31,8 @@
     "box": {
         "title": "Sélectionne des objets",
         "add": "Ajouter au carton",
-        "drop": "Déposer"
+        "drop": "Déposer",
+        "added": "{} objet(s) ajouté(s) au carton !",
+        "dropped": "{} objet(s) retiré(s) du carton !"
     }
 }
