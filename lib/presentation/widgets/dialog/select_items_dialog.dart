@@ -25,14 +25,43 @@ class _SelectItemsDialogState extends State<SelectItemsDialog> {
     });
   }
 
+  void _toggleSelectAll() {
+    setState(() {
+      if (_selectedIds.length == widget.items.length) {
+        _selectedIds.clear();
+      } else {
+        _selectedIds.addAll(widget.items.map((e) => e.id!).toList());
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final valideButtonLabel =
-        widget.items.isNotEmpty && widget.items[0].shelf == -1
+    final isDropMode = widget.items.isNotEmpty && widget.items[0].shelf == -1;
+
+    final validButtonLabel = isDropMode
         ? LocaleKeys.box_drop.tr()
         : LocaleKeys.box_add.tr();
+
+    final allSelected = _selectedIds.length == widget.items.length;
+
     return AlertDialog(
-      title: Text(LocaleKeys.box_title.tr()),
+      titlePadding: const EdgeInsets.only(
+        top: 16,
+        left: 24,
+        right: 8,
+        bottom: 8,
+      ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(LocaleKeys.box_title.tr()),
+          IconButton(
+            onPressed: _toggleSelectAll,
+            icon: allSelected ? Icon(Icons.deselect) : Icon(Icons.select_all),
+          ),
+        ],
+      ),
       content: SizedBox(
         width: double.maxFinite,
         child: ListView.builder(
@@ -59,8 +88,10 @@ class _SelectItemsDialogState extends State<SelectItemsDialog> {
           child: Text(LocaleKeys.common_cancel.tr()),
         ),
         ElevatedButton(
-          onPressed: () => Navigator.pop(context, _selectedIds.toList()),
-          child: Text(valideButtonLabel),
+          onPressed: _selectedIds.isEmpty
+              ? null
+              : () => Navigator.pop(context, _selectedIds.toList()),
+          child: Text(validButtonLabel),
         ),
       ],
     );
