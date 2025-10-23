@@ -110,8 +110,10 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
       onRename: () => _showRenameDialog(shelf.name),
       onDelete: _deleteShelf,
       onSearch: _openSearchScreen,
-      onAddToBox: () => _addItemsToBox(shelfItems),
-      onDropFromBox: () => _dropItemsFromBox(boxItems),
+      onAddToBox: shelfItems.isEmpty ? null : () => _addItemsToBox(shelfItems),
+      onDropFromBox: boxItems.isEmpty
+          ? null
+          : () => _dropItemsFromBox(boxItems),
       body: shelfItems.isEmpty
           ? Center(child: Text(LocaleKeys.storage_noItem.tr()))
           : Padding(
