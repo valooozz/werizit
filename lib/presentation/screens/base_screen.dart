@@ -66,6 +66,7 @@ class _BaseScreenState extends State<BaseScreen> {
             ? IconButton(
                 onPressed: widget.onBack,
                 icon: const Icon(Icons.arrow_back),
+                tooltip: LocaleKeys.tooltip_back.tr(),
               )
             : null,
         title: Text(widget.title),
@@ -74,29 +75,38 @@ class _BaseScreenState extends State<BaseScreen> {
             IconButton(
               onPressed: _navigateToHome,
               icon: const Icon(Icons.home),
+              tooltip: LocaleKeys.tooltip_home.tr(),
             ),
           if (widget.onSearch != null)
             IconButton(
               onPressed: widget.onSearch,
               icon: const Icon(Icons.search),
+              tooltip: LocaleKeys.tooltip_search.tr(),
             ),
           if (widget.onAddToBox != null)
             IconButton(
               onPressed: widget.onAddToBox,
               icon: const Icon(Icons.move_to_inbox),
+              tooltip: LocaleKeys.tooltip_addToBox.tr(),
             ),
           if (widget.onDropFromBox != null)
             IconButton(
               onPressed: widget.onDropFromBox,
               icon: const Icon(Icons.outbox),
+              tooltip: LocaleKeys.tooltip_dropFromBox.tr(),
             ),
           if (widget.onRename != null)
             IconButton(
               onPressed: widget.onRename,
               icon: const Icon(Icons.edit),
+              tooltip: LocaleKeys.tooltip_edit.tr(),
             ),
           if (widget.onDelete != null)
-            IconButton(onPressed: _delete, icon: const Icon(Icons.delete)),
+            IconButton(
+              onPressed: _delete,
+              icon: const Icon(Icons.delete),
+              tooltip: LocaleKeys.tooltip_delete.tr(),
+            ),
         ],
       ),
       body: widget.body,

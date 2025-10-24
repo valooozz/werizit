@@ -71,6 +71,7 @@ class ItemInfoDialog extends ConsumerWidget {
                       IconButton(
                         icon: const Icon(Icons.close),
                         onPressed: () => Navigator.pop(context),
+                        tooltip: LocaleKeys.tooltip_close.tr(),
                       ),
                     ],
                   ),

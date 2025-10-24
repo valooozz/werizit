@@ -78,16 +78,19 @@ class _ItemCardState extends ConsumerState<ItemCard> {
             IconButton(
               onPressed: _addItemToBox,
               icon: const Icon(Icons.move_to_inbox),
+              tooltip: LocaleKeys.tooltip_addItemToBox.tr(),
             ),
           IconButton(
             onPressed: _showRenameDialog,
             icon: const Icon(Icons.edit),
+            tooltip: LocaleKeys.tooltip_edit.tr(),
           ),
           IconButton(
             onPressed: () {
               _deleteItem();
             },
             icon: const Icon(Icons.delete),
+            tooltip: LocaleKeys.tooltip_delete.tr(),
           ),
         ],
       ),

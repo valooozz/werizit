@@ -59,6 +59,9 @@ class _SelectItemsDialogState extends State<SelectItemsDialog> {
           IconButton(
             onPressed: _toggleSelectAll,
             icon: allSelected ? Icon(Icons.deselect) : Icon(Icons.select_all),
+            tooltip: allSelected
+                ? LocaleKeys.tooltip_unselect.tr()
+                : LocaleKeys.tooltip_select.tr(),
           ),
         ],
       ),

@@ -42,5 +42,18 @@
         "drop": "Déposer",
         "added": "{} objet(s) ajouté(s) au carton !",
         "dropped": "{} objet(s) retiré(s) du carton !"
+    },
+    "tooltip": {
+        "back": "Retour",
+        "home": "Retourner à l'accueil",
+        "search": "Rechercher un objet",
+        "edit": "Renommer",
+        "delete": "Supprimer",
+        "select": "Tout sélectionner",
+        "unselect": "Tout désélectionner",
+        "addToBox": "Ajouter des objets au carton",
+        "addItemToBox": "Ajouter au carton",
+        "dropFromBox": "Retirer des objets du carton",
+        "close": "Fermer"
     }
 }

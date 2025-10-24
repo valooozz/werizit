@@ -42,5 +42,17 @@ abstract class  LocaleKeys {
   static const box_added = 'box.added';
   static const box_dropped = 'box.dropped';
   static const box = 'box';
+  static const tooltip_back = 'tooltip.back';
+  static const tooltip_home = 'tooltip.home';
+  static const tooltip_search = 'tooltip.search';
+  static const tooltip_edit = 'tooltip.edit';
+  static const tooltip_delete = 'tooltip.delete';
+  static const tooltip_select = 'tooltip.select';
+  static const tooltip_unselect = 'tooltip.unselect';
+  static const tooltip_addToBox = 'tooltip.addToBox';
+  static const tooltip_addItemToBox = 'tooltip.addItemToBox';
+  static const tooltip_dropFromBox = 'tooltip.dropFromBox';
+  static const tooltip_close = 'tooltip.close';
+  static const tooltip = 'tooltip';
 
 }
