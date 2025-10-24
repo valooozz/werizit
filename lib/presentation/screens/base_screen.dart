@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:rangement/core/icons/box_icons.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/widgets/dialog/confirm_dialog.dart';
 
@@ -86,13 +87,13 @@ class _BaseScreenState extends State<BaseScreen> {
           if (widget.onAddToBox != null)
             IconButton(
               onPressed: widget.onAddToBox,
-              icon: const Icon(Icons.move_to_inbox),
+              icon: const Icon(BoxIcons.boxAdd),
               tooltip: LocaleKeys.tooltip_addToBox.tr(),
             ),
           if (widget.onDropFromBox != null)
             IconButton(
               onPressed: widget.onDropFromBox,
-              icon: const Icon(Icons.outbox),
+              icon: const Icon(BoxIcons.box),
               tooltip: LocaleKeys.tooltip_dropFromBox.tr(),
             ),
           if (widget.onRename != null)
