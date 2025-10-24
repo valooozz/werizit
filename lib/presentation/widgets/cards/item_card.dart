@@ -117,7 +117,9 @@ class _ItemCardState extends ConsumerState<ItemCard> {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      color: widget.isSelected ? Theme.of(context).colorScheme.primary : null,
+      color: widget.isSelected
+          ? Theme.of(context).colorScheme.primary
+          : Theme.of(context).colorScheme.primaryContainer,
       elevation: widget.isSelected ? 5 : 1,
       child: InkWell(
         onTap: _handleTap,

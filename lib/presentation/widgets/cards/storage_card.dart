@@ -14,6 +14,7 @@ class StorageCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 1,
       clipBehavior: Clip.hardEdge,
+      color: Theme.of(context).colorScheme.primaryContainer,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
