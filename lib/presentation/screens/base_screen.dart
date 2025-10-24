@@ -15,6 +15,7 @@ class BaseScreen extends StatefulWidget {
   final VoidCallback? onBack;
   final String? deleteConfirmationTitle;
   final String? deleteConfirmationMessage;
+  final bool showHome;
 
   const BaseScreen({
     super.key,
@@ -29,6 +30,7 @@ class BaseScreen extends StatefulWidget {
     this.onBack,
     this.deleteConfirmationTitle,
     this.deleteConfirmationMessage,
+    this.showHome = true,
   });
 
   @override
@@ -52,6 +54,10 @@ class _BaseScreenState extends State<BaseScreen> {
     widget.onDelete!();
   }
 
+  void _navigateToHome() {
+    Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,6 +70,11 @@ class _BaseScreenState extends State<BaseScreen> {
             : null,
         title: Text(widget.title),
         actions: [
+          if (widget.showHome == true)
+            IconButton(
+              onPressed: _navigateToHome,
+              icon: const Icon(Icons.home),
+            ),
           if (widget.onSearch != null)
             IconButton(
               onPressed: widget.onSearch,

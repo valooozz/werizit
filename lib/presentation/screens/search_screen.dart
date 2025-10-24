@@ -24,7 +24,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   void _refreshSearch(String searchText) {
-    final dao = ref.read(daoProvider); // ✅ utilise l’unique DAO global
+    final dao = ref.read(daoProvider);
 
     setState(() {
       if (searchText.isEmpty) {

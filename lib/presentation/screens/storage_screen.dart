@@ -16,6 +16,7 @@ class StorageScreen<T extends Storage> extends StatelessWidget {
   final void Function()? onDelete;
   final void Function(T item)? onTap;
   final void Function()? onBack;
+  final bool? showHome;
 
   const StorageScreen({
     super.key,
@@ -26,6 +27,7 @@ class StorageScreen<T extends Storage> extends StatelessWidget {
     this.onDelete,
     this.onTap,
     this.onBack,
+    this.showHome,
   });
 
   void _showAddDialog(BuildContext context) {
@@ -80,6 +82,7 @@ class StorageScreen<T extends Storage> extends StatelessWidget {
       onDelete: onDelete == null ? null : () => _deleteStorage(context),
       onRename: onRename == null ? null : () => _showRenameDialog(context),
       onBack: onBack,
+      showHome: showHome ?? true,
       body: storages.isEmpty
           ? Center(child: Text(LocaleKeys.storage_noElement.tr()))
           : GridView.builder(
