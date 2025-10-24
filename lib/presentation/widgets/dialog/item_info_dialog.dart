@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rangement/core/providers/dao_provider.dart';
 import 'package:rangement/core/providers/items_provider.dart';
+import 'package:rangement/data/models/item.dart';
 import 'package:rangement/data/models/item_info.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
 
@@ -16,7 +17,10 @@ class ItemInfoDialog extends ConsumerWidget {
     final dao = ref.read(daoProvider);
     final allItems = ref.read(itemsProvider);
 
-    final item = allItems.firstWhere((i) => i.id == itemId);
+    final item = allItems.firstWhere(
+      (i) => i.id == itemId,
+      orElse: () => Item(id: itemId, name: '', shelf: -1),
+    );
     if (item.shelf == -1) return null;
 
     return await dao.getItemInfo(item.id!);
