@@ -52,18 +52,27 @@ class _SelectItemsDialogState extends State<SelectItemsDialog> {
         right: 8,
         bottom: 8,
       ),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(LocaleKeys.box_title.tr()),
-          IconButton(
-            onPressed: _toggleSelectAll,
-            icon: allSelected ? Icon(Icons.deselect) : Icon(Icons.select_all),
-            tooltip: allSelected
-                ? LocaleKeys.tooltip_unselect.tr()
-                : LocaleKeys.tooltip_select.tr(),
-          ),
-        ],
+      title: Expanded(
+        flex: 1,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: Text(
+                LocaleKeys.box_title.tr(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            IconButton(
+              onPressed: _toggleSelectAll,
+              icon: allSelected ? Icon(Icons.deselect) : Icon(Icons.select_all),
+              tooltip: allSelected
+                  ? LocaleKeys.tooltip_unselect.tr()
+                  : LocaleKeys.tooltip_select.tr(),
+            ),
+          ],
+        ),
       ),
       content: SizedBox(
         width: double.maxFinite,
