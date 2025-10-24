@@ -69,7 +69,7 @@ flutter build web
 
 Fichiers de ressources dans le dossier `assets/translations/`
 
-Pour générer le fichier `lib/generated/locale_keys.g.dart` associé (utile pour avoir un typage des champs de traduction), utiliser la commande `flutter pub run easy_localization:generate -S assets/translations -f keys -o locale_keys.g.dart`.
+Pour générer le fichier `lib/generated/locale_keys.g.dart` associé (utile pour avoir un typage des champs de traduction), utiliser la commande `dart run easy_localization:generate -S assets/translations -f keys -o locale_keys.g.dart`.
 
 ## Dépannage rapide
 
