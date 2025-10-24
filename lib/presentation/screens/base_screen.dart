@@ -13,6 +13,8 @@ class BaseScreen extends StatefulWidget {
   final VoidCallback? onAddToBox;
   final VoidCallback? onDropFromBox;
   final VoidCallback? onBack;
+  final String? deleteConfirmationTitle;
+  final String? deleteConfirmationMessage;
 
   const BaseScreen({
     super.key,
@@ -25,6 +27,8 @@ class BaseScreen extends StatefulWidget {
     this.onAddToBox,
     this.onDropFromBox,
     this.onBack,
+    this.deleteConfirmationTitle,
+    this.deleteConfirmationMessage,
   });
 
   @override
@@ -35,8 +39,12 @@ class _BaseScreenState extends State<BaseScreen> {
   void _delete() async {
     final confirmed = await ConfirmDialog.show(
       context,
-      title: LocaleKeys.common_confirm_delete.tr(args: [widget.title]),
-      message: LocaleKeys.storage_delete_warning.tr(),
+      title:
+          widget.deleteConfirmationTitle ??
+          LocaleKeys.common_confirm_delete.tr(args: [widget.title]),
+      message:
+          widget.deleteConfirmationMessage ??
+          LocaleKeys.storage_delete_warning.tr(),
     );
 
     if (confirmed != true || !mounted) return;

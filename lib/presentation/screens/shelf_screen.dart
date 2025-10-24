@@ -8,7 +8,6 @@ import 'package:rangement/data/models/item.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/screens/base_screen.dart';
 import 'package:rangement/presentation/screens/search_screen.dart';
-import 'package:rangement/presentation/widgets/dialog/confirm_dialog.dart';
 import 'package:rangement/presentation/widgets/dialog/select_items_dialog.dart';
 import 'package:rangement/presentation/widgets/dialog/text_field_dialog.dart';
 import 'package:rangement/presentation/widgets/display/items_display.dart';
@@ -60,16 +59,6 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
 
   Future<void> _deleteSelectedItems() async {
     if (_selectedItemIds.isEmpty) return;
-
-    final confirmed = await ConfirmDialog.show(
-      context,
-      title: LocaleKeys.common_confirm_delete_multiple.tr(
-        args: [_selectedItemIds.length.toString()],
-      ),
-      message: LocaleKeys.item_delete_warning.tr(),
-    );
-
-    if (confirmed != true || !mounted) return;
 
     await ref
         .read(itemsProvider.notifier)
@@ -189,7 +178,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
 
   String _getTitle(String shelfName) {
     return _isSelectionMode
-        ? LocaleKeys.common_selected.tr(
+        ? LocaleKeys.item_selected.tr(
             args: [_selectedItemIds.length.toString()],
           )
         : shelfName;
@@ -228,6 +217,14 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
           ? null
           : () => _dropItemsFromBox(boxItems),
       onBack: _isSelectionMode ? _exitSelectionMode : null,
+      deleteConfirmationTitle: _isSelectionMode
+          ? LocaleKeys.item_confirm_delete_multiple.tr(
+              args: [_selectedItemIds.length.toString()],
+            )
+          : null,
+      deleteConfirmationMessage: _isSelectionMode
+          ? LocaleKeys.item_delete_warning.tr()
+          : null,
       body: shelfItems.isEmpty
           ? Center(child: Text(LocaleKeys.storage_noItem.tr()))
           : Padding(

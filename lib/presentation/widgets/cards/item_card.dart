@@ -140,10 +140,6 @@ class _ItemCardState extends ConsumerState<ItemCard> {
                 right: 8,
                 child: Container(
                   padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    shape: BoxShape.circle,
-                  ),
                   child: Icon(
                     Icons.check,
                     color: Theme.of(context).colorScheme.onPrimary,
