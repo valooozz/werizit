@@ -77,7 +77,7 @@ class DatabaseHelper {
 
   Future<List<Map<String, dynamic>>> queryAll(String table) async {
     final db = await database;
-    return await db.query(table);
+    return await db.query(table, orderBy: 'name ASC');
   }
 
   Future<int> update(String table, Map<String, dynamic> values, int id) async {

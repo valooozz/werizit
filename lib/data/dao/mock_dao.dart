@@ -277,7 +277,9 @@ class MockDAO implements BaseDAO {
   }
 
   @override
-  Future<List<House>> getHouses() async => _houses.values.toList();
+  Future<List<House>> getHouses() async =>
+      _houses.values.toList()
+        ..sort((house1, house2) => house1.name.compareTo(house2.name));
 
   @override
   Future<int> renameHouse(int houseId, String newName) async {
@@ -311,7 +313,9 @@ class MockDAO implements BaseDAO {
   }
 
   @override
-  Future<List<Room>> getRooms() async => _rooms.values.toList();
+  Future<List<Room>> getRooms() async =>
+      _rooms.values.toList()
+        ..sort((room1, room2) => room1.name.compareTo(room2.name));
 
   @override
   Future<List<Room>> getRoomsByHouse(int houseId) async {
@@ -348,7 +352,10 @@ class MockDAO implements BaseDAO {
   }
 
   @override
-  Future<List<Furniture>> getFurnitures() async => _furniture.values.toList();
+  Future<List<Furniture>> getFurnitures() async => _furniture.values.toList()
+    ..sort(
+      (furniture1, furniture2) => furniture1.name.compareTo(furniture2.name),
+    );
 
   @override
   Future<List<Furniture>> getFurnituresByRoom(int roomId) async =>
@@ -383,7 +390,9 @@ class MockDAO implements BaseDAO {
   }
 
   @override
-  Future<List<Shelf>> getShelves() async => _shelves.values.toList();
+  Future<List<Shelf>> getShelves() async =>
+      _shelves.values.toList()
+        ..sort((shelf1, shelf2) => shelf1.name.compareTo(shelf2.name));
 
   @override
   Future<List<Shelf>> getShelvesByFurniture(int furnitureId) async =>
@@ -417,7 +426,9 @@ class MockDAO implements BaseDAO {
   }
 
   @override
-  Future<List<Item>> getItems() async => _items.values.toList();
+  Future<List<Item>> getItems() async =>
+      _items.values.toList()
+        ..sort((item1, item2) => item1.name.compareTo(item2.name));
 
   @override
   Future<List<Item>> getItemsByShelf(int shelfId) async =>
