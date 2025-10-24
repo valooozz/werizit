@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:rangement/data/dao/base_dao.dart';
+import 'package:rangement/data/dao/mock_data.dart';
 import 'package:rangement/data/models/furniture.dart';
 import 'package:rangement/data/models/house.dart';
 import 'package:rangement/data/models/item.dart';
@@ -25,75 +28,241 @@ class MockDAO implements BaseDAO {
     // ---------- Maisons ----------
     final house1 = House(id: _generateId(), name: 'Maison principale');
     final house2 = House(id: _generateId(), name: 'Appartement de vacances');
+    final house3 = House(id: _generateId(), name: 'Chalet à la montagne');
     _houses[house1.id!] = house1;
     _houses[house2.id!] = house2;
+    _houses[house3.id!] = house3;
 
     // ---------- Pièces ----------
     final salon = Room(id: _generateId(), name: 'Salon', house: house1.id!);
     final cuisine = Room(id: _generateId(), name: 'Cuisine', house: house1.id!);
-    final chambre = Room(id: _generateId(), name: 'Chambre', house: house2.id!);
-    _rooms[salon.id!] = salon;
-    _rooms[cuisine.id!] = cuisine;
-    _rooms[chambre.id!] = chambre;
+    final chambre = Room(
+      id: _generateId(),
+      name: 'Chambre principale',
+      house: house1.id!,
+    );
+    final salleDeBain = Room(
+      id: _generateId(),
+      name: 'Salle de bain',
+      house: house1.id!,
+    );
+    final bureau = Room(id: _generateId(), name: 'Bureau', house: house1.id!);
+
+    final salonVac = Room(id: _generateId(), name: 'Salon', house: house2.id!);
+    final cuisineVac = Room(
+      id: _generateId(),
+      name: 'Cuisine',
+      house: house2.id!,
+    );
+    final chambreVac = Room(
+      id: _generateId(),
+      name: 'Chambre',
+      house: house2.id!,
+    );
+
+    final salonChalet = Room(
+      id: _generateId(),
+      name: 'Salon rustique',
+      house: house3.id!,
+    );
+    final chambreChalet = Room(
+      id: _generateId(),
+      name: 'Chambre d\'hôte',
+      house: house3.id!,
+    );
+    final cuisineChalet = Room(
+      id: _generateId(),
+      name: 'Cuisine boisée',
+      house: house3.id!,
+    );
+
+    final rooms = [
+      salon,
+      cuisine,
+      chambre,
+      salleDeBain,
+      bureau,
+      salonVac,
+      cuisineVac,
+      chambreVac,
+      salonChalet,
+      chambreChalet,
+      cuisineChalet,
+    ];
+    for (final r in rooms) {
+      _rooms[r.id!] = r;
+    }
 
     // ---------- Meubles ----------
-    final meubleTv = Furniture(
-      id: _generateId(),
-      name: 'Meuble TV',
-      room: salon.id!,
-    );
-    final placard = Furniture(
-      id: _generateId(),
-      name: 'Placard',
-      room: cuisine.id!,
-    );
-    final commode = Furniture(
-      id: _generateId(),
-      name: 'Commode',
-      room: chambre.id!,
-    );
-    _furniture[meubleTv.id!] = meubleTv;
-    _furniture[placard.id!] = placard;
-    _furniture[commode.id!] = commode;
+    final meubles = [
+      Furniture(id: _generateId(), name: 'Meuble TV', room: salon.id!),
+      Furniture(id: _generateId(), name: 'Bibliothèque', room: salon.id!),
+      Furniture(id: _generateId(), name: 'Canapé avec coffre', room: salon.id!),
+      Furniture(
+        id: _generateId(),
+        name: 'Placard de cuisine',
+        room: cuisine.id!,
+      ),
+      Furniture(id: _generateId(), name: 'Buffet', room: cuisine.id!),
+      Furniture(id: _generateId(), name: 'Commode', room: chambre.id!),
+      Furniture(id: _generateId(), name: 'Table de chevet', room: chambre.id!),
+      Furniture(id: _generateId(), name: 'Armoire', room: chambre.id!),
+      Furniture(
+        id: _generateId(),
+        name: 'Meuble sous lavabo',
+        room: salleDeBain.id!,
+      ),
+      Furniture(id: _generateId(), name: 'Bureau principal', room: bureau.id!),
+      Furniture(id: _generateId(), name: 'Étagère murale', room: bureau.id!),
+      Furniture(id: _generateId(), name: 'Buffet de salon', room: salonVac.id!),
+      Furniture(id: _generateId(), name: 'Placard mural', room: cuisineVac.id!),
+      Furniture(
+        id: _generateId(),
+        name: 'Commode en bois',
+        room: chambreVac.id!,
+      ),
+      Furniture(
+        id: _generateId(),
+        name: 'Meuble TV rustique',
+        room: salonChalet.id!,
+      ),
+      Furniture(
+        id: _generateId(),
+        name: 'Placard bois',
+        room: cuisineChalet.id!,
+      ),
+      Furniture(
+        id: _generateId(),
+        name: 'Armoire ancienne',
+        room: chambreChalet.id!,
+      ),
+    ];
+    for (final f in meubles) {
+      _furniture[f.id!] = f;
+    }
 
-    // ---------- Étagères ----------
-    final etagereTv1 = Shelf(
-      id: _generateId(),
-      name: 'Étagère supérieure',
-      furniture: meubleTv.id!,
-    );
-    final etagereTv2 = Shelf(
-      id: _generateId(),
-      name: 'Étagère inférieure',
-      furniture: meubleTv.id!,
-    );
-    final etagerePlacard = Shelf(
-      id: _generateId(),
-      name: 'Étagère du haut',
-      furniture: placard.id!,
-    );
-    final tiroirCommode = Shelf(
-      id: _generateId(),
-      name: 'Tiroir principal',
-      furniture: commode.id!,
-    );
-    _shelves[etagereTv1.id!] = etagereTv1;
-    _shelves[etagereTv2.id!] = etagereTv2;
-    _shelves[etagerePlacard.id!] = etagerePlacard;
-    _shelves[tiroirCommode.id!] = tiroirCommode;
+    // ---------- Étagères / Tiroirs ----------
+    final shelves = <Shelf>[
+      // Salon maison principale
+      Shelf(
+        id: _generateId(),
+        name: 'Étagère supérieure',
+        furniture: meubles[0].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Étagère inférieure',
+        furniture: meubles[0].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Rayon du haut',
+        furniture: meubles[1].id!,
+      ),
+      Shelf(id: _generateId(), name: 'Rayon du bas', furniture: meubles[1].id!),
+      Shelf(
+        id: _generateId(),
+        name: 'Coffre principal',
+        furniture: meubles[2].id!,
+      ),
+
+      // Cuisine maison principale
+      Shelf(
+        id: _generateId(),
+        name: 'Placard du haut',
+        furniture: meubles[3].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Placard du bas',
+        furniture: meubles[3].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Tiroir à couverts',
+        furniture: meubles[4].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Tiroir à nappes',
+        furniture: meubles[4].id!,
+      ),
+
+      // Chambre principale
+      Shelf(
+        id: _generateId(),
+        name: 'Tiroir principal',
+        furniture: meubles[5].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Tiroir supérieur',
+        furniture: meubles[6].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Espace penderie',
+        furniture: meubles[7].id!,
+      ),
+
+      // Bureau
+      Shelf(
+        id: _generateId(),
+        name: 'Tiroir du bureau',
+        furniture: meubles[9].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Étagère documents',
+        furniture: meubles[10].id!,
+      ),
+
+      // Appartement de vacances
+      Shelf(
+        id: _generateId(),
+        name: 'Tiroir principal',
+        furniture: meubles[12].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Rayon du haut',
+        furniture: meubles[11].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Espace penderie',
+        furniture: meubles[14].id!,
+      ),
+
+      // Chalet
+      Shelf(id: _generateId(), name: 'Étagère TV', furniture: meubles[14].id!),
+      Shelf(
+        id: _generateId(),
+        name: 'Tiroir cuisine',
+        furniture: meubles[15].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Penderie bois',
+        furniture: meubles[16].id!,
+      ),
+    ];
+
+    for (final s in shelves) {
+      _shelves[s.id!] = s;
+    }
 
     // ---------- Items ----------
-    final items = [
-      Item(id: _generateId(), name: 'Télécommande', shelf: etagereTv1.id!),
-      Item(id: _generateId(), name: 'Console de jeux', shelf: etagereTv2.id!),
-      Item(
-        id: _generateId(),
-        name: 'Livre de recettes',
-        shelf: etagerePlacard.id!,
-      ),
-      Item(id: _generateId(), name: 'Boîte à bijoux', shelf: tiroirCommode.id!),
-      Item(id: _generateId(), name: 'Câble HDMI', shelf: etagereTv2.id!),
-    ];
+
+    final items = <Item>[];
+    final shelfIds = shelves.map((s) => s.id!).toList();
+    final random = Random();
+
+    for (final name in itemNames) {
+      final shelfId = shelfIds[random.nextInt(shelfIds.length)];
+      items.add(Item(id: _generateId(), name: name, shelf: shelfId));
+    }
+
     for (final i in items) {
       _items[i.id!] = i;
     }
