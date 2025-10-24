@@ -91,7 +91,7 @@ class StorageScreen<T extends Storage> extends StatelessWidget {
                 maxCrossAxisExtent: 300,
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 8,
-                childAspectRatio: 2,
+                childAspectRatio: 1.5,
               ),
               itemCount: storages.length,
               itemBuilder: (context, index) {
