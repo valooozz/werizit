@@ -9,7 +9,6 @@ import 'package:rangement/data/models/item_info.dart';
 import 'package:rangement/data/models/room.dart';
 import 'package:rangement/data/models/shelf.dart';
 
-/// Mock DAO en mémoire avec jeu de données de démonstration.
 class MockDAO implements BaseDAO {
   final _houses = <int, House>{};
   final _rooms = <int, Room>{};

@@ -22,6 +22,9 @@ class ItemInfoDialog extends ConsumerWidget {
     return await dao.getItemInfo(item.id!);
   }
 
+  Widget _buildInfoRow(String text) =>
+      Text(text, style: const TextStyle(fontSize: 18));
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FutureBuilder<ItemInfo?>(
@@ -103,7 +106,4 @@ class ItemInfoDialog extends ConsumerWidget {
       },
     );
   }
-
-  Widget _buildInfoRow(String text) =>
-      Text(text, style: const TextStyle(fontSize: 18));
 }

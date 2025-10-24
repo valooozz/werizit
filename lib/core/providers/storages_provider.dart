@@ -8,13 +8,11 @@ abstract class StorageNotifier<T extends Storage>
 
   StorageNotifier({required this.dao}) : super({});
 
-  /// Charge tous les items ou, si parentId est fourni, ceux du parent
   Future<void> load() async {
     final storages = await loadFromDb();
     state = {for (var storage in storages) storage.id!: storage};
   }
 
-  /// Doit être implémentée par chaque type pour charger depuis la DB
   Future<List<T>> loadFromDb();
 
   Future<void> add(T item) async {

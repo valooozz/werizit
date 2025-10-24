@@ -30,18 +30,97 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     Future.microtask(() => ref.read(itemsProvider.notifier).loadItems());
   }
 
-  void _toggleItemSelection(int itemId) {
-    setState(() {
-      if (_selectedItemIds.contains(itemId)) {
-        _selectedItemIds.remove(itemId);
-        if (_selectedItemIds.isEmpty) {
-          _isSelectionMode = false;
-        }
-      } else if (_isSelectionMode) {
-        _selectedItemIds.add(itemId);
-      }
-    });
+  // -------------------------------------
+  // --------------- Shelf ---------------
+  // -------------------------------------
+
+  void _showRenameDialog(String shelfName) async {
+    TextFieldDialog.show(
+      context,
+      title: LocaleKeys.common_renameOf.tr(args: [shelfName]),
+      hintText: LocaleKeys.common_name.tr(),
+      cancelText: LocaleKeys.common_cancel.tr(),
+      confirmText: LocaleKeys.common_rename.tr(),
+      onConfirm: (text) async {
+        await ref.read(shelvesProvider.notifier).rename(widget.shelfId, text);
+        showAppSnackBar(LocaleKeys.storage_renamed.tr());
+      },
+    );
   }
+
+  void _deleteShelf() async {
+    Navigator.pop(context);
+    await ref.read(shelvesProvider.notifier).remove(widget.shelfId);
+    showAppSnackBar(LocaleKeys.storage_deleted.tr());
+  }
+
+  void _openSearchScreen() {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => SearchScreen()));
+  }
+
+  String _getTitle(String shelfName) {
+    return _isSelectionMode
+        ? LocaleKeys.item_selected.tr(
+            args: [_selectedItemIds.length.toString()],
+          )
+        : shelfName;
+  }
+
+  // -------------------------------------
+  // --------------- Item ----------------
+  // -------------------------------------
+
+  Future<void> _addItem(String name) async {
+    await ref
+        .read(itemsProvider.notifier)
+        .addItem(Item(name: name, shelf: widget.shelfId));
+    showAppSnackBar(LocaleKeys.item_added.tr());
+  }
+
+  void _showAddDialog(String shelfName) {
+    TextFieldDialog.show(
+      context,
+      title: LocaleKeys.common_addIn.tr(args: [shelfName]),
+      hintText: LocaleKeys.common_name.tr(),
+      cancelText: LocaleKeys.common_cancel.tr(),
+      confirmText: LocaleKeys.common_add.tr(),
+      onConfirm: _addItem,
+    );
+  }
+
+  Future<void> _addItemsToBox(List<Item> items) async {
+    final selectedItemIds = await showDialog<List<int>>(
+      context: context,
+      builder: (_) => SelectItemsDialog(items: items),
+    );
+
+    if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
+      await ref.read(itemsProvider.notifier).putItemsIntoBox(selectedItemIds);
+      showAppSnackBar(
+        LocaleKeys.box_added.tr(args: [selectedItemIds.length.toString()]),
+      );
+    }
+  }
+
+  Future<void> _dropItemsFromBox(List<Item> items) async {
+    final selectedItemIds = await showDialog<List<int>>(
+      context: context,
+      builder: (_) => SelectItemsDialog(items: items),
+    );
+
+    if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
+      await ref
+          .read(itemsProvider.notifier)
+          .dropItemsFromBox(selectedItemIds, widget.shelfId);
+      showAppSnackBar(
+        LocaleKeys.box_dropped.tr(args: [selectedItemIds.length.toString()]),
+      );
+    }
+  }
+
+  // -------------------------------------
+  // ------------- Selection -------------
+  // -------------------------------------
 
   void _enterSelectionMode(int itemId) {
     setState(() {
@@ -54,6 +133,19 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     setState(() {
       _isSelectionMode = false;
       _selectedItemIds.clear();
+    });
+  }
+
+  void _toggleItemSelection(int itemId) {
+    setState(() {
+      if (_selectedItemIds.contains(itemId)) {
+        _selectedItemIds.remove(itemId);
+        if (_selectedItemIds.isEmpty) {
+          _isSelectionMode = false;
+        }
+      } else if (_isSelectionMode) {
+        _selectedItemIds.add(itemId);
+      }
     });
   }
 
@@ -104,85 +196,9 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     );
   }
 
-  Future<void> _addItem(String name) async {
-    await ref
-        .read(itemsProvider.notifier)
-        .addItem(Item(name: name, shelf: widget.shelfId));
-    showAppSnackBar(LocaleKeys.item_added.tr());
-  }
-
-  void _showAddDialog(String shelfName) {
-    TextFieldDialog.show(
-      context,
-      title: LocaleKeys.common_addIn.tr(args: [shelfName]),
-      hintText: LocaleKeys.common_name.tr(),
-      cancelText: LocaleKeys.common_cancel.tr(),
-      confirmText: LocaleKeys.common_add.tr(),
-      onConfirm: _addItem,
-    );
-  }
-
-  void _showRenameDialog(String shelfName) async {
-    TextFieldDialog.show(
-      context,
-      title: LocaleKeys.common_renameOf.tr(args: [shelfName]),
-      hintText: LocaleKeys.common_name.tr(),
-      cancelText: LocaleKeys.common_cancel.tr(),
-      confirmText: LocaleKeys.common_rename.tr(),
-      onConfirm: (text) async {
-        await ref.read(shelvesProvider.notifier).rename(widget.shelfId, text);
-        showAppSnackBar(LocaleKeys.storage_renamed.tr());
-      },
-    );
-  }
-
-  void _deleteShelf() async {
-    Navigator.pop(context);
-    await ref.read(shelvesProvider.notifier).remove(widget.shelfId);
-    showAppSnackBar(LocaleKeys.storage_deleted.tr());
-  }
-
-  void _openSearchScreen() {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => SearchScreen()));
-  }
-
-  Future<void> _addItemsToBox(List<Item> items) async {
-    final selectedItemIds = await showDialog<List<int>>(
-      context: context,
-      builder: (_) => SelectItemsDialog(items: items),
-    );
-
-    if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
-      await ref.read(itemsProvider.notifier).putItemsIntoBox(selectedItemIds);
-      showAppSnackBar(
-        LocaleKeys.box_added.tr(args: [selectedItemIds.length.toString()]),
-      );
-    }
-  }
-
-  Future<void> _dropItemsFromBox(List<Item> items) async {
-    final selectedItemIds = await showDialog<List<int>>(
-      context: context,
-      builder: (_) => SelectItemsDialog(items: items),
-    );
-
-    if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
-      await ref
-          .read(itemsProvider.notifier)
-          .dropItemsFromBox(selectedItemIds, widget.shelfId);
-      showAppSnackBar(
-        LocaleKeys.box_dropped.tr(args: [selectedItemIds.length.toString()]),
-      );
-    }
-  }
-
-  String _getTitle(String shelfName) {
-    return _isSelectionMode
-        ? LocaleKeys.item_selected.tr(
-            args: [_selectedItemIds.length.toString()],
-          )
-        : shelfName;
-  }
+  // -------------------------------------
+  // --------------- Build ---------------
+  // -------------------------------------
 
   @override
   Widget build(BuildContext context) {

@@ -50,12 +50,20 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     showAppSnackBar(LocaleKeys.box_added.tr(args: ['1']));
   }
 
-  void _handleTap() async {
-    if (widget.isSelectionMode) {
-      widget.onToggleSelection!();
-    } else {
-      _showInfoDialog();
-    }
+  void _showRenameDialog() {
+    TextFieldDialog.show(
+      context,
+      title: LocaleKeys.common_renameOf.tr(args: [widget.item.name]),
+      hintText: LocaleKeys.common_name.tr(),
+      cancelText: LocaleKeys.common_cancel.tr(),
+      confirmText: LocaleKeys.common_rename.tr(),
+      onConfirm: (text) async {
+        await ref
+            .read(itemsProvider.notifier)
+            .renameItem(widget.item.id!, text);
+        showAppSnackBar(LocaleKeys.item_renamed.tr());
+      },
+    );
   }
 
   void _showInfoDialog() async {
@@ -97,20 +105,12 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     );
   }
 
-  void _showRenameDialog() {
-    TextFieldDialog.show(
-      context,
-      title: LocaleKeys.common_renameOf.tr(args: [widget.item.name]),
-      hintText: LocaleKeys.common_name.tr(),
-      cancelText: LocaleKeys.common_cancel.tr(),
-      confirmText: LocaleKeys.common_rename.tr(),
-      onConfirm: (text) async {
-        await ref
-            .read(itemsProvider.notifier)
-            .renameItem(widget.item.id!, text);
-        showAppSnackBar(LocaleKeys.item_renamed.tr());
-      },
-    );
+  void _handleTap() async {
+    if (widget.isSelectionMode) {
+      widget.onToggleSelection!();
+    } else {
+      _showInfoDialog();
+    }
   }
 
   @override
