@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rangement/core/providers/furnitures_provider.dart';
 import 'package:rangement/core/providers/rooms_provider.dart';
 import 'package:rangement/data/models/furniture.dart';
+import 'package:rangement/data/models/room.dart';
 import 'package:rangement/presentation/screens/storage_screen.dart';
 
 import 'furniture_screen.dart';
@@ -20,8 +21,10 @@ class RoomScreen extends ConsumerWidget {
     final room = ref
         .watch(roomsProvider)
         .values
-        .where((r) => r.id == roomId)
-        .first;
+        .firstWhere(
+          (r) => r.id == roomId,
+          orElse: () => Room(name: '', house: -1),
+        );
 
     final furnitures = ref
         .watch(furnituresProvider)

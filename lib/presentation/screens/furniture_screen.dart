@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rangement/core/providers/furnitures_provider.dart';
 import 'package:rangement/core/providers/shelves_provider.dart';
+import 'package:rangement/data/models/furniture.dart';
 import 'package:rangement/data/models/shelf.dart';
 import 'package:rangement/presentation/screens/shelf_screen.dart';
 import 'package:rangement/presentation/screens/storage_screen.dart';
@@ -19,8 +20,10 @@ class FurnitureScreen extends ConsumerWidget {
     final furniture = ref
         .watch(furnituresProvider)
         .values
-        .where((f) => f.id == furnitureId)
-        .first;
+        .firstWhere(
+          (f) => f.id == furnitureId,
+          orElse: () => Furniture(name: '', room: -1),
+        );
 
     final shelves = ref
         .watch(shelvesProvider)

@@ -5,6 +5,7 @@ import 'package:rangement/core/providers/items_provider.dart';
 import 'package:rangement/core/providers/shelves_provider.dart';
 import 'package:rangement/core/utils/snackbar_utils.dart';
 import 'package:rangement/data/models/item.dart';
+import 'package:rangement/data/models/shelf.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/screens/base_screen.dart';
 import 'package:rangement/presentation/screens/search_screen.dart';
@@ -205,8 +206,10 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     final shelf = ref
         .watch(shelvesProvider)
         .values
-        .where((s) => s.id == widget.shelfId)
-        .first;
+        .firstWhere(
+          (s) => s.id == widget.shelfId,
+          orElse: () => Shelf(name: '', furniture: -1),
+        );
 
     final allItems = ref.watch(itemsProvider);
     final shelfItems = allItems.where((i) => i.shelf == shelf.id).toList();
