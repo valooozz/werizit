@@ -234,10 +234,15 @@ class DAO implements BaseDAO {
   @override
   Future<void> putItemsIntoBox(List<int> itemIds) async {
     final db = await dbHelper.database;
+
+    if (itemIds.isEmpty) return;
+
+    final placeholders = List.filled(itemIds.length, '?').join(', ');
+
     await db.update(
       'Item',
-      {'shelf': null},
-      where: 'id IN ?',
+      {'shelf': -1},
+      where: 'id IN ($placeholders)',
       whereArgs: itemIds,
     );
   }
@@ -245,17 +250,22 @@ class DAO implements BaseDAO {
   @override
   Future<List<Item>> getItemsFromBox() async {
     final db = await dbHelper.database;
-    final maps = await db.query('Item', where: 'shelf IS NULL');
+    final maps = await db.query('Item', where: 'shelf = -1');
     return maps.map((m) => Item.fromMap(m)).toList();
   }
 
   @override
   Future<void> dropItemsFromBox(List<int> itemIds, int shelfId) async {
     final db = await dbHelper.database;
+
+    if (itemIds.isEmpty) return;
+
+    final placeholders = List.filled(itemIds.length, '?').join(', ');
+
     await db.update(
       'Item',
       {'shelf': shelfId},
-      where: 'id IN ?',
+      where: 'id IN ($placeholders)',
       whereArgs: itemIds,
     );
   }
