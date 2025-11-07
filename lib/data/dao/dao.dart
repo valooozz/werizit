@@ -1,5 +1,6 @@
 import 'package:rangement/data/dao/base_dao.dart';
 import 'package:rangement/data/models/item_info.dart';
+import 'package:rangement/data/models/trip.dart';
 
 import '../db/database_helper.dart';
 import '../models/furniture.dart';
@@ -170,8 +171,8 @@ class DAO implements BaseDAO {
 
   // ---------- ITEM ----------
   @override
-  Future<int> insertItem(Item obj) async =>
-      await dbHelper.insert('Item', obj.toMap());
+  Future<int> insertItem(Item item) async =>
+      await dbHelper.insert('Item', item.toMap());
 
   @override
   Future<List<Item>> getItems() async {
@@ -267,6 +268,47 @@ class DAO implements BaseDAO {
       {'shelf': shelfId},
       where: 'id IN ($placeholders)',
       whereArgs: itemIds,
+    );
+  }
+
+  // ---------- TRIP ----------
+  @override
+  Future<int> insertTrip(Trip trip) async {
+    return await dbHelper.insert('Trip', trip.toMap());
+  }
+
+  @override
+  Future<List<Trip>> getTrips() async {
+    final maps = await dbHelper.queryAll('Trip');
+    return maps.map((m) => Trip.fromMap(m)).toList();
+  }
+
+  @override
+  Future<int> renameTrip(int tripId, String newName) async {
+    return await dbHelper.update('Trip', {'name': newName}, tripId);
+  }
+
+  @override
+  Future<int> deleteTrip(int tripId) async {
+    return await dbHelper.delete('Trip', tripId);
+  }
+
+  @override
+  Future<int> linkTripItem(int tripId, int itemId) async {
+    return await dbHelper.insert('TripItem', {
+      'tripId': tripId,
+      'itemId': itemId,
+    });
+  }
+
+  @override
+  Future<void> unlinkTripItem(int tripId, int itemId) async {
+    final db = await dbHelper.database;
+
+    await db.delete(
+      'TripItem',
+      where: 'tripId = ? AND itemId = ?',
+      whereArgs: [tripId, itemId],
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:rangement/data/models/item_info.dart';
+import 'package:rangement/data/models/trip.dart';
 
 import '../models/furniture.dart';
 import '../models/house.dart';
@@ -39,7 +40,7 @@ abstract class BaseDAO {
   Future<String> getShelfName(int sheldIf);
 
   // ITEM
-  Future<int> insertItem(Item obj);
+  Future<int> insertItem(Item item);
   Future<List<Item>> getItems();
   Future<List<Item>> getItemsByShelf(int shelfId);
   Future<int> renameItem(int itemId, String newName);
@@ -49,4 +50,12 @@ abstract class BaseDAO {
   Future<void> putItemsIntoBox(List<int> itemIds);
   Future<List<Item>> getItemsFromBox();
   Future<void> dropItemsFromBox(List<int> itemIds, int shelfId);
+
+  // TRIP
+  Future<int> insertTrip(Trip trip);
+  Future<List<Trip>> getTrips();
+  Future<int> renameTrip(int tripId, String newName);
+  Future<int> deleteTrip(int tripId);
+  Future<int> linkTripItem(int tripId, int itemId);
+  Future<void> unlinkTripItem(int tripId, int itemId);
 }

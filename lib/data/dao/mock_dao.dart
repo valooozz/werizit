@@ -418,9 +418,9 @@ class MockDAO implements BaseDAO {
 
   // ---------- ITEM ----------
   @override
-  Future<int> insertItem(Item obj) async {
+  Future<int> insertItem(Item item) async {
     final id = _generateId();
-    _items[id] = obj.copyWith(id: id);
+    _items[id] = item.copyWith(id: id);
     return id;
   }
 

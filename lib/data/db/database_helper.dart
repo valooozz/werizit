@@ -68,6 +68,16 @@ class DatabaseHelper {
         FOREIGN KEY (shelf) REFERENCES Shelf (id) ON DELETE CASCADE
       )
     ''');
+
+    await db.execute('''
+      CREATE TABLE TripItem(
+        tripId INTEGER NOT NULL,
+        itemId INTEGER NOT NULL,
+        PRIMARY KEY (tripId, itemId),
+        FOREIGN KEY (tripId) REFERENCES Trip (id) ON DELETE CASCADE,
+        FOREIGN KEY (itemId) REFERENCES Item (id) ON DELETE CASCADE
+      )
+    ''');
   }
 
   Future<int> insert(String table, Map<String, dynamic> values) async {
