@@ -5,7 +5,6 @@ import 'package:rangement/generated/locale_keys.g.dart';
 
 class SelectItemsDialog extends StatefulWidget {
   final List<Item> items;
-
   const SelectItemsDialog({super.key, required this.items});
 
   @override
@@ -38,11 +37,9 @@ class _SelectItemsDialogState extends State<SelectItemsDialog> {
   @override
   Widget build(BuildContext context) {
     final isDropMode = widget.items.isNotEmpty && widget.items[0].shelf == -1;
-
     final validButtonLabel = isDropMode
         ? LocaleKeys.box_drop.tr()
         : LocaleKeys.box_add.tr();
-
     final allSelected = _selectedIds.length == widget.items.length;
 
     return AlertDialog(
@@ -52,27 +49,26 @@ class _SelectItemsDialogState extends State<SelectItemsDialog> {
         right: 8,
         bottom: 8,
       ),
-      title: Expanded(
-        flex: 1,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              child: Text(
-                LocaleKeys.box_title.tr(),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Text(
+              LocaleKeys.box_title.tr(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            IconButton(
-              onPressed: _toggleSelectAll,
-              icon: allSelected ? Icon(Icons.deselect) : Icon(Icons.select_all),
-              tooltip: allSelected
-                  ? LocaleKeys.tooltip_unselect.tr()
-                  : LocaleKeys.tooltip_select.tr(),
-            ),
-          ],
-        ),
+          ),
+          IconButton(
+            onPressed: _toggleSelectAll,
+            icon: allSelected
+                ? const Icon(Icons.deselect)
+                : const Icon(Icons.select_all),
+            tooltip: allSelected
+                ? LocaleKeys.tooltip_unselect.tr()
+                : LocaleKeys.tooltip_select.tr(),
+          ),
+        ],
       ),
       content: SizedBox(
         width: double.maxFinite,
@@ -82,12 +78,15 @@ class _SelectItemsDialogState extends State<SelectItemsDialog> {
           itemBuilder: (context, index) {
             final item = widget.items[index];
             final isSelected = _selectedIds.contains(item.id);
-
             return CheckboxListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              title: Text(item.name),
+              title: Text(
+                item.name,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+              ),
               value: isSelected,
               onChanged: (_) => _toggleSelection(item.id!),
             );
