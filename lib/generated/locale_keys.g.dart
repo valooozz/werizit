@@ -53,6 +53,7 @@ abstract class  LocaleKeys {
   static const tooltip_addItemToBox = 'tooltip.addItemToBox';
   static const tooltip_dropFromBox = 'tooltip.dropFromBox';
   static const tooltip_close = 'tooltip.close';
+  static const tooltip_openTrips = 'tooltip.openTrips';
   static const tooltip = 'tooltip';
 
 }

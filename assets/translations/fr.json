@@ -54,6 +54,7 @@
         "addToBox": "Ajouter des objets au carton",
         "addItemToBox": "Ajouter au carton",
         "dropFromBox": "Retirer des objets du carton",
-        "close": "Fermer"
+        "close": "Fermer",
+        "openTrips": "Destinations"
     }
 }

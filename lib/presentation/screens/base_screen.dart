@@ -9,6 +9,7 @@ class BaseScreen extends StatefulWidget {
   final Widget body;
   final VoidCallback? onAdd;
   final VoidCallback? onSearch;
+  final VoidCallback? onHandleTrips;
   final VoidCallback? onDelete;
   final VoidCallback? onRename;
   final VoidCallback? onAddToBox;
@@ -24,6 +25,7 @@ class BaseScreen extends StatefulWidget {
     required this.body,
     this.onAdd,
     this.onSearch,
+    this.onHandleTrips,
     this.onDelete,
     this.onRename,
     this.onAddToBox,
@@ -77,6 +79,12 @@ class _BaseScreenState extends State<BaseScreen> {
               onPressed: _navigateToHome,
               icon: const Icon(Icons.home),
               tooltip: LocaleKeys.tooltip_home.tr(),
+            ),
+          if (widget.onHandleTrips != null)
+            IconButton(
+              onPressed: widget.onHandleTrips,
+              icon: const Icon(Icons.trip_origin),
+              tooltip: LocaleKeys.tooltip_openTrips.tr(),
             ),
           if (widget.onSearch != null)
             IconButton(
