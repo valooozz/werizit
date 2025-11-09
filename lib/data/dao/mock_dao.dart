@@ -145,8 +145,9 @@ class MockDAO implements BaseDAO {
       _furniture[f.id!] = f;
     }
 
-    // ---------- Étagères ----------
+    // ---------- Étagères / Tiroirs ----------
     final shelves = <Shelf>[
+      // Salon maison principale
       Shelf(
         id: _generateId(),
         name: 'Étagère supérieure',
@@ -168,17 +169,106 @@ class MockDAO implements BaseDAO {
         name: 'Coffre principal',
         furniture: meubles[2].id!,
       ),
+
+      // Cuisine maison principale
+      Shelf(
+        id: _generateId(),
+        name: 'Placard du haut',
+        furniture: meubles[3].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Placard du bas',
+        furniture: meubles[3].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Tiroir à couverts',
+        furniture: meubles[4].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Tiroir à nappes',
+        furniture: meubles[4].id!,
+      ),
+
+      // Chambre principale
+      Shelf(
+        id: _generateId(),
+        name: 'Tiroir principal',
+        furniture: meubles[5].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Tiroir supérieur',
+        furniture: meubles[6].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Espace penderie',
+        furniture: meubles[7].id!,
+      ),
+
+      // Bureau
+      Shelf(
+        id: _generateId(),
+        name: 'Tiroir du bureau',
+        furniture: meubles[9].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Étagère documents',
+        furniture: meubles[10].id!,
+      ),
+
+      // Appartement de vacances
+      Shelf(
+        id: _generateId(),
+        name: 'Tiroir principal',
+        furniture: meubles[12].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Rayon du haut',
+        furniture: meubles[11].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Espace penderie',
+        furniture: meubles[14].id!,
+      ),
+
+      // Chalet
+      Shelf(id: _generateId(), name: 'Étagère TV', furniture: meubles[14].id!),
+      Shelf(
+        id: _generateId(),
+        name: 'Tiroir cuisine',
+        furniture: meubles[15].id!,
+      ),
+      Shelf(
+        id: _generateId(),
+        name: 'Penderie bois',
+        furniture: meubles[16].id!,
+      ),
     ];
+
     for (final s in shelves) {
       _shelves[s.id!] = s;
     }
 
     // ---------- Items ----------
+
+    final items = <Item>[];
+    final shelfIds = shelves.map((s) => s.id!).toList();
     final random = Random();
+
     for (final name in itemNames) {
-      final shelfId = shelves[random.nextInt(shelves.length)].id!;
-      final id = _generateId();
-      _items[id] = Item(id: id, name: name, shelf: shelfId);
+      final shelfId = shelfIds[random.nextInt(shelfIds.length)];
+      items.add(Item(id: _generateId(), name: name, shelf: shelfId));
+    }
+
+    for (final i in items) {
+      _items[i.id!] = i;
     }
 
     // ---------- TRIPS DEMO ----------

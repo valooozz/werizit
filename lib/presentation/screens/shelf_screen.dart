@@ -242,7 +242,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
             )
           : null,
       deleteConfirmationMessage: _isSelectionMode
-          ? LocaleKeys.item_delete_warning.tr()
+          ? LocaleKeys.common_delete_warning.tr()
           : null,
       showHome: !_isSelectionMode,
       body: shelfItems.isEmpty

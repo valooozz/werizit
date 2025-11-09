@@ -14,6 +14,7 @@ abstract class  LocaleKeys {
   static const common_renameOf = 'common.renameOf';
   static const common_confirm = 'common.confirm';
   static const common_confirm_delete = 'common.confirm_delete';
+  static const common_delete_warning = 'common.delete_warning';
   static const common = 'common';
   static const storage_noElement = 'storage.noElement';
   static const storage_noItem = 'storage.noItem';
@@ -25,7 +26,6 @@ abstract class  LocaleKeys {
   static const item_added = 'item.added';
   static const item_renamed = 'item.renamed';
   static const item_deleted = 'item.deleted';
-  static const item_delete_warning = 'item.delete_warning';
   static const item_deleted_multiple = 'item.deleted_multiple';
   static const item_inBox = 'item.inBox';
   static const item_confirm_delete_multiple = 'item.confirm_delete_multiple';
@@ -59,6 +59,8 @@ abstract class  LocaleKeys {
   static const trips_noTrip = 'trips.noTrip';
   static const trips_added = 'trips.added';
   static const trips_add = 'trips.add';
+  static const trips_renamed = 'trips.renamed';
+  static const trips_deleted = 'trips.deleted';
   static const trips = 'trips';
 
 }

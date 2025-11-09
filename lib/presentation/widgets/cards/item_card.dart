@@ -34,7 +34,7 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     final confirmed = await ConfirmDialog.show(
       context,
       title: LocaleKeys.common_confirm_delete.tr(args: [widget.item.name]),
-      message: LocaleKeys.item_delete_warning.tr(),
+      message: LocaleKeys.common_delete_warning.tr(),
     );
 
     if (confirmed != true || !mounted) return;

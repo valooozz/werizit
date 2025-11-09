@@ -5,6 +5,7 @@ import 'package:rangement/core/providers/trips_provider.dart';
 import 'package:rangement/core/utils/snackbar_utils.dart';
 import 'package:rangement/data/models/trip.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
+import 'package:rangement/presentation/widgets/cards/trip_card.dart';
 import 'package:rangement/presentation/widgets/dialog/text_field_dialog.dart';
 
 class TripsScreen extends ConsumerWidget {
@@ -42,7 +43,7 @@ class TripsScreen extends ConsumerWidget {
                   final trip = trips[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Placeholder(), // remplacera TripCard(trip: trip)
+                    child: TripCard(trip: trip),
                   );
                 },
               ),

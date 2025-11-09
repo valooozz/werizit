@@ -10,7 +10,8 @@
         "rename": "Renommer",
         "renameOf": "Renommer '{}'",
         "confirm": "Confirmer",
-        "confirm_delete": "Supprimer '{}' ?"
+        "confirm_delete": "Supprimer '{}' ?",
+        "delete_warning": "Cette action est irréversible."
     },
     "storage": {
         "noElement": "Aucun élément pour le moment",
@@ -24,7 +25,6 @@
         "added": "Objet ajouté !",
         "renamed": "Objet renommé !",
         "deleted": "Objet supprimé !",
-        "delete_warning": "Cette action est irréversible.",
         "deleted_multiple": "{} objet(s) supprimé(s) !",
         "inBox": "Objet rangé dans le carton",
         "confirm_delete_multiple": "Supprimer {} objets ?",
@@ -61,6 +61,8 @@
         "title": "Voyages",
         "noTrip": "Aucun voyage ajouté",
         "added": "Voyage ajouté !",
-        "add": "Ajouter un voyage"
+        "add": "Ajouter un voyage",
+        "renamed": "Voyage renommé !",
+        "deleted": "Voyage supprimé !"
     }
 }
