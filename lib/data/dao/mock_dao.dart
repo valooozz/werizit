@@ -8,6 +8,7 @@ import 'package:rangement/data/models/item.dart';
 import 'package:rangement/data/models/item_info.dart';
 import 'package:rangement/data/models/room.dart';
 import 'package:rangement/data/models/shelf.dart';
+import 'package:rangement/data/models/trip.dart';
 
 class MockDAO implements BaseDAO {
   final _houses = <int, House>{};
@@ -15,6 +16,10 @@ class MockDAO implements BaseDAO {
   final _furniture = <int, Furniture>{};
   final _shelves = <int, Shelf>{};
   final _items = <int, Item>{};
+
+  // ---------- NOUVEAUX CHAMPS POUR TRIPS ----------
+  final _trips = <int, Trip>{};
+  final _tripItems = <int, Set<int>>{}; // tripId -> {itemIds}
 
   int _nextId = 1;
   int _generateId() => _nextId++;
@@ -140,9 +145,8 @@ class MockDAO implements BaseDAO {
       _furniture[f.id!] = f;
     }
 
-    // ---------- Étagères / Tiroirs ----------
+    // ---------- Étagères ----------
     final shelves = <Shelf>[
-      // Salon maison principale
       Shelf(
         id: _generateId(),
         name: 'Étagère supérieure',
@@ -164,107 +168,28 @@ class MockDAO implements BaseDAO {
         name: 'Coffre principal',
         furniture: meubles[2].id!,
       ),
-
-      // Cuisine maison principale
-      Shelf(
-        id: _generateId(),
-        name: 'Placard du haut',
-        furniture: meubles[3].id!,
-      ),
-      Shelf(
-        id: _generateId(),
-        name: 'Placard du bas',
-        furniture: meubles[3].id!,
-      ),
-      Shelf(
-        id: _generateId(),
-        name: 'Tiroir à couverts',
-        furniture: meubles[4].id!,
-      ),
-      Shelf(
-        id: _generateId(),
-        name: 'Tiroir à nappes',
-        furniture: meubles[4].id!,
-      ),
-
-      // Chambre principale
-      Shelf(
-        id: _generateId(),
-        name: 'Tiroir principal',
-        furniture: meubles[5].id!,
-      ),
-      Shelf(
-        id: _generateId(),
-        name: 'Tiroir supérieur',
-        furniture: meubles[6].id!,
-      ),
-      Shelf(
-        id: _generateId(),
-        name: 'Espace penderie',
-        furniture: meubles[7].id!,
-      ),
-
-      // Bureau
-      Shelf(
-        id: _generateId(),
-        name: 'Tiroir du bureau',
-        furniture: meubles[9].id!,
-      ),
-      Shelf(
-        id: _generateId(),
-        name: 'Étagère documents',
-        furniture: meubles[10].id!,
-      ),
-
-      // Appartement de vacances
-      Shelf(
-        id: _generateId(),
-        name: 'Tiroir principal',
-        furniture: meubles[12].id!,
-      ),
-      Shelf(
-        id: _generateId(),
-        name: 'Rayon du haut',
-        furniture: meubles[11].id!,
-      ),
-      Shelf(
-        id: _generateId(),
-        name: 'Espace penderie',
-        furniture: meubles[14].id!,
-      ),
-
-      // Chalet
-      Shelf(id: _generateId(), name: 'Étagère TV', furniture: meubles[14].id!),
-      Shelf(
-        id: _generateId(),
-        name: 'Tiroir cuisine',
-        furniture: meubles[15].id!,
-      ),
-      Shelf(
-        id: _generateId(),
-        name: 'Penderie bois',
-        furniture: meubles[16].id!,
-      ),
     ];
-
     for (final s in shelves) {
       _shelves[s.id!] = s;
     }
 
     // ---------- Items ----------
-
-    final items = <Item>[];
-    final shelfIds = shelves.map((s) => s.id!).toList();
     final random = Random();
-
     for (final name in itemNames) {
-      final shelfId = shelfIds[random.nextInt(shelfIds.length)];
-      items.add(Item(id: _generateId(), name: name, shelf: shelfId));
+      final shelfId = shelves[random.nextInt(shelves.length)].id!;
+      final id = _generateId();
+      _items[id] = Item(id: id, name: name, shelf: shelfId);
     }
 
-    for (final i in items) {
-      _items[i.id!] = i;
-    }
+    // ---------- TRIPS DEMO ----------
+    final trip1 = Trip(id: _generateId(), name: 'Vacances été 2025');
+    final trip2 = Trip(id: _generateId(), name: 'Week-end montagne');
+    _trips[trip1.id!] = trip1;
+    _trips[trip2.id!] = trip2;
+
+    // Quelques items liés
+    _tripItems[trip1.id!] = {_items.keys.first, _items.keys.last};
+    _tripItems[trip2.id!] = {_items.keys.elementAt(1)};
   }
 
   // ---------- HOUSE ----------
@@ -277,8 +202,7 @@ class MockDAO implements BaseDAO {
 
   @override
   Future<List<House>> getHouses() async =>
-      _houses.values.toList()
-        ..sort((house1, house2) => house1.name.compareTo(house2.name));
+      _houses.values.toList()..sort((a, b) => a.name.compareTo(b.name));
 
   @override
   Future<int> renameHouse(int houseId, String newName) async {
@@ -299,9 +223,8 @@ class MockDAO implements BaseDAO {
   }
 
   @override
-  Future<String> getHouseName(int houseId) async {
-    return _houses[houseId]?.name ?? 'Unknown';
-  }
+  Future<String> getHouseName(int houseId) async =>
+      _houses[houseId]?.name ?? 'Unknown';
 
   // ---------- ROOM ----------
   @override
@@ -313,13 +236,11 @@ class MockDAO implements BaseDAO {
 
   @override
   Future<List<Room>> getRooms() async =>
-      _rooms.values.toList()
-        ..sort((room1, room2) => room1.name.compareTo(room2.name));
+      _rooms.values.toList()..sort((a, b) => a.name.compareTo(b.name));
 
   @override
-  Future<List<Room>> getRoomsByHouse(int houseId) async {
-    return _rooms.values.where((r) => r.house == houseId).toList();
-  }
+  Future<List<Room>> getRoomsByHouse(int houseId) async =>
+      _rooms.values.where((r) => r.house == houseId).toList();
 
   @override
   Future<int> renameRoom(int roomId, String newName) async {
@@ -351,10 +272,8 @@ class MockDAO implements BaseDAO {
   }
 
   @override
-  Future<List<Furniture>> getFurnitures() async => _furniture.values.toList()
-    ..sort(
-      (furniture1, furniture2) => furniture1.name.compareTo(furniture2.name),
-    );
+  Future<List<Furniture>> getFurnitures() async =>
+      _furniture.values.toList()..sort((a, b) => a.name.compareTo(b.name));
 
   @override
   Future<List<Furniture>> getFurnituresByRoom(int roomId) async =>
@@ -390,8 +309,7 @@ class MockDAO implements BaseDAO {
 
   @override
   Future<List<Shelf>> getShelves() async =>
-      _shelves.values.toList()
-        ..sort((shelf1, shelf2) => shelf1.name.compareTo(shelf2.name));
+      _shelves.values.toList()..sort((a, b) => a.name.compareTo(b.name));
 
   @override
   Future<List<Shelf>> getShelvesByFurniture(int furnitureId) async =>
@@ -426,8 +344,7 @@ class MockDAO implements BaseDAO {
 
   @override
   Future<List<Item>> getItems() async =>
-      _items.values.toList()
-        ..sort((item1, item2) => item1.name.compareTo(item2.name));
+      _items.values.toList()..sort((a, b) => a.name.compareTo(b.name));
 
   @override
   Future<List<Item>> getItemsByShelf(int shelfId) async =>
@@ -444,6 +361,9 @@ class MockDAO implements BaseDAO {
   @override
   Future<int> deleteItem(int itemId) async {
     _items.remove(itemId);
+    for (final ids in _tripItems.values) {
+      ids.remove(itemId);
+    }
     return 1;
   }
 
@@ -456,12 +376,10 @@ class MockDAO implements BaseDAO {
   Future<ItemInfo> getItemInfo(int itemId) async {
     final i = _items[itemId];
     if (i == null) throw Exception('Item not found');
-
     final shelf = i.shelf != null ? _shelves[i.shelf] : null;
     final furniture = shelf != null ? _furniture[shelf.furniture] : null;
     final room = furniture != null ? _rooms[furniture.room] : null;
     final house = room != null ? _houses[room.house] : null;
-
     return ItemInfo(
       id: i.id!,
       name: i.name,
@@ -490,5 +408,45 @@ class MockDAO implements BaseDAO {
       final i = _items[id];
       if (i != null) _items[id] = i.copyWith(shelf: shelfId);
     }
+  }
+
+  // ---------- TRIP ----------
+  @override
+  Future<int> insertTrip(Trip trip) async {
+    final id = _generateId();
+    _trips[id] = trip.copyWith(id: id);
+    _tripItems[id] = {};
+    return id;
+  }
+
+  @override
+  Future<List<Trip>> getTrips() async =>
+      _trips.values.toList()..sort((a, b) => a.name.compareTo(b.name));
+
+  @override
+  Future<int> renameTrip(int tripId, String newName) async {
+    final t = _trips[tripId];
+    if (t == null) return 0;
+    _trips[tripId] = t.copyWith(name: newName);
+    return 1;
+  }
+
+  @override
+  Future<int> deleteTrip(int tripId) async {
+    _trips.remove(tripId);
+    _tripItems.remove(tripId);
+    return 1;
+  }
+
+  @override
+  Future<int> linkTripItem(int tripId, int itemId) async {
+    final set = _tripItems.putIfAbsent(tripId, () => <int>{});
+    set.add(itemId);
+    return 1;
+  }
+
+  @override
+  Future<void> unlinkTripItem(int tripId, int itemId) async {
+    _tripItems[tripId]?.remove(itemId);
   }
 }
