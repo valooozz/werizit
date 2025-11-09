@@ -5,6 +5,7 @@ import 'package:rangement/data/models/storage.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/screens/base_screen.dart';
 import 'package:rangement/presentation/screens/search_screen.dart';
+import 'package:rangement/presentation/screens/trips_screen.dart';
 import 'package:rangement/presentation/widgets/cards/storage_card.dart';
 import 'package:rangement/presentation/widgets/dialog/text_field_dialog.dart';
 
@@ -62,6 +63,10 @@ class StorageScreen<T extends Storage> extends StatelessWidget {
     );
   }
 
+  void _openTripsScreen(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => TripsScreen()));
+  }
+
   void _openSearchScreen(BuildContext context) {
     Navigator.push(context, MaterialPageRoute(builder: (_) => SearchScreen()));
   }
@@ -78,6 +83,7 @@ class StorageScreen<T extends Storage> extends StatelessWidget {
     return BaseScreen(
       title: parentStorage?.name ?? LocaleKeys.common_home.tr(),
       onAdd: () => _showAddDialog(context),
+      onHandleTrips: () => _openTripsScreen(context),
       onSearch: () => _openSearchScreen(context),
       onDelete: onDelete == null ? null : () => _deleteStorage(context),
       onRename: onRename == null ? null : () => _showRenameDialog(context),

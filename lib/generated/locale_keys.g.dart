@@ -55,5 +55,10 @@ abstract class  LocaleKeys {
   static const tooltip_close = 'tooltip.close';
   static const tooltip_openTrips = 'tooltip.openTrips';
   static const tooltip = 'tooltip';
+  static const trips_title = 'trips.title';
+  static const trips_noTrip = 'trips.noTrip';
+  static const trips_added = 'trips.added';
+  static const trips_add = 'trips.add';
+  static const trips = 'trips';
 
 }

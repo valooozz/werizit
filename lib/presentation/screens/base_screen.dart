@@ -83,7 +83,7 @@ class _BaseScreenState extends State<BaseScreen> {
           if (widget.onHandleTrips != null)
             IconButton(
               onPressed: widget.onHandleTrips,
-              icon: const Icon(Icons.trip_origin),
+              icon: const Icon(Icons.luggage),
               tooltip: LocaleKeys.tooltip_openTrips.tr(),
             ),
           if (widget.onSearch != null)

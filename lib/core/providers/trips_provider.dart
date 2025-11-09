@@ -9,7 +9,9 @@ final tripsProvider = StateNotifierProvider<TripsNotifier, List<Trip>>(
 
 class TripsNotifier extends StateNotifier<List<Trip>> {
   final BaseDAO dao;
-  TripsNotifier({required this.dao}) : super([]);
+  TripsNotifier({required this.dao}) : super([]) {
+    loadTrips();
+  }
 
   Future<void> loadTrips() async {
     state = await dao.getTrips();

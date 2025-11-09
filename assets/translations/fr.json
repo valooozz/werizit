@@ -56,5 +56,11 @@
         "dropFromBox": "Retirer des objets du carton",
         "close": "Fermer",
         "openTrips": "Destinations"
+    },
+    "trips": {
+        "title": "Voyages",
+        "noTrip": "Aucun voyage ajouté",
+        "added": "Voyage ajouté !",
+        "add": "Ajouter un voyage"
     }
 }
