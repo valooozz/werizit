@@ -31,4 +31,8 @@ class TripsNotifier extends StateNotifier<List<Trip>> {
     await dao.deleteTrip(id);
     await loadTrips();
   }
+
+  Future<List<int>> getTripsByItem(int itemId) async {
+    return await dao.getTripsByItem(itemId);
+  }
 }

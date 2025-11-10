@@ -272,8 +272,16 @@ class MockDAO implements BaseDAO {
     }
 
     // ---------- TRIPS DEMO ----------
-    final trip1 = Trip(id: _generateId(), name: 'Vacances été 2025');
-    final trip2 = Trip(id: _generateId(), name: 'Week-end montagne');
+    final trip1 = Trip(
+      id: _generateId(),
+      name: 'Vacances été 2025',
+      itemIds: [],
+    );
+    final trip2 = Trip(
+      id: _generateId(),
+      name: 'Week-end montagne',
+      itemIds: [],
+    );
     _trips[trip1.id!] = trip1;
     _trips[trip2.id!] = trip2;
 
@@ -538,8 +546,17 @@ class MockDAO implements BaseDAO {
   @override
   Future<void> linkItemToTrips(int itemId, List<int> tripIds) async {
     for (final tripId in tripIds) {
+      _trips[tripId]!.itemIds!.add(itemId);
       final set = _tripItems.putIfAbsent(tripId, () => <int>{});
       set.add(itemId);
     }
+  }
+
+  @override
+  Future<List<int>> getTripsByItem(int itemId) async {
+    return _tripItems.entries
+        .where((entry) => entry.value.contains(itemId))
+        .map((entry) => entry.key)
+        .toList();
   }
 }

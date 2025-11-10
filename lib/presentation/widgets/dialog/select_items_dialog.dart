@@ -6,11 +6,13 @@ import 'package:rangement/generated/locale_keys.g.dart';
 class SelectItemsDialog<T extends Thing> extends StatefulWidget {
   final List<T> items;
   final String validButtonLabel;
+  final Set<int>? startSelectedIds;
 
   const SelectItemsDialog({
     super.key,
     required this.items,
     required this.validButtonLabel,
+    this.startSelectedIds,
   });
 
   @override
@@ -19,7 +21,15 @@ class SelectItemsDialog<T extends Thing> extends StatefulWidget {
 
 class _SelectItemsDialogState<T extends Thing>
     extends State<SelectItemsDialog<T>> {
-  final Set<int> _selectedIds = {};
+  late final Set<int> _selectedIds;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIds = widget.startSelectedIds != null
+        ? Set<int>.from(widget.startSelectedIds!)
+        : <int>{};
+  }
 
   void _toggleSelection(int id) {
     setState(() {

@@ -7,15 +7,20 @@ import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/widgets/dialog/select_items_dialog.dart';
 
 class SelectTripsDialog<T extends Thing> extends ConsumerWidget {
-  const SelectTripsDialog({super.key});
+  final int itemId;
+  const SelectTripsDialog({super.key, required this.itemId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final trips = ref.watch(tripsProvider).toList();
+    final selectedTrips = trips
+        .where((trip) => trip.itemIds!.contains(itemId))
+        .map((m) => m.id!);
 
     return SelectItemsDialog(
       items: trips,
       validButtonLabel: LocaleKeys.trips_link.tr(),
+      startSelectedIds: {...selectedTrips},
     );
   }
 }

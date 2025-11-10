@@ -279,7 +279,13 @@ class DAO implements BaseDAO {
 
   @override
   Future<List<Trip>> getTrips() async {
-    final maps = await dbHelper.queryAll('Trip');
+    final db = await dbHelper.database;
+    final maps = await db.rawQuery('''
+  SELECT t.id, t.name, GROUP_CONCAT(ti.itemId) AS itemIds
+  FROM Trip t
+  INNER JOIN TripItem ti ON t.id = ti.tripId
+  GROUP BY t.id, t.name;
+''');
     return maps.map((m) => Trip.fromMap(m)).toList();
   }
 
@@ -304,5 +310,16 @@ class DAO implements BaseDAO {
     for (final tripId in tripIds) {
       await dbHelper.insert('TripItem', {'tripId': tripId, 'itemId': itemId});
     }
+  }
+
+  @override
+  Future<List<int>> getTripsByItem(int itemId) async {
+    final db = await dbHelper.database;
+    final maps = await db.rawQuery(
+      'SELECT tripId FROM TripItem WHERE itemId = ?',
+      [itemId],
+    );
+
+    return maps.map((m) => m['tripId'] as int).toList();
   }
 }

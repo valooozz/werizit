@@ -70,7 +70,7 @@ class _ItemCardState extends ConsumerState<ItemCard> {
   Future<void> _addItemToTrips() async {
     final selectedTripsIds = await showDialog<List<int>>(
       context: context,
-      builder: (_) => SelectTripsDialog(),
+      builder: (_) => SelectTripsDialog(itemId: widget.item.id!),
     );
 
     if (selectedTripsIds != null && selectedTripsIds.isNotEmpty) {
