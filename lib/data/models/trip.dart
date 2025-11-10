@@ -1,5 +1,9 @@
-class Trip {
+import 'package:rangement/data/models/thing.dart';
+
+class Trip implements Thing {
+  @override
   final int? id;
+  @override
   final String name;
 
   const Trip({this.id, required this.name});

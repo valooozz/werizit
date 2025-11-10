@@ -47,4 +47,10 @@ class ItemsNotifier extends StateNotifier<List<Item>> {
     await dao.dropItemsFromBox(itemIds, shelfId);
     await loadItems();
   }
+
+  Future<void> linkItemWithTrips(int itemId, List<int> tripIds) async {
+    await dao.unlinkItem(itemId);
+    await dao.linkItemToTrips(itemId, tripIds);
+    await loadItems();
+  }
 }

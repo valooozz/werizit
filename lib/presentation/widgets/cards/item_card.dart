@@ -7,6 +7,7 @@ import 'package:rangement/data/models/item.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/widgets/dialog/confirm_dialog.dart';
 import 'package:rangement/presentation/widgets/dialog/item_info_dialog.dart';
+import 'package:rangement/presentation/widgets/dialog/select_trips_dialog.dart';
 import 'package:rangement/presentation/widgets/dialog/text_field_dialog.dart';
 
 class ItemCard extends ConsumerStatefulWidget {
@@ -66,6 +67,20 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     );
   }
 
+  Future<void> _addItemToTrips() async {
+    final selectedTripsIds = await showDialog<List<int>>(
+      context: context,
+      builder: (_) => SelectTripsDialog(),
+    );
+
+    if (selectedTripsIds != null && selectedTripsIds.isNotEmpty) {
+      await ref
+          .read(itemsProvider.notifier)
+          .linkItemWithTrips(widget.item.id!, selectedTripsIds);
+      showAppSnackBar(LocaleKeys.trips_linked.tr(args: [widget.item.name]));
+    }
+  }
+
   void _showInfoDialog() async {
     showDialog(
       context: context,
@@ -88,6 +103,7 @@ class _ItemCardState extends ConsumerState<ItemCard> {
               icon: const Icon(Icons.move_to_inbox),
               tooltip: LocaleKeys.tooltip_addItemToBox.tr(),
             ),
+          IconButton(onPressed: _addItemToTrips, icon: Icon(Icons.luggage)),
           IconButton(
             onPressed: _showRenameDialog,
             icon: const Icon(Icons.edit),

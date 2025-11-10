@@ -92,7 +92,10 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
   Future<void> _addItemsToBox(List<Item> items) async {
     final selectedItemIds = await showDialog<List<int>>(
       context: context,
-      builder: (_) => SelectItemsDialog(items: items),
+      builder: (_) => SelectItemsDialog<Item>(
+        items: items,
+        validButtonLabel: LocaleKeys.box_add.tr(),
+      ),
     );
 
     if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
@@ -106,7 +109,10 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
   Future<void> _dropItemsFromBox(List<Item> items) async {
     final selectedItemIds = await showDialog<List<int>>(
       context: context,
-      builder: (_) => SelectItemsDialog(items: items),
+      builder: (_) => SelectItemsDialog<Item>(
+        items: items,
+        validButtonLabel: LocaleKeys.box_drop.tr(),
+      ),
     );
 
     if (selectedItemIds != null && selectedItemIds.isNotEmpty) {

@@ -61,6 +61,8 @@ abstract class  LocaleKeys {
   static const trips_add = 'trips.add';
   static const trips_renamed = 'trips.renamed';
   static const trips_deleted = 'trips.deleted';
+  static const trips_link = 'trips.link';
+  static const trips_linked = 'trips.linked';
   static const trips = 'trips';
 
 }

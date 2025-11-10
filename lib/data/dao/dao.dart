@@ -294,21 +294,15 @@ class DAO implements BaseDAO {
   }
 
   @override
-  Future<int> linkTripItem(int tripId, int itemId) async {
-    return await dbHelper.insert('TripItem', {
-      'tripId': tripId,
-      'itemId': itemId,
-    });
+  Future<void> unlinkItem(int itemId) async {
+    final db = await dbHelper.database;
+    await db.delete('TripItem', where: 'itemId = ?', whereArgs: [itemId]);
   }
 
   @override
-  Future<void> unlinkTripItem(int tripId, int itemId) async {
-    final db = await dbHelper.database;
-
-    await db.delete(
-      'TripItem',
-      where: 'tripId = ? AND itemId = ?',
-      whereArgs: [tripId, itemId],
-    );
+  Future<void> linkItemToTrips(int itemId, List<int> tripIds) async {
+    for (final tripId in tripIds) {
+      await dbHelper.insert('TripItem', {'tripId': tripId, 'itemId': itemId});
+    }
   }
 }

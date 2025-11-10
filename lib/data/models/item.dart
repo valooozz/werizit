@@ -1,5 +1,9 @@
-class Item {
+import 'package:rangement/data/models/thing.dart';
+
+class Item implements Thing {
+  @override
   final int? id;
+  @override
   final String name;
   final int? shelf;
 

@@ -56,6 +56,6 @@ abstract class BaseDAO {
   Future<List<Trip>> getTrips();
   Future<int> renameTrip(int tripId, String newName);
   Future<int> deleteTrip(int tripId);
-  Future<int> linkTripItem(int tripId, int itemId);
-  Future<void> unlinkTripItem(int tripId, int itemId);
+  Future<void> unlinkItem(int itemId);
+  Future<void> linkItemToTrips(int itemId, List<int> tripIds);
 }

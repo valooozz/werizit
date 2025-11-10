@@ -1,17 +1,24 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:rangement/data/models/item.dart';
+import 'package:rangement/data/models/thing.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
 
-class SelectItemsDialog extends StatefulWidget {
-  final List<Item> items;
-  const SelectItemsDialog({super.key, required this.items});
+class SelectItemsDialog<T extends Thing> extends StatefulWidget {
+  final List<T> items;
+  final String validButtonLabel;
+
+  const SelectItemsDialog({
+    super.key,
+    required this.items,
+    required this.validButtonLabel,
+  });
 
   @override
   State<SelectItemsDialog> createState() => _SelectItemsDialogState();
 }
 
-class _SelectItemsDialogState extends State<SelectItemsDialog> {
+class _SelectItemsDialogState<T extends Thing>
+    extends State<SelectItemsDialog<T>> {
   final Set<int> _selectedIds = {};
 
   void _toggleSelection(int id) {
@@ -36,10 +43,6 @@ class _SelectItemsDialogState extends State<SelectItemsDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final isDropMode = widget.items.isNotEmpty && widget.items[0].shelf == -1;
-    final validButtonLabel = isDropMode
-        ? LocaleKeys.box_drop.tr()
-        : LocaleKeys.box_add.tr();
     final allSelected = _selectedIds.length == widget.items.length;
 
     return AlertDialog(
@@ -102,7 +105,7 @@ class _SelectItemsDialogState extends State<SelectItemsDialog> {
           onPressed: _selectedIds.isEmpty
               ? null
               : () => Navigator.pop(context, _selectedIds.toList()),
-          child: Text(validButtonLabel),
+          child: Text(widget.validButtonLabel),
         ),
       ],
     );

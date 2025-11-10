@@ -63,6 +63,8 @@
         "added": "Voyage ajouté !",
         "add": "Ajouter un voyage",
         "renamed": "Voyage renommé !",
-        "deleted": "Voyage supprimé !"
+        "deleted": "Voyage supprimé !",
+        "link": "Lier",
+        "linked": "{} a été ajouté aux voyages !"
     }
 }
