@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:rangement/core/icons/box_icons.dart';
+import 'package:rangement/data/db/database_exporter.dart';
+import 'package:rangement/data/db/database_importer.dart';
 import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:rangement/presentation/widgets/dialog/confirm_dialog.dart';
 
@@ -61,6 +63,9 @@ class _BaseScreenState extends State<BaseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final importer = DatabaseImporter();
+    final exporter = DatabaseExporter();
+
     return Scaffold(
       appBar: AppBar(
         leading: widget.onBack != null
@@ -77,6 +82,42 @@ class _BaseScreenState extends State<BaseScreen> {
               onPressed: _navigateToHome,
               icon: const Icon(Icons.home),
               tooltip: LocaleKeys.tooltip_home.tr(),
+            )
+          else
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.swap_vert),
+              onSelected: (value) {
+                switch (value) {
+                  case 'import':
+                    importer.importDatabaseFromJson(context);
+                    break;
+                  case 'export':
+                    exporter.exportDatabaseAsJson(context);
+                    break;
+                }
+              },
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'import',
+                  child: Row(
+                    children: [
+                      Icon(Icons.exit_to_app),
+                      SizedBox(width: 8),
+                      Text('Importer une sauvegarde'),
+                    ],
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: 'export',
+                  child: Row(
+                    children: [
+                      Icon(Icons.output),
+                      SizedBox(width: 8),
+                      Text('Exporter les données'),
+                    ],
+                  ),
+                ),
+              ],
             ),
           if (widget.onSearch != null)
             IconButton(

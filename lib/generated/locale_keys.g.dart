@@ -54,5 +54,13 @@ abstract class  LocaleKeys {
   static const tooltip_dropFromBox = 'tooltip.dropFromBox';
   static const tooltip_close = 'tooltip.close';
   static const tooltip = 'tooltip';
+  static const export_success = 'export.success';
+  static const export_created = 'export.created';
+  static const export_error = 'export.error';
+  static const export = 'export';
+  static const import_noFile = 'import.noFile';
+  static const import_sucess = 'import.sucess';
+  static const import_error = 'import.error';
+  static const import = 'import';
 
 }

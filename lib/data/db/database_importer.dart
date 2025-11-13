@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:rangement/core/utils/snackbar_utils.dart';
+import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'database_helper.dart';
@@ -20,9 +23,7 @@ class DatabaseImporter {
       );
 
       if (result == null || result.files.single.path == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Aucun fichier sélectionné.')),
-        );
+        showAppSnackBar(LocaleKeys.import_noFile.tr());
         return;
       }
 
@@ -53,13 +54,9 @@ class DatabaseImporter {
 
       await batch.commit(noResult: true);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Import JSON terminé avec succès !')),
-      );
+      showAppSnackBar(LocaleKeys.import_sucess.tr());
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Erreur lors de l’import : $e')));
+      showAppSnackBar(LocaleKeys.import_error.tr(args: [e.toString()]));
     }
   }
 }

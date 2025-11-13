@@ -2,9 +2,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rangement/core/utils/snackbar_utils.dart';
+import 'package:rangement/generated/locale_keys.g.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'database_helper.dart';
@@ -45,18 +48,12 @@ class DatabaseExporter {
       final result = await SharePlus.instance.share(params);
 
       if (result.status == ShareResultStatus.success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Export JSON partagé avec succès !')),
-        );
+        showAppSnackBar(LocaleKeys.export_success.tr());
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Export JSON créé, mais non partagé.')),
-        );
+        showAppSnackBar(LocaleKeys.export_created.tr());
       }
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Erreur lors de l’export : $e')));
+      showAppSnackBar(LocaleKeys.export_error.tr(args: [e.toString()]));
     }
   }
 }
