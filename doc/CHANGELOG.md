@@ -1,3 +1,7 @@
+### Version 1.1.0
+
+- Possibilité d'importer et d'exporter des données
+
 ### Version 1.0.2
 
 - Fix : affichage SelectItemsDialog
