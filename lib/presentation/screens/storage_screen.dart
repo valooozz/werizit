@@ -83,6 +83,7 @@ class StorageScreen<T extends Storage> extends StatelessWidget {
       onRename: onRename == null ? null : () => _showRenameDialog(context),
       onBack: onBack,
       showHome: showHome ?? true,
+      showImportExport: showHome ?? true ? false : true,
       body: storages.isEmpty
           ? Center(child: Text(LocaleKeys.storage_noElement.tr()))
           : GridView.builder(

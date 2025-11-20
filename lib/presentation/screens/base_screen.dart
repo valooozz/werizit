@@ -19,6 +19,7 @@ class BaseScreen extends StatefulWidget {
   final String? deleteConfirmationTitle;
   final String? deleteConfirmationMessage;
   final bool showHome;
+  final bool showImportExport;
 
   const BaseScreen({
     super.key,
@@ -34,6 +35,7 @@ class BaseScreen extends StatefulWidget {
     this.deleteConfirmationTitle,
     this.deleteConfirmationMessage,
     this.showHome = true,
+    this.showImportExport = false,
   });
 
   @override
@@ -82,8 +84,8 @@ class _BaseScreenState extends State<BaseScreen> {
               onPressed: _navigateToHome,
               icon: const Icon(Icons.home),
               tooltip: LocaleKeys.tooltip_home.tr(),
-            )
-          else
+            ),
+          if (widget.showImportExport == true)
             PopupMenuButton<String>(
               icon: const Icon(Icons.swap_vert),
               onSelected: (value) {
