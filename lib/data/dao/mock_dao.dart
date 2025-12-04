@@ -1,13 +1,13 @@
 import 'dart:math';
 
-import 'package:rangement/data/dao/base_dao.dart';
-import 'package:rangement/data/dao/mock_data.dart';
-import 'package:rangement/data/models/furniture.dart';
-import 'package:rangement/data/models/house.dart';
-import 'package:rangement/data/models/item.dart';
-import 'package:rangement/data/models/item_info.dart';
-import 'package:rangement/data/models/room.dart';
-import 'package:rangement/data/models/shelf.dart';
+import 'package:werizit/data/dao/base_dao.dart';
+import 'package:werizit/data/dao/mock_data.dart';
+import 'package:werizit/data/models/furniture.dart';
+import 'package:werizit/data/models/house.dart';
+import 'package:werizit/data/models/item.dart';
+import 'package:werizit/data/models/item_info.dart';
+import 'package:werizit/data/models/room.dart';
+import 'package:werizit/data/models/shelf.dart';
 
 class MockDAO implements BaseDAO {
   final _houses = <int, House>{};

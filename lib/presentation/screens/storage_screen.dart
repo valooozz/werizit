@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:rangement/core/utils/snackbar_utils.dart';
-import 'package:rangement/data/models/storage.dart';
-import 'package:rangement/generated/locale_keys.g.dart';
-import 'package:rangement/presentation/screens/base_screen.dart';
-import 'package:rangement/presentation/screens/search_screen.dart';
-import 'package:rangement/presentation/widgets/cards/storage_card.dart';
-import 'package:rangement/presentation/widgets/dialog/text_field_dialog.dart';
+import 'package:werizit/core/utils/snackbar_utils.dart';
+import 'package:werizit/data/models/storage.dart';
+import 'package:werizit/generated/locale_keys.g.dart';
+import 'package:werizit/presentation/screens/base_screen.dart';
+import 'package:werizit/presentation/screens/search_screen.dart';
+import 'package:werizit/presentation/widgets/cards/storage_card.dart';
+import 'package:werizit/presentation/widgets/dialog/text_field_dialog.dart';
 
 class StorageScreen<T extends Storage> extends StatelessWidget {
   final Storage? parentStorage;

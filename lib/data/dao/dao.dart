@@ -1,5 +1,5 @@
-import 'package:rangement/data/dao/base_dao.dart';
-import 'package:rangement/data/models/item_info.dart';
+import 'package:werizit/data/dao/base_dao.dart';
+import 'package:werizit/data/models/item_info.dart';
 
 import '../db/database_helper.dart';
 import '../models/furniture.dart';

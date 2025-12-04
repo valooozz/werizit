@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rangement/core/providers/dao_provider.dart';
-import 'package:rangement/data/models/item.dart';
-import 'package:rangement/generated/locale_keys.g.dart';
-import 'package:rangement/presentation/widgets/display/items_display.dart';
+import 'package:werizit/core/providers/dao_provider.dart';
+import 'package:werizit/data/models/item.dart';
+import 'package:werizit/generated/locale_keys.g.dart';
+import 'package:werizit/presentation/widgets/display/items_display.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});

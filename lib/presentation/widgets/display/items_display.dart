@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rangement/data/models/item.dart';
-import 'package:rangement/presentation/widgets/cards/item_card.dart';
+import 'package:werizit/data/models/item.dart';
+import 'package:werizit/presentation/widgets/cards/item_card.dart';
 
 class ItemsDisplay extends StatelessWidget {
   const ItemsDisplay({

@@ -6,8 +6,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:rangement/core/utils/snackbar_utils.dart';
-import 'package:rangement/generated/locale_keys.g.dart';
+import 'package:werizit/core/utils/snackbar_utils.dart';
+import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'database_helper.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rangement/data/dao/base_dao.dart';
-import 'package:rangement/data/models/storage.dart';
+import 'package:werizit/data/dao/base_dao.dart';
+import 'package:werizit/data/models/storage.dart';
 
 abstract class StorageNotifier<T extends Storage>
     extends StateNotifier<Map<int, T>> {

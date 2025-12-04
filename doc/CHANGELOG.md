@@ -1,3 +1,7 @@
+### Version 1.1.1
+
+- Signature pour déploiement Google Play
+
 ### Version 1.1.0
 
 - Possibilité d'importer et d'exporter des données

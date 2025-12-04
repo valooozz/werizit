@@ -1,17 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rangement/core/providers/items_provider.dart';
-import 'package:rangement/core/providers/shelves_provider.dart';
-import 'package:rangement/core/utils/snackbar_utils.dart';
-import 'package:rangement/data/models/item.dart';
-import 'package:rangement/data/models/shelf.dart';
-import 'package:rangement/generated/locale_keys.g.dart';
-import 'package:rangement/presentation/screens/base_screen.dart';
-import 'package:rangement/presentation/screens/search_screen.dart';
-import 'package:rangement/presentation/widgets/dialog/select_items_dialog.dart';
-import 'package:rangement/presentation/widgets/dialog/text_field_dialog.dart';
-import 'package:rangement/presentation/widgets/display/items_display.dart';
+import 'package:werizit/core/providers/items_provider.dart';
+import 'package:werizit/core/providers/shelves_provider.dart';
+import 'package:werizit/core/utils/snackbar_utils.dart';
+import 'package:werizit/data/models/item.dart';
+import 'package:werizit/data/models/shelf.dart';
+import 'package:werizit/generated/locale_keys.g.dart';
+import 'package:werizit/presentation/screens/base_screen.dart';
+import 'package:werizit/presentation/screens/search_screen.dart';
+import 'package:werizit/presentation/widgets/dialog/select_items_dialog.dart';
+import 'package:werizit/presentation/widgets/dialog/text_field_dialog.dart';
+import 'package:werizit/presentation/widgets/display/items_display.dart';
 
 class ShelfScreen extends ConsumerStatefulWidget {
   final int shelfId;

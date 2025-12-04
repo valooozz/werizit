@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rangement/main.dart';
+import 'package:werizit/main.dart';
 
 void showAppSnackBar(String message, {bool isError = false}) {
   final messenger = rootScaffoldMessengerKey.currentState;

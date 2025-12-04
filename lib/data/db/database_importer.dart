@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:rangement/core/utils/snackbar_utils.dart';
-import 'package:rangement/generated/locale_keys.g.dart';
+import 'package:werizit/core/utils/snackbar_utils.dart';
+import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'database_helper.dart';

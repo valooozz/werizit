@@ -1,4 +1,4 @@
-import 'package:rangement/data/models/item_info.dart';
+import 'package:werizit/data/models/item_info.dart';
 
 import '../models/furniture.dart';
 import '../models/house.dart';

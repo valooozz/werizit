@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:rangement/data/models/storage.dart';
+import 'package:werizit/data/models/storage.dart';
 
 class StorageCard extends StatelessWidget {
   final Storage storage;

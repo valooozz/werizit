@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rangement/core/providers/houses_provider.dart';
-import 'package:rangement/core/providers/rooms_provider.dart';
-import 'package:rangement/data/models/house.dart';
-import 'package:rangement/data/models/room.dart';
-import 'package:rangement/presentation/screens/storage_screen.dart';
+import 'package:werizit/core/providers/houses_provider.dart';
+import 'package:werizit/core/providers/rooms_provider.dart';
+import 'package:werizit/data/models/house.dart';
+import 'package:werizit/data/models/room.dart';
+import 'package:werizit/presentation/screens/storage_screen.dart';
 
 import 'room_screen.dart';
 
