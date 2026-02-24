@@ -63,6 +63,15 @@ abstract class  LocaleKeys {
   static const trips_deleted = 'trips.deleted';
   static const trips_link = 'trips.link';
   static const trips_linked = 'trips.linked';
+  static const trips_close = 'trips.close';
   static const trips = 'trips';
+  static const export_success = 'export.success';
+  static const export_created = 'export.created';
+  static const export_error = 'export.error';
+  static const export = 'export';
+  static const import_noFile = 'import.noFile';
+  static const import_sucess = 'import.sucess';
+  static const import_error = 'import.error';
+  static const import = 'import';
 
 }

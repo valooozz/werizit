@@ -1,4 +1,4 @@
-import 'package:rangement/data/models/storage.dart';
+import 'package:werizit/data/models/storage.dart';
 
 class Room extends Storage {
   final int house;

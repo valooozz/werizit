@@ -1,5 +1,5 @@
-import 'package:rangement/data/models/item_info.dart';
-import 'package:rangement/data/models/trip.dart';
+import 'package:werizit/data/models/item_info.dart';
+import 'package:werizit/data/models/trip.dart';
 
 import '../models/furniture.dart';
 import '../models/house.dart';

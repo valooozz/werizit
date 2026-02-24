@@ -1,4 +1,4 @@
-import 'package:rangement/data/models/thing.dart';
+import 'package:werizit/data/models/thing.dart';
 
 class Item implements Thing {
   @override

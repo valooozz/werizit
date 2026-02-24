@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rangement/core/providers/trips_provider.dart';
-import 'package:rangement/core/utils/snackbar_utils.dart';
-import 'package:rangement/data/models/trip.dart';
-import 'package:rangement/generated/locale_keys.g.dart';
-import 'package:rangement/presentation/widgets/cards/trip_card.dart';
-import 'package:rangement/presentation/widgets/dialog/text_field_dialog.dart';
+import 'package:werizit/core/providers/trips_provider.dart';
+import 'package:werizit/core/utils/snackbar_utils.dart';
+import 'package:werizit/data/models/trip.dart';
+import 'package:werizit/generated/locale_keys.g.dart';
+import 'package:werizit/presentation/widgets/cards/trip_card.dart';
+import 'package:werizit/presentation/widgets/dialog/text_field_dialog.dart';
 
 class TripsScreen extends ConsumerWidget {
   const TripsScreen({super.key});

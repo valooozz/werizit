@@ -65,6 +65,17 @@
         "renamed": "Voyage renommé !",
         "deleted": "Voyage supprimé !",
         "link": "Lier",
-        "linked": "{} a été ajouté aux voyages !"
+        "linked": "{} a été ajouté aux voyages !",
+        "close": "Fermer"
+    },
+    "export": {
+        "success": "Export JSON partagé avec succès !",
+        "created": "Export JSON créé, mais non partagé.",
+        "error": "Erreur lors de l'export : {}"
+    },
+    "import": {
+        "noFile": "Aucun fichier sélectionné",
+        "sucess": "Import JSON terminé avec succès",
+        "error": "Erreur lors de l'import : {}"
     }
 }

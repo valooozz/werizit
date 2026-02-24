@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rangement/core/providers/dao_provider.dart';
-import 'package:rangement/data/dao/base_dao.dart';
-import 'package:rangement/data/models/item.dart';
+import 'package:werizit/core/providers/dao_provider.dart';
+import 'package:werizit/data/dao/base_dao.dart';
+import 'package:werizit/data/models/item.dart';
 
 final itemsProvider = StateNotifierProvider<ItemsNotifier, List<Item>>(
   (ref) => ItemsNotifier(dao: ref.read(daoProvider)),

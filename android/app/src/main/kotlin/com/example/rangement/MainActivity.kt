@@ -1,4 +1,4 @@
-package com.example.rangement
+package com.valooozz.werizit
 
 import io.flutter.embedding.android.FlutterActivity
 

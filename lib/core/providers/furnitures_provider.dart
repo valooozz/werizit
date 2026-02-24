@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rangement/core/providers/dao_provider.dart';
-import 'package:rangement/data/models/furniture.dart';
+import 'package:werizit/core/providers/dao_provider.dart';
+import 'package:werizit/data/models/furniture.dart';
 
 import 'storages_provider.dart';
 
