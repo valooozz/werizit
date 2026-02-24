@@ -55,7 +55,7 @@
         "addItemToBox": "Ajouter au carton",
         "dropFromBox": "Retirer des objets du carton",
         "close": "Fermer",
-        "openTrips": "Destinations"
+        "openTrips": "Voyages"
     },
     "trips": {
         "title": "Voyages",
@@ -66,7 +66,8 @@
         "deleted": "Voyage supprimé !",
         "link": "Lier",
         "linked": "{} a été ajouté aux voyages !",
-        "close": "Fermer"
+        "close": "Fermer",
+        "select": "Sélectionne des voyages"
     },
     "export": {
         "success": "Export JSON partagé avec succès !",

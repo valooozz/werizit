@@ -103,7 +103,11 @@ class _ItemCardState extends ConsumerState<ItemCard> {
               icon: const Icon(Icons.move_to_inbox),
               tooltip: LocaleKeys.tooltip_addItemToBox.tr(),
             ),
-          IconButton(onPressed: _addItemToTrips, icon: Icon(Icons.luggage)),
+          IconButton(
+            onPressed: _addItemToTrips,
+            icon: Icon(Icons.luggage),
+            tooltip: LocaleKeys.tooltip_openTrips.tr(),
+          ),
           IconButton(
             onPressed: _showRenameDialog,
             icon: const Icon(Icons.edit),

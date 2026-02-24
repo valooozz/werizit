@@ -20,6 +20,7 @@ class SelectTripsDialog<T extends Thing> extends ConsumerWidget {
     return SelectItemsDialog(
       items: trips,
       validButtonLabel: LocaleKeys.trips_link.tr(),
+      dialogTitle: LocaleKeys.trips_select.tr(),
       startSelectedIds: {...selectedTrips},
     );
   }

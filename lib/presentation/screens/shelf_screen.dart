@@ -95,6 +95,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
       builder: (_) => SelectItemsDialog<Item>(
         items: items,
         validButtonLabel: LocaleKeys.box_add.tr(),
+        dialogTitle: LocaleKeys.box_title.tr(),
       ),
     );
 
@@ -112,6 +113,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
       builder: (_) => SelectItemsDialog<Item>(
         items: items,
         validButtonLabel: LocaleKeys.box_drop.tr(),
+        dialogTitle: LocaleKeys.box_title.tr(),
       ),
     );
 

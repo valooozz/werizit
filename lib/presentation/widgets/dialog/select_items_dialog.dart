@@ -6,12 +6,14 @@ import 'package:werizit/generated/locale_keys.g.dart';
 class SelectItemsDialog<T extends Thing> extends StatefulWidget {
   final List<T> items;
   final String validButtonLabel;
+  final String dialogTitle;
   final Set<int>? startSelectedIds;
 
   const SelectItemsDialog({
     super.key,
     required this.items,
     required this.validButtonLabel,
+    required this.dialogTitle,
     this.startSelectedIds,
   });
 
@@ -67,7 +69,7 @@ class _SelectItemsDialogState<T extends Thing>
         children: [
           Expanded(
             child: Text(
-              LocaleKeys.box_title.tr(),
+              widget.dialogTitle,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

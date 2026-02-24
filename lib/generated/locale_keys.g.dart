@@ -64,6 +64,7 @@ abstract class  LocaleKeys {
   static const trips_link = 'trips.link';
   static const trips_linked = 'trips.linked';
   static const trips_close = 'trips.close';
+  static const trips_select = 'trips.select';
   static const trips = 'trips';
   static const export_success = 'export.success';
   static const export_created = 'export.created';
