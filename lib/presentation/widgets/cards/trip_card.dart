@@ -1,11 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:werizit/core/providers/items_provider.dart';
 import 'package:werizit/core/providers/trips_provider.dart';
 import 'package:werizit/core/utils/snackbar_utils.dart';
+import 'package:werizit/data/models/item.dart';
 import 'package:werizit/data/models/trip.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:werizit/presentation/widgets/dialog/confirm_dialog.dart';
+import 'package:werizit/presentation/widgets/dialog/select_items_dialog.dart';
 import 'package:werizit/presentation/widgets/dialog/text_field_dialog.dart';
 
 class TripCard extends ConsumerWidget {
@@ -40,8 +43,39 @@ class TripCard extends ConsumerWidget {
     );
   }
 
+  Future<void> _showLinkDialog(
+    BuildContext context,
+    WidgetRef ref,
+    List<Item> items,
+  ) async {
+    final startSelectedItemIds = trip.itemIds;
+    final selectedItemIds = await showDialog<List<int>>(
+      context: context,
+      builder: (_) => SelectItemsDialog<Item>(
+        items: items,
+        validButtonLabel: LocaleKeys.trips_link.tr(),
+        dialogTitle: LocaleKeys.item_select.tr(),
+        startSelectedIds: {...?startSelectedItemIds},
+      ),
+    );
+
+    if (selectedItemIds == null || startSelectedItemIds == null) {
+      return;
+    }
+
+    final oldSet = startSelectedItemIds.toSet();
+    final newSet = selectedItemIds.toSet();
+    final itemsToAdd = newSet.difference(oldSet).toList();
+    final itemsToRemove = oldSet.difference(newSet).toList();
+    await ref
+        .read(tripsProvider.notifier)
+        .updateTripLinks(trip.id!, itemsToAdd, itemsToRemove);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final allItems = ref.watch(itemsProvider);
+
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       color: Theme.of(context).colorScheme.primaryContainer,
@@ -51,6 +85,10 @@ class TripCard extends ConsumerWidget {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            IconButton(
+              onPressed: () => _showLinkDialog(context, ref, allItems),
+              icon: const Icon(Icons.link),
+            ),
             IconButton(
               onPressed: () => _showRenameDialog(context, ref),
               icon: const Icon(Icons.edit),

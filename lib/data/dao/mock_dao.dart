@@ -543,14 +543,14 @@ class MockDAO implements BaseDAO {
     }
   }
 
-  @override
-  Future<void> linkItemToTrips(int itemId, List<int> tripIds) async {
-    for (final tripId in tripIds) {
-      _trips[tripId]!.itemIds!.add(itemId);
-      final set = _tripItems.putIfAbsent(tripId, () => <int>{});
-      set.add(itemId);
-    }
-  }
+  // @override
+  // Future<void> linkItemToTrips(int itemId, List<int> tripIds) async {
+  //   for (final tripId in tripIds) {
+  //     _trips[tripId]!.itemIds!.add(itemId);
+  //     final set = _tripItems.putIfAbsent(tripId, () => <int>{});
+  //     set.add(itemId);
+  //   }
+  // }
 
   @override
   Future<List<int>> getTripsByItem(int itemId) async {
@@ -558,5 +558,31 @@ class MockDAO implements BaseDAO {
         .where((entry) => entry.value.contains(itemId))
         .map((entry) => entry.key)
         .toList();
+  }
+
+  // ---------- TRIP/ITEM ----------
+  @override
+  Future<void> linkTripsToItems(List<int> tripIds, List<int> itemIds) async {
+    for (final tripId in tripIds) {
+      for (final itemId in itemIds) {
+        _trips[tripId]!.itemIds!.add(itemId);
+        final set = _tripItems.putIfAbsent(tripId, () => <int>{});
+        set.add(itemId);
+      }
+    }
+  }
+
+  @override
+  Future<void> unlinkTripsFromItems(
+    List<int> tripIds,
+    List<int> itemIds,
+  ) async {
+    for (final tripId in tripIds) {
+      for (final itemId in itemIds) {
+        _trips[tripId]!.itemIds!.remove(itemId);
+        final set = _tripItems.putIfAbsent(tripId, () => <int>{});
+        set.remove(itemId);
+      }
+    }
   }
 }

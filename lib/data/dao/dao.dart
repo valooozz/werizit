@@ -271,6 +271,13 @@ class DAO implements BaseDAO {
     );
   }
 
+  // @override
+  // Future<void> linkTripToItems(int tripId, List<int> itemsIds) async {
+  //   for (final itemId in itemsIds) {
+  //     await dbHelper.insert('TripItem', {'tripId': tripId, 'itemId': itemId});
+  //   }
+  // }
+
   // ---------- TRIP ----------
   @override
   Future<int> insertTrip(Trip trip) async {
@@ -305,12 +312,12 @@ class DAO implements BaseDAO {
     await db.delete('TripItem', where: 'itemId = ?', whereArgs: [itemId]);
   }
 
-  @override
-  Future<void> linkItemToTrips(int itemId, List<int> tripIds) async {
-    for (final tripId in tripIds) {
-      await dbHelper.insert('TripItem', {'tripId': tripId, 'itemId': itemId});
-    }
-  }
+  // @override
+  // Future<void> linkItemToTrips(int itemId, List<int> tripIds) async {
+  //   for (final tripId in tripIds) {
+  //     await dbHelper.insert('TripItem', {'tripId': tripId, 'itemId': itemId});
+  //   }
+  // }
 
   @override
   Future<List<int>> getTripsByItem(int itemId) async {
@@ -321,5 +328,32 @@ class DAO implements BaseDAO {
     );
 
     return maps.map((m) => m['tripId'] as int).toList();
+  }
+
+  // ---------- TRIP/ITEM ----------
+  @override
+  Future<void> linkTripsToItems(List<int> tripIds, List<int> itemIds) async {
+    for (final tripId in tripIds) {
+      for (final itemId in itemIds) {
+        await dbHelper.insert('TripItem', {'tripId': tripId, 'itemId': itemId});
+      }
+    }
+  }
+
+  @override
+  Future<void> unlinkTripsFromItems(
+    List<int> tripIds,
+    List<int> itemIds,
+  ) async {
+    for (final tripId in tripIds) {
+      for (final itemId in itemIds) {
+        final db = await dbHelper.database;
+        await db.delete(
+          'TripItem',
+          where: 'tripId = ? AND itemId = ?',
+          whereArgs: [tripId, itemId],
+        );
+      }
+    }
   }
 }

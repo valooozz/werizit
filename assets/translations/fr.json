@@ -28,6 +28,7 @@
         "deleted_multiple": "{} objet(s) supprimé(s) !",
         "inBox": "Objet rangé dans le carton",
         "confirm_delete_multiple": "Supprimer {} objets ?",
+        "select": "Sélectionne des objets",
         "selected": "{} sélectionné(s)"
     },
     "search": {
@@ -37,7 +38,6 @@
         "noItem": "Aucun élément trouvé"
     },
     "box": {
-        "title": "Sélectionne des objets",
         "add": "Ajouter au carton",
         "drop": "Déposer",
         "added": "{} objet(s) ajouté(s) au carton !",
@@ -65,7 +65,7 @@
         "renamed": "Voyage renommé !",
         "deleted": "Voyage supprimé !",
         "link": "Lier",
-        "linked": "{} a été ajouté aux voyages !",
+        "linked": "{} a été ajouté au·x voyage·s sélectionné·s !",
         "close": "Fermer",
         "select": "Sélectionne des voyages"
     },
