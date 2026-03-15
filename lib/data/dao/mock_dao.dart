@@ -543,15 +543,6 @@ class MockDAO implements BaseDAO {
     }
   }
 
-  // @override
-  // Future<void> linkItemToTrips(int itemId, List<int> tripIds) async {
-  //   for (final tripId in tripIds) {
-  //     _trips[tripId]!.itemIds!.add(itemId);
-  //     final set = _tripItems.putIfAbsent(tripId, () => <int>{});
-  //     set.add(itemId);
-  //   }
-  // }
-
   @override
   Future<List<int>> getTripsByItem(int itemId) async {
     return _tripItems.entries

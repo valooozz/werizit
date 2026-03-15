@@ -43,5 +43,6 @@ class TripsNotifier extends StateNotifier<List<Trip>> {
   ) async {
     await dao.linkTripsToItems([tripId], itemIdsToAdd);
     await dao.unlinkTripsFromItems([tripId], itemIdsToRemove);
+    await loadTrips();
   }
 }

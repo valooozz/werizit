@@ -2,12 +2,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/core/providers/items_provider.dart';
+import 'package:werizit/core/providers/trips_provider.dart';
 import 'package:werizit/core/utils/snackbar_utils.dart';
 import 'package:werizit/data/models/item.dart';
+import 'package:werizit/data/models/trip.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:werizit/presentation/widgets/dialog/confirm_dialog.dart';
 import 'package:werizit/presentation/widgets/dialog/item_info_dialog.dart';
-import 'package:werizit/presentation/widgets/dialog/select_trips_dialog.dart';
+import 'package:werizit/presentation/widgets/dialog/select_items_dialog.dart';
 import 'package:werizit/presentation/widgets/dialog/text_field_dialog.dart';
 
 class ItemCard extends ConsumerStatefulWidget {
@@ -67,18 +69,37 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     );
   }
 
-  Future<void> _addItemToTrips() async {
-    final selectedTripsIds = await showDialog<List<int>>(
+  Future<void> _showLinkDialog(
+    BuildContext context,
+    WidgetRef ref,
+    int itemId,
+  ) async {
+    final trips = ref.watch(tripsProvider).toList();
+    final startSelectedTrips = trips
+        .where((trip) => trip.itemIds!.contains(itemId))
+        .map((m) => m.id!);
+
+    final selectedTripIds = await showDialog<List<int>>(
       context: context,
-      builder: (_) => SelectTripsDialog(itemId: widget.item.id!),
+      builder: (_) => SelectItemsDialog<Trip>(
+        items: trips,
+        validButtonLabel: LocaleKeys.trips_link.tr(),
+        dialogTitle: LocaleKeys.trips_select.tr(),
+        startSelectedIds: {...startSelectedTrips},
+      ),
     );
 
-    if (selectedTripsIds != null && selectedTripsIds.isNotEmpty) {
-      await ref
-          .read(itemsProvider.notifier)
-          .linkItemWithTrips(widget.item.id!, selectedTripsIds);
-      showAppSnackBar(LocaleKeys.trips_linked.tr(args: [widget.item.name]));
+    if (selectedTripIds == null) {
+      return;
     }
+
+    final oldSet = startSelectedTrips.toSet();
+    final newSet = selectedTripIds.toSet();
+    final tripsToAdd = newSet.difference(oldSet).toList();
+    final tripsToRemove = oldSet.difference(newSet).toList();
+    await ref
+        .read(itemsProvider.notifier)
+        .updateItemLinks(itemId, tripsToAdd, tripsToRemove);
   }
 
   void _showInfoDialog() async {
@@ -104,7 +125,7 @@ class _ItemCardState extends ConsumerState<ItemCard> {
               tooltip: LocaleKeys.tooltip_addItemToBox.tr(),
             ),
           IconButton(
-            onPressed: _addItemToTrips,
+            onPressed: () => _showLinkDialog(context, ref, widget.item.id!),
             icon: Icon(Icons.luggage),
             tooltip: LocaleKeys.tooltip_openTrips.tr(),
           ),
