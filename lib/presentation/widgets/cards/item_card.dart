@@ -86,6 +86,7 @@ class _ItemCardState extends ConsumerState<ItemCard> {
         validButtonLabel: LocaleKeys.trips_link.tr(),
         dialogTitle: LocaleKeys.trips_select.tr(),
         startSelectedIds: {...startSelectedTrips},
+        cantBeEmpty: false,
       ),
     );
 

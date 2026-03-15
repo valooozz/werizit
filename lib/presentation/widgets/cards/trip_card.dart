@@ -56,6 +56,7 @@ class TripCard extends ConsumerWidget {
         validButtonLabel: LocaleKeys.trips_link.tr(),
         dialogTitle: LocaleKeys.item_select.tr(),
         startSelectedIds: {...?startSelectedItemIds},
+        cantBeEmpty: false,
       ),
     );
 

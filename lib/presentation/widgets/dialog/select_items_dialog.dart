@@ -8,6 +8,7 @@ class SelectItemsDialog<T extends Thing> extends StatefulWidget {
   final String validButtonLabel;
   final String dialogTitle;
   final Set<int>? startSelectedIds;
+  final bool cantBeEmpty;
 
   const SelectItemsDialog({
     super.key,
@@ -15,6 +16,7 @@ class SelectItemsDialog<T extends Thing> extends StatefulWidget {
     required this.validButtonLabel,
     required this.dialogTitle,
     this.startSelectedIds,
+    this.cantBeEmpty = true,
   });
 
   @override
@@ -114,7 +116,7 @@ class _SelectItemsDialogState<T extends Thing>
           child: Text(LocaleKeys.common_cancel.tr()),
         ),
         ElevatedButton(
-          onPressed: _selectedIds.isEmpty
+          onPressed: _selectedIds.isEmpty && widget.cantBeEmpty
               ? null
               : () => Navigator.pop(context, _selectedIds.toList()),
           child: Text(widget.validButtonLabel),
