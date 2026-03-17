@@ -94,6 +94,7 @@ class PrepareTripScreen extends ConsumerWidget {
                     item: item,
                     isSelected: item.taken,
                     isSelectionMode: true,
+                    showInfoOnLongPress: true,
                     onToggleSelection: () => _onItemPress(ref, item),
                   );
                 },

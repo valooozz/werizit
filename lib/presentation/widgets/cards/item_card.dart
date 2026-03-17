@@ -16,6 +16,7 @@ class ItemCard extends ConsumerStatefulWidget {
   final Item item;
   final bool isSelected;
   final bool isSelectionMode;
+  final bool showInfoOnLongPress;
   final VoidCallback? onToggleSelection;
   final VoidCallback? onLongPress;
 
@@ -24,6 +25,7 @@ class ItemCard extends ConsumerStatefulWidget {
     required this.item,
     this.isSelected = false,
     this.isSelectionMode = false,
+    this.showInfoOnLongPress = false,
     this.onToggleSelection,
     this.onLongPress,
   });
@@ -156,6 +158,14 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     }
   }
 
+  void _handleLongPress(List<Trip> trips) async {
+    if (widget.showInfoOnLongPress) {
+      _showInfoDialog(trips);
+    } else if (widget.onLongPress != null) {
+      widget.onLongPress!();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final trips = ref.watch(tripsProvider).toList();
@@ -168,7 +178,7 @@ class _ItemCardState extends ConsumerState<ItemCard> {
       elevation: widget.isSelected ? 5 : 1,
       child: InkWell(
         onTap: () => _handleTap(trips),
-        onLongPress: widget.onLongPress,
+        onLongPress: () => _handleLongPress(trips),
         borderRadius: BorderRadius.circular(12),
         child: Stack(
           children: [

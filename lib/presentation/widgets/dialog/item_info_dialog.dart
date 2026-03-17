@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,7 +47,17 @@ class ItemInfoDialog extends ConsumerWidget {
           );
         }
 
-        final item = ref.watch(itemsProvider).firstWhere((i) => i.id == itemId);
+        final item = ref
+            .watch(itemsProvider)
+            .firstWhereOrNull((i) => i.id == itemId);
+
+        if (item == null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pop();
+          });
+          return const SizedBox.shrink();
+        }
+
         final itemInfo = snapshot.data;
 
         return Dialog(
