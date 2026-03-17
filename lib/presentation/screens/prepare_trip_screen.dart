@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/core/providers/items_provider.dart';
 import 'package:werizit/core/providers/trips_provider.dart';
+import 'package:werizit/data/models/item.dart';
 import 'package:werizit/data/models/trip.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:werizit/presentation/widgets/cards/item_card.dart';
@@ -48,6 +49,14 @@ class PrepareTripScreen extends ConsumerWidget {
     await ref.read(tripsProvider.notifier).updateSelectedTrips(selectedTripIds);
   }
 
+  void _onItemPress(WidgetRef ref, Item item) {
+    if (item.taken) {
+      ref.read(itemsProvider.notifier).untakeItem(item.id!);
+    } else {
+      ref.read(itemsProvider.notifier).takeItem(item.id!);
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final allTrips = ref.watch(tripsProvider).toList();
@@ -72,18 +81,24 @@ class PrepareTripScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: allTrips.isEmpty
-            ? Center(child: Text(LocaleKeys.trips_noTrip.tr()))
-            : ListView.builder(
+      body: 0 == 1
+          ? Center(child: Text(LocaleKeys.storage_noItem.tr()))
+          : Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: ListView.builder(
                 itemCount: itemsToTake.length,
                 itemBuilder: (context, index) {
                   final item = itemsToTake[index];
-                  return ItemCard(item: item);
+
+                  return ItemCard(
+                    item: item,
+                    isSelected: item.taken,
+                    isSelectionMode: true,
+                    onToggleSelection: () => _onItemPress(ref, item),
+                  );
                 },
               ),
-      ),
+            ),
     );
   }
 }
