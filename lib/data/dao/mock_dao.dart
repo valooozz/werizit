@@ -256,6 +256,9 @@ class MockDAO implements BaseDAO {
       _shelves[s.id!] = s;
     }
 
+    // Wardrobe
+    _shelves[-2] = Shelf(id: _generateId(), name: 'Armoire', furniture: -1);
+
     // ---------- Items ----------
 
     final items = <Item>[];
@@ -263,7 +266,7 @@ class MockDAO implements BaseDAO {
     final random = Random();
 
     for (final name in itemNames) {
-      final shelfId = shelfIds[random.nextInt(shelfIds.length)];
+      final shelfId = shelfIds[random.nextInt(shelfIds.length - 1)];
       items.add(
         Item(id: _generateId(), name: name, shelf: shelfId, taken: false),
       );
@@ -448,9 +451,10 @@ class MockDAO implements BaseDAO {
   Future<List<Item>> getItems() async =>
       _items.values.toList()..sort((a, b) => a.name.compareTo(b.name));
 
-  @override
-  Future<List<Item>> getItemsByShelf(int shelfId) async =>
-      _items.values.where((i) => i.shelf == shelfId).toList();
+  // @override
+  // Future<List<Item>> getItemsByShelf(int shelfId) async {
+  //   return _items.values.where((i) => i.shelf == shelfId).toList();
+  // }
 
   @override
   Future<int> renameItem(int itemId, String newName) async {

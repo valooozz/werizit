@@ -42,7 +42,7 @@ abstract class BaseDAO {
   // ITEM
   Future<int> insertItem(Item item);
   Future<List<Item>> getItems();
-  Future<List<Item>> getItemsByShelf(int shelfId);
+  // Future<List<Item>> getItemsByShelf(int shelfId);
   Future<int> renameItem(int itemId, String newName);
   Future<int> deleteItem(int itemId);
   Future<List<Item>> searchItems(String searchText);

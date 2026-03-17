@@ -217,8 +217,11 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
         .values
         .firstWhere(
           (s) => s.id == widget.shelfId,
-          orElse: () =>
-              Shelf(name: LocaleKeys.wardrobe_title.tr(), furniture: -1),
+          orElse: () => Shelf(
+            id: -2,
+            name: LocaleKeys.wardrobe_title.tr(),
+            furniture: -1,
+          ),
         );
 
     final allItems = ref.watch(itemsProvider);

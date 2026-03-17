@@ -180,16 +180,16 @@ class DAO implements BaseDAO {
     return maps.map((m) => Item.fromMap(m)).toList();
   }
 
-  @override
-  Future<List<Item>> getItemsByShelf(int shelfId) async {
-    final db = await dbHelper.database;
-    final maps = await db.query(
-      'Item',
-      where: 'shelf = ?',
-      whereArgs: [shelfId],
-    );
-    return maps.map((m) => Item.fromMap(m)).toList();
-  }
+  // @override
+  // Future<List<Item>> getItemsByShelf(int shelfId) async {
+  //   final db = await dbHelper.database;
+  //   final maps = await db.query(
+  //     'Item',
+  //     where: 'shelf = ?',
+  //     whereArgs: [shelfId],
+  //   );
+  //   return maps.map((m) => Item.fromMap(m)).toList();
+  // }
 
   @override
   Future<int> renameItem(int itemId, String newName) async {
