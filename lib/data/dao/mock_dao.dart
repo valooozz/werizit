@@ -526,6 +526,13 @@ class MockDAO implements BaseDAO {
     _items[itemId] = i.copyWith(taken: false);
   }
 
+  @override
+  Future<void> untakeAllItems() async {
+    for (final key in _items.keys) {
+      _items[key] = _items[key]!.copyWith(taken: false);
+    }
+  }
+
   // ---------- TRIP ----------
   @override
   Future<int> insertTrip(Trip trip) async {

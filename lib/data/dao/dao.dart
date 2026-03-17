@@ -281,6 +281,12 @@ class DAO implements BaseDAO {
     await dbHelper.update('Item', {'taken': 0}, itemId);
   }
 
+  @override
+  Future<void> untakeAllItems() async {
+    final db = await dbHelper.database;
+    await db.update('Item', {'taken': 0});
+  }
+
   // ---------- TRIP ----------
   @override
   Future<int> insertTrip(Trip trip) async {

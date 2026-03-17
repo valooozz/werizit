@@ -52,6 +52,7 @@ abstract class BaseDAO {
   Future<void> dropItemsFromBox(List<int> itemIds, int shelfId);
   Future<void> takeItem(int itemId);
   Future<void> untakeItem(int itemId);
+  Future<void> untakeAllItems();
 
   // TRIP
   Future<int> insertTrip(Trip trip);

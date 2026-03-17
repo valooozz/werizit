@@ -75,4 +75,9 @@ class ItemsNotifier extends StateNotifier<List<Item>> {
     await dao.untakeItem(itemId);
     await loadItems();
   }
+
+  Future<void> untakeAllItems() async {
+    await dao.untakeAllItems();
+    await loadItems();
+  }
 }

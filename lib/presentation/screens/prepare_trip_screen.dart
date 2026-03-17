@@ -57,6 +57,10 @@ class PrepareTripScreen extends ConsumerWidget {
     }
   }
 
+  void _untakeAllItems(WidgetRef ref) {
+    ref.read(itemsProvider.notifier).untakeAllItems();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final allTrips = ref.watch(tripsProvider).toList();
@@ -77,6 +81,11 @@ class PrepareTripScreen extends ConsumerWidget {
           IconButton(
             onPressed: () => _showSelectDialog(context, ref, allTrips),
             icon: const Icon(Icons.luggage),
+            tooltip: LocaleKeys.tooltip_selectTrips.tr(),
+          ),
+          IconButton(
+            onPressed: () => _untakeAllItems(ref),
+            icon: const Icon(Icons.replay),
             tooltip: LocaleKeys.tooltip_selectTrips.tr(),
           ),
         ],
