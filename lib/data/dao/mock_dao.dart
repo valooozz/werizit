@@ -275,11 +275,13 @@ class MockDAO implements BaseDAO {
     final trip1 = Trip(
       id: _generateId(),
       name: 'Vacances été 2025',
+      selected: false,
       itemIds: [],
     );
     final trip2 = Trip(
       id: _generateId(),
       name: 'Week-end montagne',
+      selected: false,
       itemIds: [],
     );
     _trips[trip1.id!] = trip1;
@@ -549,6 +551,17 @@ class MockDAO implements BaseDAO {
         .where((entry) => entry.value.contains(itemId))
         .map((entry) => entry.key)
         .toList();
+  }
+
+  @override
+  Future<void> updateSelectedTrips(List<int> tripIdsToSelect) async {
+    for (final tripEntry in _trips.entries) {
+      if (tripIdsToSelect.contains(tripEntry.value.id)) {
+        _trips[tripEntry.key] = tripEntry.value.copyWith(selected: true);
+      } else {
+        _trips[tripEntry.key] = tripEntry.value.copyWith(selected: false);
+      }
+    }
   }
 
   // ---------- TRIP/ITEM ----------

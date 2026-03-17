@@ -93,7 +93,7 @@ class _BaseScreenState extends State<BaseScreen> {
             IconButton(
               onPressed: widget.onPrepareTrip,
               icon: const Icon(Icons.how_to_vote),
-              tooltip: LocaleKeys.tooltip_openTrips.tr(),
+              tooltip: LocaleKeys.tooltip_openPrepareTrip.tr(),
             ),
           if (widget.onHandleTrips != null)
             IconButton(

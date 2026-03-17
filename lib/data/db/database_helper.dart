@@ -70,6 +70,14 @@ class DatabaseHelper {
     ''');
 
     await db.execute('''
+      CREATE TABLE Trip(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        selected INTEGER
+      )
+    ''');
+
+    await db.execute('''
       CREATE TABLE TripItem(
         tripId INTEGER NOT NULL,
         itemId INTEGER NOT NULL,

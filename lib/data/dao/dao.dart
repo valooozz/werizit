@@ -316,6 +316,24 @@ class DAO implements BaseDAO {
     return maps.map((m) => m['tripId'] as int).toList();
   }
 
+  @override
+  Future<void> updateSelectedTrips(List<int> tripIdsToSelect) async {
+    final db = await dbHelper.database;
+    await db.update(
+      'Trip',
+      {'selected': 1},
+      where: 'id IN (${List.filled(tripIdsToSelect.length, '?').join(',')})',
+      whereArgs: tripIdsToSelect,
+    );
+    await db.update(
+      'Trip',
+      {'selected': 0},
+      where:
+          'id NOT IN (${List.filled(tripIdsToSelect.length, '?').join(',')})',
+      whereArgs: tripIdsToSelect,
+    );
+  }
+
   // ---------- TRIP/ITEM ----------
   @override
   Future<void> linkTripsToItems(List<int> tripIds, List<int> itemIds) async {

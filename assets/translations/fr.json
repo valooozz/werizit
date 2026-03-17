@@ -56,7 +56,9 @@
         "addItemToBox": "Ajouter au carton",
         "dropFromBox": "Retirer des objets du carton",
         "close": "Fermer",
-        "openTrips": "Voyages"
+        "openTrips": "Voyages",
+        "openPrepareTrip": "Affaires à prendre",
+        "selectTrips": "Sélectionner les voyages"
     },
     "trips": {
         "title": "Voyages",
@@ -79,5 +81,9 @@
         "noFile": "Aucun fichier sélectionné",
         "sucess": "Import JSON terminé avec succès",
         "error": "Erreur lors de l'import : {}"
+    },
+    "prepare": {
+        "title": "Préparation des affaires",
+        "validate": "Valider"
     }
 }
