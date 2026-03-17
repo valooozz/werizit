@@ -281,11 +281,11 @@ class DAO implements BaseDAO {
   Future<List<Trip>> getTrips() async {
     final db = await dbHelper.database;
     final maps = await db.rawQuery('''
-  SELECT t.id, t.name, GROUP_CONCAT(ti.itemId) AS itemIds
-  FROM Trip t
-  INNER JOIN TripItem ti ON t.id = ti.tripId
-  GROUP BY t.id, t.name;
-''');
+      SELECT t.id, t.name, t.selected, GROUP_CONCAT(ti.itemId) AS itemIds
+      FROM Trip t
+      INNER JOIN TripItem ti ON t.id = ti.tripId
+      GROUP BY t.id, t.name;
+    ''');
     return maps.map((m) => Trip.fromMap(m)).toList();
   }
 

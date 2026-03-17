@@ -74,7 +74,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
   Future<void> _addItem(String name) async {
     await ref
         .read(itemsProvider.notifier)
-        .addItem(Item(name: name, shelf: widget.shelfId));
+        .addItem(Item(name: name, shelf: widget.shelfId, taken: false));
     showAppSnackBar(LocaleKeys.item_added.tr());
   }
 

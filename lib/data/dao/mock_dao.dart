@@ -264,7 +264,9 @@ class MockDAO implements BaseDAO {
 
     for (final name in itemNames) {
       final shelfId = shelfIds[random.nextInt(shelfIds.length)];
-      items.add(Item(id: _generateId(), name: name, shelf: shelfId));
+      items.add(
+        Item(id: _generateId(), name: name, shelf: shelfId, taken: false),
+      );
     }
 
     for (final i in items) {

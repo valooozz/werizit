@@ -12,7 +12,9 @@ class TripsScreen extends ConsumerWidget {
   const TripsScreen({super.key});
 
   Future<void> _addItem(WidgetRef ref, String name) async {
-    await ref.read(tripsProvider.notifier).addTrip(Trip(name: name));
+    await ref
+        .read(tripsProvider.notifier)
+        .addTrip(Trip(name: name, selected: false));
     showAppSnackBar(LocaleKeys.trips_added.tr());
   }
 

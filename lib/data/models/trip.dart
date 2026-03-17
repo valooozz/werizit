@@ -11,7 +11,7 @@ class Trip implements Thing {
   const Trip({
     this.id,
     required this.name,
-    this.selected = false,
+    required this.selected,
     this.itemIds,
   });
 
@@ -23,19 +23,19 @@ class Trip implements Thing {
     return Trip(
       id: map['id'],
       name: map['name'],
-      selected: map['selected'],
+      selected: map['selected'] == 0 ? false : true,
       itemIds: itemIds,
     );
   }
 
-  Map<String, dynamic> toMap() => {'name': name, 'selected': false};
+  Map<String, dynamic> toMap() => {'name': name, 'selected': selected ? 1 : 0};
 
-  Trip copyWith({int? id, String? name, bool? selected}) {
+  Trip copyWith({int? id, String? name, bool? selected, List<int>? itemIds}) {
     return Trip(
       id: id ?? this.id,
       name: name ?? this.name,
       selected: selected ?? this.selected,
-      itemIds: [],
+      itemIds: itemIds ?? this.itemIds,
     );
   }
 }

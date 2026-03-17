@@ -47,7 +47,12 @@ class TripsNotifier extends StateNotifier<List<Trip>> {
   }
 
   Future<void> updateSelectedTrips(List<int> tripIdsToSelect) async {
+    state = state
+        .map(
+          (trip) => trip.copyWith(selected: tripIdsToSelect.contains(trip.id)),
+        )
+        .toList();
+
     await dao.updateSelectedTrips(tripIdsToSelect);
-    await loadTrips();
   }
 }

@@ -19,7 +19,7 @@ class ItemInfoDialog extends ConsumerWidget {
 
     final item = allItems.firstWhere(
       (i) => i.id == itemId,
-      orElse: () => Item(id: itemId, name: '', shelf: -1),
+      orElse: () => Item(id: itemId, name: '', shelf: -1, taken: false),
     );
     if (item.shelf == -1) return null;
 
