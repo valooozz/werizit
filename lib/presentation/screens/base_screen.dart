@@ -12,6 +12,7 @@ class BaseScreen extends StatefulWidget {
   final VoidCallback? onAdd;
   final VoidCallback? onSearch;
   final VoidCallback? onHandleTrips;
+  final VoidCallback? onPrepareTrip;
   final VoidCallback? onDelete;
   final VoidCallback? onRename;
   final VoidCallback? onAddToBox;
@@ -29,6 +30,7 @@ class BaseScreen extends StatefulWidget {
     this.onAdd,
     this.onSearch,
     this.onHandleTrips,
+    this.onPrepareTrip,
     this.onDelete,
     this.onRename,
     this.onAddToBox,
@@ -86,6 +88,12 @@ class _BaseScreenState extends State<BaseScreen> {
               onPressed: _navigateToHome,
               icon: const Icon(Icons.home),
               tooltip: LocaleKeys.tooltip_home.tr(),
+            ),
+          if (widget.onPrepareTrip != null)
+            IconButton(
+              onPressed: widget.onPrepareTrip,
+              icon: const Icon(Icons.how_to_vote),
+              tooltip: LocaleKeys.tooltip_openTrips.tr(),
             ),
           if (widget.onHandleTrips != null)
             IconButton(
