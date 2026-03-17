@@ -9,7 +9,7 @@ import 'package:werizit/data/models/shelf.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:werizit/presentation/screens/base_screen.dart';
 import 'package:werizit/presentation/screens/search_screen.dart';
-import 'package:werizit/presentation/widgets/dialog/select_items_dialog.dart';
+import 'package:werizit/presentation/widgets/dialog/select_dialog.dart';
 import 'package:werizit/presentation/widgets/dialog/text_field_dialog.dart';
 import 'package:werizit/presentation/widgets/display/items_display.dart';
 
@@ -92,7 +92,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
   Future<void> _addItemsToBox(List<Item> items) async {
     final selectedItemIds = await showDialog<List<int>>(
       context: context,
-      builder: (_) => SelectItemsDialog<Item>(
+      builder: (_) => SelectDialog<Item>(
         items: items,
         validButtonLabel: LocaleKeys.box_add.tr(),
         dialogTitle: LocaleKeys.item_select.tr(),
@@ -110,7 +110,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
   Future<void> _dropItemsFromBox(List<Item> items) async {
     final selectedItemIds = await showDialog<List<int>>(
       context: context,
-      builder: (_) => SelectItemsDialog<Item>(
+      builder: (_) => SelectDialog<Item>(
         items: items,
         validButtonLabel: LocaleKeys.box_drop.tr(),
         dialogTitle: LocaleKeys.item_select.tr(),

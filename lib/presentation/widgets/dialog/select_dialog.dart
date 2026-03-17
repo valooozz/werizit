@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:werizit/data/models/thing.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 
-class SelectItemsDialog<T extends Thing> extends StatefulWidget {
+class SelectDialog<T extends Thing> extends StatefulWidget {
   final List<T> items;
   final String validButtonLabel;
   final String dialogTitle;
   final Set<int>? startSelectedIds;
   final bool cantBeEmpty;
 
-  const SelectItemsDialog({
+  const SelectDialog({
     super.key,
     required this.items,
     required this.validButtonLabel,
@@ -20,11 +20,10 @@ class SelectItemsDialog<T extends Thing> extends StatefulWidget {
   });
 
   @override
-  State<SelectItemsDialog> createState() => _SelectItemsDialogState();
+  State<SelectDialog> createState() => _SelectDialogState();
 }
 
-class _SelectItemsDialogState<T extends Thing>
-    extends State<SelectItemsDialog<T>> {
+class _SelectDialogState<T extends Thing> extends State<SelectDialog<T>> {
   late final Set<int> _selectedIds;
 
   @override

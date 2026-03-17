@@ -31,6 +31,7 @@ abstract class  LocaleKeys {
   static const item_confirm_delete_multiple = 'item.confirm_delete_multiple';
   static const item_select = 'item.select';
   static const item_selected = 'item.selected';
+  static const item_linked = 'item.linked';
   static const item = 'item';
   static const search_title = 'search.title';
   static const search_hintText = 'search.hintText';

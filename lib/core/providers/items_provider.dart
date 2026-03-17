@@ -10,7 +10,9 @@ final itemsProvider = StateNotifierProvider<ItemsNotifier, List<Item>>(
 class ItemsNotifier extends StateNotifier<List<Item>> {
   final BaseDAO dao;
 
-  ItemsNotifier({required this.dao}) : super([]);
+  ItemsNotifier({required this.dao}) : super([]) {
+    loadItems();
+  }
 
   Future<void> loadItems() async {
     state = await dao.getItems();

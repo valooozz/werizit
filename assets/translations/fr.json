@@ -29,7 +29,8 @@
         "inBox": "Objet rangé dans le carton",
         "confirm_delete_multiple": "Supprimer {} objets ?",
         "select": "Sélectionne des objets",
-        "selected": "{} sélectionné(s)"
+        "selected": "{} sélectionné(s)",
+        "linked": "{} a été lié au·x voyage·s sélectionné·s !"
     },
     "search": {
         "title": "Rechercher un objet",
@@ -65,7 +66,7 @@
         "renamed": "Voyage renommé !",
         "deleted": "Voyage supprimé !",
         "link": "Lier",
-        "linked": "{} a été ajouté au·x voyage·s sélectionné·s !",
+        "linked": "{} a été lié aux objets sélectionnés !",
         "close": "Fermer",
         "select": "Sélectionne des voyages"
     },

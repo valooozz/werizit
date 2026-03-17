@@ -8,7 +8,7 @@ import 'package:werizit/data/models/item.dart';
 import 'package:werizit/data/models/trip.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:werizit/presentation/widgets/dialog/confirm_dialog.dart';
-import 'package:werizit/presentation/widgets/dialog/select_items_dialog.dart';
+import 'package:werizit/presentation/widgets/dialog/select_dialog.dart';
 import 'package:werizit/presentation/widgets/dialog/text_field_dialog.dart';
 
 class TripCard extends ConsumerWidget {
@@ -51,7 +51,7 @@ class TripCard extends ConsumerWidget {
     final startSelectedItemIds = trip.itemIds;
     final selectedItemIds = await showDialog<List<int>>(
       context: context,
-      builder: (_) => SelectItemsDialog<Item>(
+      builder: (_) => SelectDialog<Item>(
         items: items,
         validButtonLabel: LocaleKeys.trips_link.tr(),
         dialogTitle: LocaleKeys.item_select.tr(),
@@ -71,6 +71,7 @@ class TripCard extends ConsumerWidget {
     await ref
         .read(tripsProvider.notifier)
         .updateTripLinks(trip.id!, itemsToAdd, itemsToRemove);
+    showAppSnackBar(LocaleKeys.trips_linked.tr(args: [trip.name]));
   }
 
   @override
