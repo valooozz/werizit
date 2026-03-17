@@ -24,6 +24,7 @@ class ShelfScreen extends ConsumerStatefulWidget {
 class _ShelfScreenState extends ConsumerState<ShelfScreen> {
   final Set<int> _selectedItemIds = {};
   bool _isSelectionMode = false;
+  bool get _isWardrobe => widget.shelfId == -2;
 
   @override
   void initState() {
@@ -216,7 +217,8 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
         .values
         .firstWhere(
           (s) => s.id == widget.shelfId,
-          orElse: () => Shelf(name: '', furniture: -1),
+          orElse: () =>
+              Shelf(name: LocaleKeys.wardrobe_title.tr(), furniture: -1),
         );
 
     final allItems = ref.watch(itemsProvider);
@@ -230,9 +232,15 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
           ? _selectedItemIds.length == 1
                 ? _renameSelectedItem
                 : null
+          : _isWardrobe
+          ? null
           : () => _showRenameDialog(shelf.name),
-      onDelete: _isSelectionMode ? _deleteSelectedItems : _deleteShelf,
-      onSearch: _isSelectionMode ? null : _openSearchScreen,
+      onDelete: _isSelectionMode
+          ? _deleteSelectedItems
+          : _isWardrobe
+          ? null
+          : _deleteShelf,
+      onSearch: _isSelectionMode || _isWardrobe ? null : _openSearchScreen,
       onAddToBox: _isSelectionMode
           ? _moveSelectedItemsToBox
           : shelfItems.isEmpty
@@ -252,7 +260,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
       deleteConfirmationMessage: _isSelectionMode
           ? LocaleKeys.common_delete_warning.tr()
           : null,
-      showHome: !_isSelectionMode,
+      showHome: !(_isSelectionMode || _isWardrobe),
       showImportExport: false,
       body: shelfItems.isEmpty
           ? Center(child: Text(LocaleKeys.storage_noItem.tr()))

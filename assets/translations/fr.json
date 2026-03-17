@@ -58,7 +58,8 @@
         "close": "Fermer",
         "openTrips": "Voyages",
         "openPrepareTrip": "Affaires à prendre",
-        "selectTrips": "Sélectionner les voyages"
+        "selectTrips": "Sélectionner les voyages",
+        "wardrobe": "Armoire"
     },
     "trips": {
         "title": "Voyages",
@@ -87,5 +88,8 @@
         "validate": "Valider",
         "noTrip": "Aucun voyage sélectionné",
         "empty": "Aucun objet lié aux voyages sélectionnés"
+    },
+    "wardrobe": {
+        "title": "Armoire"
     }
 }

@@ -57,6 +57,7 @@ abstract class  LocaleKeys {
   static const tooltip_openTrips = 'tooltip.openTrips';
   static const tooltip_openPrepareTrip = 'tooltip.openPrepareTrip';
   static const tooltip_selectTrips = 'tooltip.selectTrips';
+  static const tooltip_wardrobe = 'tooltip.wardrobe';
   static const tooltip = 'tooltip';
   static const trips_title = 'trips.title';
   static const trips_noTrip = 'trips.noTrip';
@@ -82,5 +83,7 @@ abstract class  LocaleKeys {
   static const prepare_noTrip = 'prepare.noTrip';
   static const prepare_empty = 'prepare.empty';
   static const prepare = 'prepare';
+  static const wardrobe_title = 'wardrobe.title';
+  static const wardrobe = 'wardrobe';
 
 }

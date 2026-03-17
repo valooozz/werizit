@@ -6,6 +6,7 @@ import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:werizit/presentation/screens/base_screen.dart';
 import 'package:werizit/presentation/screens/prepare_trip_screen.dart';
 import 'package:werizit/presentation/screens/search_screen.dart';
+import 'package:werizit/presentation/screens/shelf_screen.dart';
 import 'package:werizit/presentation/screens/trips_screen.dart';
 import 'package:werizit/presentation/widgets/cards/storage_card.dart';
 import 'package:werizit/presentation/widgets/dialog/text_field_dialog.dart';
@@ -75,6 +76,13 @@ class StorageScreen<T extends Storage> extends StatelessWidget {
     Navigator.push(context, MaterialPageRoute(builder: (_) => TripsScreen()));
   }
 
+  void _openWardrobe(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => ShelfScreen(shelfId: -2)),
+    );
+  }
+
   void _openSearchScreen(BuildContext context) {
     Navigator.push(context, MaterialPageRoute(builder: (_) => SearchScreen()));
   }
@@ -93,6 +101,7 @@ class StorageScreen<T extends Storage> extends StatelessWidget {
       onAdd: () => _showAddDialog(context),
       onPrepareTrip: () => _openPrepareTripScreen(context),
       onHandleTrips: () => _openTripsScreen(context),
+      onOpenWardrobe: () => _openWardrobe(context),
       onSearch: () => _openSearchScreen(context),
       onDelete: onDelete == null ? null : () => _deleteStorage(context),
       onRename: onRename == null ? null : () => _showRenameDialog(context),

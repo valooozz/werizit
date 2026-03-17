@@ -13,6 +13,7 @@ class BaseScreen extends StatefulWidget {
   final VoidCallback? onSearch;
   final VoidCallback? onHandleTrips;
   final VoidCallback? onPrepareTrip;
+  final VoidCallback? onOpenWardrobe;
   final VoidCallback? onDelete;
   final VoidCallback? onRename;
   final VoidCallback? onAddToBox;
@@ -31,6 +32,7 @@ class BaseScreen extends StatefulWidget {
     this.onSearch,
     this.onHandleTrips,
     this.onPrepareTrip,
+    this.onOpenWardrobe,
     this.onDelete,
     this.onRename,
     this.onAddToBox,
@@ -100,6 +102,12 @@ class _BaseScreenState extends State<BaseScreen> {
               onPressed: widget.onHandleTrips,
               icon: const Icon(Icons.luggage),
               tooltip: LocaleKeys.tooltip_openTrips.tr(),
+            ),
+          if (widget.onOpenWardrobe != null)
+            IconButton(
+              onPressed: widget.onOpenWardrobe,
+              icon: const Icon(Icons.checkroom),
+              tooltip: LocaleKeys.tooltip_wardrobe.tr(),
             ),
           if (widget.showImportExport == true)
             PopupMenuButton<String>(
