@@ -84,6 +84,8 @@
     },
     "prepare": {
         "title": "Préparation des affaires",
-        "validate": "Valider"
+        "validate": "Valider",
+        "noTrip": "Aucun voyage sélectionné",
+        "empty": "Aucun objet lié aux voyages sélectionnés"
     }
 }

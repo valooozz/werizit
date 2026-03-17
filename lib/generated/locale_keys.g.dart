@@ -79,6 +79,8 @@ abstract class  LocaleKeys {
   static const import = 'import';
   static const prepare_title = 'prepare.title';
   static const prepare_validate = 'prepare.validate';
+  static const prepare_noTrip = 'prepare.noTrip';
+  static const prepare_empty = 'prepare.empty';
   static const prepare = 'prepare';
 
 }

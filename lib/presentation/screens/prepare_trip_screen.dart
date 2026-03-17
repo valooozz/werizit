@@ -81,8 +81,10 @@ class PrepareTripScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: 0 == 1
-          ? Center(child: Text(LocaleKeys.storage_noItem.tr()))
+      body: selectedTrips.isEmpty
+          ? Center(child: Text(LocaleKeys.prepare_noTrip.tr()))
+          : itemsToTake.isEmpty
+          ? Center(child: Text(LocaleKeys.prepare_empty.tr()))
           : Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: ListView.builder(
