@@ -30,7 +30,8 @@
         "confirm_delete_multiple": "Supprimer {} objets ?",
         "select": "Sélectionne des objets",
         "selected": "{} sélectionné(s)",
-        "linked": "{} a été lié au·x voyage·s sélectionné·s !"
+        "linked": "{} a été lié au·x voyage·s sélectionné·s !",
+        "inWardrobe": "Objet rangé dans l'armoire"
     },
     "search": {
         "title": "Rechercher un objet",

@@ -22,7 +22,26 @@ class ItemInfoDialog extends ConsumerWidget {
       (i) => i.id == itemId,
       orElse: () => Item(id: itemId, name: '', shelf: -1, taken: false),
     );
-    if (item.shelf == -1) return null;
+    if (item.shelf == -1) {
+      return ItemInfo(
+        id: itemId,
+        name: item.name,
+        house: '',
+        room: '',
+        furniture: '',
+        shelf: 'box',
+      );
+    }
+    if (item.shelf == -2) {
+      return ItemInfo(
+        id: itemId,
+        name: item.name,
+        house: '',
+        room: '',
+        furniture: '',
+        shelf: 'wardrobe',
+      );
+    }
 
     return await dao.getItemInfo(item.id!);
   }
@@ -97,9 +116,14 @@ class ItemInfoDialog extends ConsumerWidget {
                 const Divider(height: 1),
                 Padding(
                   padding: const EdgeInsets.all(16),
-                  child: itemInfo == null
+                  child: itemInfo == null || itemInfo.shelf == 'box'
                       ? Text(
                           LocaleKeys.item_inBox.tr(),
+                          style: TextStyle(fontSize: 16),
+                        )
+                      : itemInfo.shelf == 'wardrobe'
+                      ? Text(
+                          LocaleKeys.item_inWardrobe.tr(),
                           style: TextStyle(fontSize: 16),
                         )
                       : Column(
