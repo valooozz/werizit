@@ -46,6 +46,16 @@ class TripsNotifier extends StateNotifier<List<Trip>> {
     await loadTrips();
   }
 
+  Future<void> updateItemLinks(
+    int itemId,
+    List<int> tripsToAdd,
+    List<int> tripsToRemove,
+  ) async {
+    await dao.linkTripsToItems(tripsToAdd, [itemId]);
+    await dao.unlinkTripsFromItems(tripsToRemove, [itemId]);
+    await loadTrips();
+  }
+
   Future<void> updateSelectedTrips(List<int> tripIdsToSelect) async {
     state = state
         .map(

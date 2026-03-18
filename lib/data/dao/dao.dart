@@ -299,7 +299,7 @@ class DAO implements BaseDAO {
     final maps = await db.rawQuery('''
       SELECT t.id, t.name, t.selected, GROUP_CONCAT(ti.itemId) AS itemIds
       FROM Trip t
-      INNER JOIN TripItem ti ON t.id = ti.tripId
+      LEFT OUTER JOIN TripItem ti ON t.id = ti.tripId
       GROUP BY t.id, t.name;
     ''');
     return maps.map((m) => Trip.fromMap(m)).toList();
@@ -353,6 +353,9 @@ class DAO implements BaseDAO {
   // ---------- TRIP/ITEM ----------
   @override
   Future<void> linkTripsToItems(List<int> tripIds, List<int> itemIds) async {
+    print(
+      'linkTripsToItems - ' + tripIds.toString() + ' - ' + itemIds.toString(),
+    );
     for (final tripId in tripIds) {
       for (final itemId in itemIds) {
         await dbHelper.insert('TripItem', {'tripId': tripId, 'itemId': itemId});
@@ -365,6 +368,12 @@ class DAO implements BaseDAO {
     List<int> tripIds,
     List<int> itemIds,
   ) async {
+    print(
+      'unlinkTripsFromItems - ' +
+          tripIds.toString() +
+          ' - ' +
+          itemIds.toString(),
+    );
     for (final tripId in tripIds) {
       for (final itemId in itemIds) {
         final db = await dbHelper.database;

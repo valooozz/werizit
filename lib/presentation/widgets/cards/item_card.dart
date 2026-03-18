@@ -75,8 +75,9 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     BuildContext context,
     WidgetRef ref,
     Item item,
-    List<Trip> trips,
   ) async {
+    final trips = ref.read(tripsProvider);
+
     final startSelectedTrips = trips
         .where((trip) => trip.itemIds!.contains(item.id))
         .map((m) => m.id!);
@@ -101,12 +102,12 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     final tripsToAdd = newSet.difference(oldSet).toList();
     final tripsToRemove = oldSet.difference(newSet).toList();
     await ref
-        .read(itemsProvider.notifier)
+        .read(tripsProvider.notifier)
         .updateItemLinks(item.id!, tripsToAdd, tripsToRemove);
     showAppSnackBar(LocaleKeys.item_linked.tr(args: [widget.item.name]));
   }
 
-  void _showInfoDialog(List<Trip> trips) async {
+  void _showInfoDialog() async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -129,7 +130,7 @@ class _ItemCardState extends ConsumerState<ItemCard> {
               tooltip: LocaleKeys.tooltip_addItemToBox.tr(),
             ),
           IconButton(
-            onPressed: () => _showLinkDialog(context, ref, widget.item, trips),
+            onPressed: () => _showLinkDialog(context, ref, widget.item),
             icon: Icon(Icons.luggage),
             tooltip: LocaleKeys.tooltip_openTrips.tr(),
           ),
@@ -150,17 +151,17 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     );
   }
 
-  void _handleTap(List<Trip> trips) async {
+  void _handleTap() async {
     if (widget.isSelectionMode) {
       widget.onToggleSelection!();
     } else {
-      _showInfoDialog(trips);
+      _showInfoDialog();
     }
   }
 
-  void _handleLongPress(List<Trip> trips) async {
+  void _handleLongPress() async {
     if (widget.showInfoOnLongPress) {
-      _showInfoDialog(trips);
+      _showInfoDialog();
     } else if (widget.onLongPress != null) {
       widget.onLongPress!();
     }
@@ -168,8 +169,6 @@ class _ItemCardState extends ConsumerState<ItemCard> {
 
   @override
   Widget build(BuildContext context) {
-    final trips = ref.watch(tripsProvider).toList();
-
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       color: widget.isSelected
@@ -177,8 +176,8 @@ class _ItemCardState extends ConsumerState<ItemCard> {
           : Theme.of(context).colorScheme.primaryContainer,
       elevation: widget.isSelected ? 5 : 1,
       child: InkWell(
-        onTap: () => _handleTap(trips),
-        onLongPress: () => _handleLongPress(trips),
+        onTap: () => _handleTap(),
+        onLongPress: () => _handleLongPress(),
         borderRadius: BorderRadius.circular(12),
         child: Stack(
           children: [
