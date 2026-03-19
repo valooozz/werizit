@@ -353,9 +353,6 @@ class DAO implements BaseDAO {
   // ---------- TRIP/ITEM ----------
   @override
   Future<void> linkTripsToItems(List<int> tripIds, List<int> itemIds) async {
-    print(
-      'linkTripsToItems - ' + tripIds.toString() + ' - ' + itemIds.toString(),
-    );
     for (final tripId in tripIds) {
       for (final itemId in itemIds) {
         await dbHelper.insert('TripItem', {'tripId': tripId, 'itemId': itemId});
@@ -368,12 +365,6 @@ class DAO implements BaseDAO {
     List<int> tripIds,
     List<int> itemIds,
   ) async {
-    print(
-      'unlinkTripsFromItems - ' +
-          tripIds.toString() +
-          ' - ' +
-          itemIds.toString(),
-    );
     for (final tripId in tripIds) {
       for (final itemId in itemIds) {
         final db = await dbHelper.database;

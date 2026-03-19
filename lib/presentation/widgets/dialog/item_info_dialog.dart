@@ -93,23 +93,34 @@ class ItemInfoDialog extends ConsumerWidget {
                     horizontal: 16,
                     vertical: 12,
                   ),
-                  child: Row(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Text(
-                          item.name,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              item.name,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
+                          IconButton(
+                            icon: const Icon(Icons.close),
+                            onPressed: () => Navigator.pop(context),
+                            tooltip: LocaleKeys.tooltip_close.tr(),
+                          ),
+                        ],
+                      ),
+                      if (actions != null) ...[
+                        SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: actions!,
                         ),
-                      ),
-                      if (actions != null) ...actions!,
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => Navigator.pop(context),
-                        tooltip: LocaleKeys.tooltip_close.tr(),
-                      ),
+                      ],
                     ],
                   ),
                 ),
