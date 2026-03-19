@@ -69,6 +69,17 @@ class _BaseScreenState extends State<BaseScreen> {
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
+  void _handleClickBox(String choice) {
+    switch (choice) {
+      case 'add':
+        if (widget.onAddToBox != null) widget.onAddToBox!();
+        break;
+      case 'drop':
+        if (widget.onDropFromBox != null) widget.onDropFromBox!();
+        break;
+    }
+  }
+
   void _handleClickMenu(String choice) {
     switch (choice) {
       case 'rename':
@@ -162,13 +173,35 @@ class _BaseScreenState extends State<BaseScreen> {
               icon: const Icon(Icons.search),
               tooltip: LocaleKeys.tooltip_search.tr(),
             ),
-          if (widget.onAddToBox != null)
+          if (widget.onAddToBox != null && widget.onDropFromBox != null)
+            PopupMenuButton<String>(
+              icon: Icon(BoxIcons.box),
+              onSelected: _handleClickBox,
+              tooltip: LocaleKeys.tooltip_boxMenu.tr(),
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
+                  value: 'add',
+                  child: ListTile(
+                    leading: Icon(BoxIcons.boxAdd),
+                    title: Text(LocaleKeys.tooltip_addToBox.tr()),
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: 'drop',
+                  child: ListTile(
+                    leading: Icon(BoxIcons.box),
+                    title: Text(LocaleKeys.tooltip_dropFromBox.tr()),
+                  ),
+                ),
+              ],
+            ),
+          if (widget.onAddToBox != null && widget.onDropFromBox == null)
             IconButton(
               onPressed: widget.onAddToBox,
               icon: const Icon(BoxIcons.boxAdd),
               tooltip: LocaleKeys.tooltip_addToBox.tr(),
             ),
-          if (widget.onDropFromBox != null)
+          if (widget.onDropFromBox != null && widget.onAddToBox == null)
             IconButton(
               onPressed: widget.onDropFromBox,
               icon: const Icon(BoxIcons.box),

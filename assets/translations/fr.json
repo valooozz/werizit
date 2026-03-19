@@ -61,7 +61,8 @@
         "openPrepareTrip": "Affaires à prendre",
         "selectTrips": "Sélectionner les voyages",
         "wardrobe": "Armoire",
-        "resetItems": "Désélectionner tous les objets"
+        "resetItems": "Désélectionner tous les objets",
+        "boxMenu": "Afficher le menu du carton"
     },
     "trips": {
         "title": "Voyages",
