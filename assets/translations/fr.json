@@ -87,7 +87,7 @@
         "error": "Erreur lors de l'import : {}"
     },
     "prepare": {
-        "title": "Préparation des affaires",
+        "title": "Affaires",
         "validate": "Valider",
         "noTrip": "Aucun voyage sélectionné",
         "empty": "Aucun objet lié aux voyages sélectionnés"

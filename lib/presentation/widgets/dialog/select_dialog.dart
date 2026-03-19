@@ -71,7 +71,7 @@ class _SelectDialogState<T extends Thing> extends State<SelectDialog<T>> {
           Expanded(
             child: Text(
               widget.dialogTitle,
-              maxLines: 1,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
           ),
