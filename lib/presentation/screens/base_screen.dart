@@ -69,6 +69,17 @@ class _BaseScreenState extends State<BaseScreen> {
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
+  void _handleClickMenu(String choice) {
+    switch (choice) {
+      case 'rename':
+        if (widget.onRename != null) widget.onRename!();
+        break;
+      case 'delete':
+        if (widget.onDelete != null) _delete();
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final importer = DatabaseImporter();
@@ -163,17 +174,25 @@ class _BaseScreenState extends State<BaseScreen> {
               icon: const Icon(BoxIcons.box),
               tooltip: LocaleKeys.tooltip_dropFromBox.tr(),
             ),
-          if (widget.onRename != null)
-            IconButton(
-              onPressed: widget.onRename,
-              icon: const Icon(Icons.edit),
-              tooltip: LocaleKeys.tooltip_edit.tr(),
-            ),
-          if (widget.onDelete != null)
-            IconButton(
-              onPressed: _delete,
-              icon: const Icon(Icons.delete),
-              tooltip: LocaleKeys.tooltip_delete.tr(),
+          if (widget.onRename != null || widget.onDelete != null)
+            PopupMenuButton<String>(
+              onSelected: _handleClickMenu,
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
+                  value: 'rename',
+                  child: ListTile(
+                    leading: Icon(Icons.edit_outlined),
+                    title: Text(LocaleKeys.tooltip_edit.tr()),
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: 'delete',
+                  child: ListTile(
+                    leading: Icon(Icons.delete_outlined),
+                    title: Text(LocaleKeys.tooltip_delete.tr()),
+                  ),
+                ),
+              ],
             ),
         ],
       ),

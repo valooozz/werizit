@@ -8,7 +8,6 @@ import 'package:werizit/data/models/item.dart';
 import 'package:werizit/data/models/shelf.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:werizit/presentation/screens/base_screen.dart';
-import 'package:werizit/presentation/screens/search_screen.dart';
 import 'package:werizit/presentation/widgets/dialog/select_dialog.dart';
 import 'package:werizit/presentation/widgets/dialog/text_field_dialog.dart';
 import 'package:werizit/presentation/widgets/display/items_display.dart';
@@ -54,10 +53,6 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     Navigator.pop(context);
     await ref.read(shelvesProvider.notifier).remove(widget.shelfId);
     showAppSnackBar(LocaleKeys.storage_deleted.tr());
-  }
-
-  void _openSearchScreen() {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => SearchScreen()));
   }
 
   String _getTitle(String shelfName) {
@@ -243,7 +238,6 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
           : _isWardrobe
           ? null
           : _deleteShelf,
-      onSearch: _isSelectionMode || _isWardrobe ? null : _openSearchScreen,
       onAddToBox: _isSelectionMode
           ? _moveSelectedItemsToBox
           : shelfItems.isEmpty
