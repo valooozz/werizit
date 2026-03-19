@@ -60,7 +60,8 @@
         "openTrips": "Voyages",
         "openPrepareTrip": "Affaires à prendre",
         "selectTrips": "Sélectionner les voyages",
-        "wardrobe": "Armoire"
+        "wardrobe": "Armoire",
+        "resetItems": "Désélectionner tous les objets"
     },
     "trips": {
         "title": "Voyages",

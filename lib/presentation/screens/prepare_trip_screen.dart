@@ -86,7 +86,7 @@ class PrepareTripScreen extends ConsumerWidget {
           IconButton(
             onPressed: () => _untakeAllItems(ref),
             icon: const Icon(Icons.replay),
-            tooltip: LocaleKeys.tooltip_selectTrips.tr(),
+            tooltip: LocaleKeys.tooltip_resetItems.tr(),
           ),
         ],
       ),
