@@ -28,7 +28,7 @@ class HomeScreen extends ConsumerWidget {
           MaterialPageRoute(builder: (_) => HouseScreen(houseId: house.id!)),
         );
       },
-      showHome: false,
+      isHome: true,
     );
   }
 }

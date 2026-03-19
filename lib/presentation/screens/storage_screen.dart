@@ -19,7 +19,7 @@ class StorageScreen<T extends Storage> extends StatelessWidget {
   final void Function()? onDelete;
   final void Function(T item)? onTap;
   final void Function()? onBack;
-  final bool? showHome;
+  final bool isHome;
 
   const StorageScreen({
     super.key,
@@ -30,7 +30,7 @@ class StorageScreen<T extends Storage> extends StatelessWidget {
     this.onDelete,
     this.onTap,
     this.onBack,
-    this.showHome,
+    this.isHome = false,
   });
 
   void _showAddDialog(BuildContext context) {
@@ -99,15 +99,15 @@ class StorageScreen<T extends Storage> extends StatelessWidget {
     return BaseScreen(
       title: parentStorage?.name ?? LocaleKeys.common_home.tr(),
       onAdd: () => _showAddDialog(context),
-      onPrepareTrip: () => _openPrepareTripScreen(context),
-      onHandleTrips: () => _openTripsScreen(context),
-      onOpenWardrobe: () => _openWardrobe(context),
-      onSearch: () => _openSearchScreen(context),
+      onPrepareTrip: isHome ? () => _openPrepareTripScreen(context) : null,
+      onHandleTrips: isHome ? () => _openTripsScreen(context) : null,
+      onOpenWardrobe: isHome ? () => _openWardrobe(context) : null,
+      onSearch: isHome ? () => _openSearchScreen(context) : null,
       onDelete: onDelete == null ? null : () => _deleteStorage(context),
       onRename: onRename == null ? null : () => _showRenameDialog(context),
       onBack: onBack,
-      showHome: showHome ?? true,
-      showImportExport: showHome ?? true ? false : true,
+      showHome: !isHome,
+      showImportExport: isHome,
       body: storages.isEmpty
           ? Center(child: Text(LocaleKeys.storage_noElement.tr()))
           : GridView.builder(
