@@ -2,10 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/core/providers/items_provider.dart';
-import 'package:werizit/core/providers/shelves_provider.dart';
+import 'package:werizit/core/providers/shelf/shelf_provider.dart';
+import 'package:werizit/core/providers/shelf/shelf_selector.dart';
 import 'package:werizit/core/utils/snackbar_utils.dart';
 import 'package:werizit/data/models/item.dart';
-import 'package:werizit/data/models/shelf.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:werizit/presentation/screens/base_screen.dart';
 import 'package:werizit/presentation/widgets/dialog/select_dialog.dart';
@@ -43,7 +43,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
       cancelText: LocaleKeys.common_cancel.tr(),
       confirmText: LocaleKeys.common_rename.tr(),
       onConfirm: (text) async {
-        await ref.read(shelvesProvider.notifier).rename(widget.shelfId, text);
+        await ref.read(shelfProvider.notifier).rename(widget.shelfId, text);
         showAppSnackBar(LocaleKeys.storage_renamed.tr());
       },
     );
@@ -51,7 +51,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
 
   void _deleteShelf() async {
     Navigator.pop(context);
-    await ref.read(shelvesProvider.notifier).remove(widget.shelfId);
+    await ref.read(shelfProvider.notifier).remove(widget.shelfId);
     showAppSnackBar(LocaleKeys.storage_deleted.tr());
   }
 
@@ -207,17 +207,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final shelf = ref
-        .watch(shelvesProvider)
-        .values
-        .firstWhere(
-          (s) => s.id == widget.shelfId,
-          orElse: () => Shelf(
-            id: -2,
-            name: LocaleKeys.wardrobe_title.tr(),
-            furniture: -1,
-          ),
-        );
+    final shelf = ref.watch(shelfByIdProvider(widget.shelfId));
 
     final allItems = ref.watch(itemsProvider);
     final shelfItems = allItems.where((i) => i.shelf == shelf.id).toList();

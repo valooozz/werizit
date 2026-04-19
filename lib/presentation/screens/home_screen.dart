@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:werizit/core/providers/houses_provider.dart';
+import 'package:werizit/core/providers/house/house_provider.dart';
+import 'package:werizit/core/providers/house/house_selector.dart';
 import 'package:werizit/data/models/house.dart';
 import 'package:werizit/presentation/screens/storage_screen.dart';
 
@@ -11,17 +12,12 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final housesNotifier = ref.read(housesProvider.notifier);
-    final houses = ref.watch(housesProvider).values.toList();
-
-    if (houses.isEmpty) {
-      housesNotifier.load();
-    }
+    final houses = ref.watch(housesListProvider);
 
     return StorageScreen<House>(
       storages: houses,
       onAdd: (name) async =>
-          await ref.read(housesProvider.notifier).add(House(name: name)),
+          await ref.read(houseProvider.notifier).add(House(name: name)),
       onTap: (house) {
         Navigator.push(
           context,

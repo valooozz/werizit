@@ -1,16 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:werizit/core/providers/dao_provider.dart';
+import 'package:werizit/core/providers/storages_provider.dart';
 import 'package:werizit/data/models/house.dart';
 
-import 'storages_provider.dart';
-
-final housesProvider = StateNotifierProvider<HousesNotifier, Map<int, House>>(
-  (ref) => HousesNotifier(dao: ref.read(daoProvider)),
+final houseProvider = AsyncNotifierProvider<HouseNotifier, Map<int, House>>(
+  HouseNotifier.new,
 );
 
-class HousesNotifier extends StorageNotifier<House> {
-  HousesNotifier({required super.dao});
-
+class HouseNotifier extends StorageNotifier<House> {
   @override
   Future<List<House>> loadFromDb() => dao.getHouses();
 

@@ -1,41 +1,54 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:werizit/core/providers/dao_provider.dart';
 import 'package:werizit/data/dao/base_dao.dart';
 import 'package:werizit/data/models/storage.dart';
 
 abstract class StorageNotifier<T extends Storage>
-    extends StateNotifier<Map<int, T>> {
-  final BaseDAO dao;
+    extends AsyncNotifier<Map<int, T>> {
+  late final BaseDAO dao;
 
-  StorageNotifier({required this.dao}) : super({});
-
-  Future<void> load() async {
-    final storages = await loadFromDb();
-    state = {for (var storage in storages) storage.id!: storage};
+  /// Chargement initial
+  @override
+  Future<Map<int, T>> build() async {
+    dao = ref.read(daoProvider);
+    final items = await loadFromDb();
+    return {for (final item in items) item.id!: item};
   }
+
+  // ======================
+  // API DAO à implémenter
+  // ======================
 
   Future<List<T>> loadFromDb();
-
-  Future<void> add(T item) async {
-    final newId = await insertToDb(item);
-    final newItem = item.copyWith(id: newId) as T;
-    state = {...state, newId: newItem};
-  }
-
-  Future<void> rename(int id, String newName) async {
-    final item = state[id];
-    if (item != null) {
-      await renameInDb(id, newName);
-      state = {...state, id: item.copyWith(name: newName) as T};
-    }
-  }
-
-  Future<void> remove(int id) async {
-    await deleteFromDb(id);
-    final newState = {...state}..remove(id);
-    state = newState;
-  }
-
   Future<int> insertToDb(T item);
   Future<void> renameInDb(int id, String newName);
   Future<void> deleteFromDb(int id);
+
+  Future<void> add(T item) async {
+    final current = state.value ?? {};
+
+    final newId = await insertToDb(item);
+    final newItem = item.copyWith(id: newId) as T;
+
+    state = AsyncData({...current, newId: newItem});
+  }
+
+  Future<void> rename(int id, String newName) async {
+    final current = state.value ?? {};
+    final item = current[id];
+    if (item == null) return;
+
+    await renameInDb(id, newName);
+
+    state = AsyncData({...current, id: item.copyWith(name: newName) as T});
+  }
+
+  Future<void> remove(int id) async {
+    final current = state.value ?? {};
+
+    await deleteFromDb(id);
+
+    final updated = {...current}..remove(id);
+    state = AsyncData(updated);
+  }
 }

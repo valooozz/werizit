@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:werizit/core/providers/furnitures_provider.dart';
-import 'package:werizit/core/providers/shelves_provider.dart';
-import 'package:werizit/data/models/furniture.dart';
+import 'package:werizit/core/providers/furniture/furniture_provider.dart';
+import 'package:werizit/core/providers/furniture/furniture_selector.dart';
+import 'package:werizit/core/providers/shelf/shelf_provider.dart';
+import 'package:werizit/core/providers/shelf/shelf_selector.dart';
 import 'package:werizit/data/models/shelf.dart';
 import 'package:werizit/presentation/screens/shelf_screen.dart';
 import 'package:werizit/presentation/screens/storage_screen.dart';
@@ -14,26 +15,12 @@ class FurnitureScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final shelvesNotifier = ref.read(shelvesProvider.notifier);
-    final furnituresNotifier = ref.read(furnituresProvider.notifier);
+    final shelvesNotifier = ref.read(shelfProvider.notifier);
+    final furnituresNotifier = ref.read(furnitureProvider.notifier);
 
-    final furniture = ref
-        .watch(furnituresProvider)
-        .values
-        .firstWhere(
-          (f) => f.id == furnitureId,
-          orElse: () => Furniture(name: '', room: -1),
-        );
+    final furniture = ref.watch(furnitureByIdProvider(furnitureId));
 
-    final shelves = ref
-        .watch(shelvesProvider)
-        .values
-        .where((s) => s.furniture == furniture.id)
-        .toList();
-
-    if (shelves.isEmpty) {
-      shelvesNotifier.load();
-    }
+    final shelves = ref.watch(shelvesByFurnitureProvider(furniture!.id!));
 
     return StorageScreen<Shelf>(
       parentStorage: furniture,

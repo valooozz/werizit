@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:werizit/core/providers/houses_provider.dart';
-import 'package:werizit/core/providers/rooms_provider.dart';
-import 'package:werizit/data/models/house.dart';
+import 'package:werizit/core/providers/house/house_provider.dart';
+import 'package:werizit/core/providers/house/house_selector.dart';
+import 'package:werizit/core/providers/room/room_provider.dart';
+import 'package:werizit/core/providers/room/room_selector.dart';
 import 'package:werizit/data/models/room.dart';
 import 'package:werizit/presentation/screens/storage_screen.dart';
 
@@ -15,29 +16,18 @@ class HouseScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final roomsNotifier = ref.read(roomsProvider.notifier);
-    final houseNotifier = ref.read(housesProvider.notifier);
+    final roomNotifier = ref.read(roomProvider.notifier);
+    final houseNotifier = ref.read(houseProvider.notifier);
 
-    final house = ref
-        .watch(housesProvider)
-        .values
-        .firstWhere((h) => h.id == houseId, orElse: () => House(name: ''));
+    final house = ref.watch(houseByIdProvider(houseId));
 
-    final rooms = ref
-        .watch(roomsProvider)
-        .values
-        .where((room) => room.house == house.id)
-        .toList();
-
-    if (rooms.isEmpty) {
-      roomsNotifier.load();
-    }
+    final rooms = ref.watch(roomsByHouseProvider(house!.id!));
 
     return StorageScreen<Room>(
       parentStorage: house,
       storages: rooms,
       onAdd: (name) async =>
-          await roomsNotifier.add(Room(name: name, house: house.id!)),
+          await roomNotifier.add(Room(name: name, house: house.id!)),
       onRename: (newName) async =>
           await houseNotifier.rename(house.id!, newName),
       onDelete: () async => await houseNotifier.remove(house.id!),
