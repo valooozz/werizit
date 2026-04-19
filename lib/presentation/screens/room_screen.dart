@@ -16,28 +16,33 @@ class RoomScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final furnitureNotifier = ref.read(furnitureProvider.notifier);
-    final roomNotifier = ref.read(roomProvider.notifier);
+    final roomAsync = ref.watch(roomByIdProvider(roomId));
 
-    final room = ref.watch(roomByIdProvider(roomId));
+    return roomAsync.when(
+      data: (room) {
+        final furnitures = ref.watch(furnituresByRoomProvider(room.id!));
 
-    final furnitures = ref.watch(furnituresByRoomProvider(room!.id!));
-
-    return StorageScreen<Furniture>(
-      parentStorage: room,
-      storages: furnitures,
-      onAdd: (name) async =>
-          await furnitureNotifier.add(Furniture(name: name, room: room.id!)),
-      onRename: (newName) async => await roomNotifier.rename(room.id!, newName),
-      onDelete: () async => await roomNotifier.remove(room.id!),
-      onTap: (furniture) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => FurnitureScreen(furnitureId: furniture.id!),
-          ),
+        return StorageScreen<Furniture>(
+          parentStorage: room,
+          storages: furnitures,
+          onAdd: (name) => ref
+              .read(furnitureProvider.notifier)
+              .add(Furniture(name: name, room: room.id!)),
+          onRename: (newName) =>
+              ref.read(roomProvider.notifier).rename(room.id!, newName),
+          onDelete: () => ref.read(roomProvider.notifier).remove(room.id!),
+          onTap: (furniture) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => FurnitureScreen(furnitureId: furniture.id!),
+              ),
+            );
+          },
         );
       },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (e, _) => Text("Erreur de chargement"),
     );
   }
 }

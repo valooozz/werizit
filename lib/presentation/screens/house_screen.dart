@@ -16,27 +16,31 @@ class HouseScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final roomNotifier = ref.read(roomProvider.notifier);
-    final houseNotifier = ref.read(houseProvider.notifier);
+    final houseAsync = ref.watch(houseByIdProvider(houseId));
 
-    final house = ref.watch(houseByIdProvider(houseId));
+    return houseAsync.when(
+      data: (house) {
+        final rooms = ref.watch(roomsByHouseProvider(house.id!));
 
-    final rooms = ref.watch(roomsByHouseProvider(house!.id!));
-
-    return StorageScreen<Room>(
-      parentStorage: house,
-      storages: rooms,
-      onAdd: (name) async =>
-          await roomNotifier.add(Room(name: name, house: house.id!)),
-      onRename: (newName) async =>
-          await houseNotifier.rename(house.id!, newName),
-      onDelete: () async => await houseNotifier.remove(house.id!),
-      onTap: (room) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => RoomScreen(roomId: room.id!)),
+        return StorageScreen<Room>(
+          parentStorage: house,
+          storages: rooms,
+          onAdd: (name) => ref
+              .read(roomProvider.notifier)
+              .add(Room(name: name, house: house.id!)),
+          onRename: (newName) =>
+              ref.read(houseProvider.notifier).rename(house.id!, newName),
+          onDelete: () => ref.read(houseProvider.notifier).remove(house.id!),
+          onTap: (room) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => RoomScreen(roomId: room.id!)),
+            );
+          },
         );
       },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (e, _) => Text("Erreur de chargement"),
     );
   }
 }

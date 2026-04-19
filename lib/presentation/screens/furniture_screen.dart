@@ -15,28 +15,35 @@ class FurnitureScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final shelvesNotifier = ref.read(shelfProvider.notifier);
-    final furnituresNotifier = ref.read(furnitureProvider.notifier);
+    final furnitureAsync = ref.watch(furnitureByIdProvider(furnitureId));
 
-    final furniture = ref.watch(furnitureByIdProvider(furnitureId));
+    return furnitureAsync.when(
+      data: (furniture) {
+        final shelves = ref.watch(shelvesByFurnitureProvider(furniture.id!));
 
-    final shelves = ref.watch(shelvesByFurnitureProvider(furniture!.id!));
-
-    return StorageScreen<Shelf>(
-      parentStorage: furniture,
-      storages: shelves,
-      onAdd: (name) async => await shelvesNotifier.add(
-        Shelf(name: name, furniture: furniture.id!),
-      ),
-      onRename: (newName) async =>
-          await furnituresNotifier.rename(furniture.id!, newName),
-      onDelete: () async => await furnituresNotifier.remove(furniture.id!),
-      onTap: (shelf) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => ShelfScreen(shelfId: shelf.id!)),
+        return StorageScreen<Shelf>(
+          parentStorage: furniture,
+          storages: shelves,
+          onAdd: (name) => ref
+              .read(shelfProvider.notifier)
+              .add(Shelf(name: name, furniture: furniture.id!)),
+          onRename: (newName) => ref
+              .read(furnitureProvider.notifier)
+              .rename(furniture.id!, newName),
+          onDelete: () =>
+              ref.read(furnitureProvider.notifier).remove(furniture.id!),
+          onTap: (shelf) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => ShelfScreen(shelfId: shelf.id!),
+              ),
+            );
+          },
         );
       },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (e, _) => Text("Erreur de chargement"),
     );
   }
 }
