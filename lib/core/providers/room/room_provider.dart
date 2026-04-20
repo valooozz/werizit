@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/data/models/room.dart';
 
-import '../storages_provider.dart';
+import '../storage_provider.dart';
 
 final roomProvider = AsyncNotifierProvider<RoomNotifier, Map<int, Room>>(
   RoomNotifier.new,

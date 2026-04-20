@@ -202,90 +202,76 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final shelfAsync = ref.watch(shelfByIdProvider(widget.shelfId));
+    final shelfStateAsync = ref.watch(shelfScreenProvider(widget.shelfId));
 
-    return shelfAsync.when(
-      data: (shelf) {
-        final shelfItemsAsync = ref.watch(itemsByShelfProvider(widget.shelfId));
+    return shelfStateAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (e, _) => const Text("Erreur de chargement"),
+      data: (state) {
+        final shelf = state.shelf;
+        final shelfItems = state.shelfItems;
+        final boxItems = state.boxItems;
 
-        final boxItemsAsync = ref.watch(itemsInBoxProvider);
+        return BaseScreen(
+          title: _getTitle(shelf.name),
 
-        return shelfItemsAsync.when(
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (e, _) => Text("Erreur"),
-          data: (shelfItems) {
-            return boxItemsAsync.when(
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (e, _) => Text("Erreur"),
-              data: (boxItems) {
-                return BaseScreen(
-                  title: _getTitle(shelf.name),
+          onAdd: _isSelectionMode ? null : () => _showAddDialog(shelf.name),
 
-                  onAdd: _isSelectionMode
-                      ? null
-                      : () => _showAddDialog(shelf.name),
+          onRename: _isSelectionMode
+              ? _selectedItemIds.length == 1
+                    ? _renameSelectedItem
+                    : null
+              : _isWardrobe
+              ? null
+              : () => _showRenameDialog(shelf.name),
 
-                  onRename: _isSelectionMode
-                      ? _selectedItemIds.length == 1
-                            ? _renameSelectedItem
-                            : null
-                      : _isWardrobe
-                      ? null
-                      : () => _showRenameDialog(shelf.name),
+          onDelete: _isSelectionMode
+              ? _deleteSelectedItems
+              : _isWardrobe
+              ? null
+              : _deleteShelf,
 
-                  onDelete: _isSelectionMode
-                      ? _deleteSelectedItems
-                      : _isWardrobe
-                      ? null
-                      : _deleteShelf,
+          onAddToBox: _isSelectionMode
+              ? _moveSelectedItemsToBox
+              : shelfItems.isEmpty
+              ? null
+              : () => _addItemsToBox(shelfItems),
 
-                  onAddToBox: _isSelectionMode
-                      ? _moveSelectedItemsToBox
-                      : shelfItems.isEmpty
-                      ? null
-                      : () => _addItemsToBox(shelfItems),
+          onDropFromBox: _isSelectionMode
+              ? null
+              : boxItems.isEmpty
+              ? null
+              : () => _dropItemsFromBox(boxItems),
 
-                  onDropFromBox: _isSelectionMode
-                      ? null
-                      : boxItems.isEmpty
-                      ? null
-                      : () => _dropItemsFromBox(boxItems),
+          onBack: _isSelectionMode ? _exitSelectionMode : null,
 
-                  onBack: _isSelectionMode ? _exitSelectionMode : null,
+          deleteConfirmationTitle: _isSelectionMode
+              ? LocaleKeys.item_confirm_delete_multiple.tr(
+                  args: [_selectedItemIds.length.toString()],
+                )
+              : null,
 
-                  deleteConfirmationTitle: _isSelectionMode
-                      ? LocaleKeys.item_confirm_delete_multiple.tr(
-                          args: [_selectedItemIds.length.toString()],
-                        )
-                      : null,
+          deleteConfirmationMessage: _isSelectionMode
+              ? LocaleKeys.common_delete_warning.tr()
+              : null,
 
-                  deleteConfirmationMessage: _isSelectionMode
-                      ? LocaleKeys.common_delete_warning.tr()
-                      : null,
+          showHome: !(_isSelectionMode || _isWardrobe),
+          showImportExport: false,
 
-                  showHome: !(_isSelectionMode || _isWardrobe),
-                  showImportExport: false,
-
-                  body: shelfItems.isEmpty
-                      ? Center(child: Text(LocaleKeys.storage_noItem.tr()))
-                      : Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: ItemsDisplay(
-                            items: shelfItems,
-                            selectedItems: _selectedItemIds,
-                            isSelectionMode: _isSelectionMode,
-                            onToggleSelection: _toggleItemSelection,
-                            onItemLongPress: _enterSelectionMode,
-                          ),
-                        ),
-                );
-              },
-            );
-          },
+          body: shelfItems.isEmpty
+              ? Center(child: Text(LocaleKeys.storage_noItem.tr()))
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: ItemsDisplay(
+                    items: shelfItems,
+                    selectedItems: _selectedItemIds,
+                    isSelectionMode: _isSelectionMode,
+                    onToggleSelection: _toggleItemSelection,
+                    onItemLongPress: _enterSelectionMode,
+                  ),
+                ),
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Text("Erreur de chargement"),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/data/models/shelf.dart';
 
-import '../storages_provider.dart';
+import '../storage_provider.dart';
 
 final shelfProvider = AsyncNotifierProvider<ShelfNotifier, Map<int, Shelf>>(
   ShelfNotifier.new,

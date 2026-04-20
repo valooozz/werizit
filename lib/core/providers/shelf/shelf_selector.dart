@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:werizit/core/providers/item/item_provider.dart';
 import 'package:werizit/core/providers/shelf/shelf_provider.dart';
 import 'package:werizit/data/models/shelf.dart';
+import 'package:werizit/data/models/states/shelf_screen_state.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 
 final shelfByIdProvider = Provider.family<AsyncValue<Shelf>, int>((ref, id) {
@@ -25,23 +27,34 @@ final shelvesByFurnitureProvider = Provider.family<List<Shelf>, int>((
   return shelfs.values.where((r) => r.furniture == furnitureId).toList();
 });
 
-// final shelfScreenProvider = FutureProvider.family<ShelfScreenState, int>((
-//   ref,
-//   shelfId,
-// ) async {
-//   final shelf = ref.watch(shelfByIdProvider(shelfId));
+final shelfScreenProvider = Provider.family<AsyncValue<ShelfScreenState>, int>((
+  ref,
+  shelfId,
+) {
+  final shelfAsync = ref.watch(shelfByIdProvider(shelfId));
+  final itemsAsync = ref.watch(itemProvider);
 
-//   final itemsMap = await ref.watch(itemProvider.future);
+  if (shelfAsync.isLoading || itemsAsync.isLoading) {
+    return const AsyncLoading();
+  }
 
-//   final items = itemsMap.values;
+  if (shelfAsync.hasError) {
+    return AsyncError(shelfAsync.error!, shelfAsync.stackTrace!);
+  }
+  if (itemsAsync.hasError) {
+    return AsyncError(itemsAsync.error!, itemsAsync.stackTrace!);
+  }
 
-//   final shelfItems = items.where((i) => i.shelf == shelf.value!.id).toList();
+  final shelf = shelfAsync.value!;
+  final itemsMap = itemsAsync.value!;
 
-//   final boxItems = items.where((i) => i.shelf == -1).toList();
+  final items = itemsMap.values;
 
-//   return ShelfScreenState(
-//     shelf: shelf.value!,
-//     shelfItems: shelfItems,
-//     boxItems: boxItems,
-//   );
-// });
+  final shelfItems = items.where((i) => i.shelf == shelf.id).toList();
+
+  final boxItems = items.where((i) => i.shelf == -1).toList();
+
+  return AsyncData(
+    ShelfScreenState(shelf: shelf, shelfItems: shelfItems, boxItems: boxItems),
+  );
+});

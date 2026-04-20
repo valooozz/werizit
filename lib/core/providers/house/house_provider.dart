@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:werizit/core/providers/storages_provider.dart';
+import 'package:werizit/core/providers/storage_provider.dart';
 import 'package:werizit/data/models/house.dart';
 
 final houseProvider = AsyncNotifierProvider<HouseNotifier, Map<int, House>>(
