@@ -24,3 +24,24 @@ final shelvesByFurnitureProvider = Provider.family<List<Shelf>, int>((
 
   return shelfs.values.where((r) => r.furniture == furnitureId).toList();
 });
+
+// final shelfScreenProvider = FutureProvider.family<ShelfScreenState, int>((
+//   ref,
+//   shelfId,
+// ) async {
+//   final shelf = ref.watch(shelfByIdProvider(shelfId));
+
+//   final itemsMap = await ref.watch(itemProvider.future);
+
+//   final items = itemsMap.values;
+
+//   final shelfItems = items.where((i) => i.shelf == shelf.value!.id).toList();
+
+//   final boxItems = items.where((i) => i.shelf == -1).toList();
+
+//   return ShelfScreenState(
+//     shelf: shelf.value!,
+//     shelfItems: shelfItems,
+//     boxItems: boxItems,
+//   );
+// });

@@ -1,11 +1,7 @@
-import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:werizit/core/providers/dao_provider.dart';
-import 'package:werizit/core/providers/items_provider.dart';
-import 'package:werizit/data/models/item.dart';
-import 'package:werizit/data/models/item_info.dart';
+import 'package:werizit/core/providers/item/item_selector.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 
 class ItemInfoDialog extends ConsumerWidget {
@@ -14,71 +10,20 @@ class ItemInfoDialog extends ConsumerWidget {
 
   const ItemInfoDialog({super.key, required this.itemId, this.actions});
 
-  Future<ItemInfo?> _getItemInfo(WidgetRef ref) async {
-    final dao = ref.read(daoProvider);
-    final allItems = ref.read(itemsProvider);
-
-    final item = allItems.firstWhere(
-      (i) => i.id == itemId,
-      orElse: () => Item(id: itemId, name: '', shelf: -1, taken: false),
-    );
-    if (item.shelf == -1) {
-      return ItemInfo(
-        id: itemId,
-        name: item.name,
-        house: '',
-        room: '',
-        furniture: '',
-        shelf: 'box',
-      );
-    }
-    if (item.shelf == -2) {
-      return ItemInfo(
-        id: itemId,
-        name: item.name,
-        house: '',
-        room: '',
-        furniture: '',
-        shelf: 'wardrobe',
-      );
-    }
-
-    return await dao.getItemInfo(item.id!);
-  }
-
   Widget _buildInfoRow(String text) =>
       Text(text, style: const TextStyle(fontSize: 18));
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FutureBuilder<ItemInfo?>(
-      future: _getItemInfo(ref),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    final itemInfoAsync = ref.watch(itemInfoByIdProvider(itemId));
 
-        if (snapshot.hasError) {
-          return Center(
-            child: Text(
-              LocaleKeys.common_error.tr(args: [snapshot.error.toString()]),
-            ),
-          );
-        }
+    return itemInfoAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
 
-        final item = ref
-            .watch(itemsProvider)
-            .firstWhereOrNull((i) => i.id == itemId);
+      error: (e, _) =>
+          Center(child: Text(LocaleKeys.common_error.tr(args: [e.toString()]))),
 
-        if (item == null) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(context).pop();
-          });
-          return const SizedBox.shrink();
-        }
-
-        final itemInfo = snapshot.data;
-
+      data: (itemInfo) {
         return Dialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -100,7 +45,7 @@ class ItemInfoDialog extends ConsumerWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              item.name,
+                              itemInfo.name,
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -127,7 +72,7 @@ class ItemInfoDialog extends ConsumerWidget {
                 const Divider(height: 1),
                 Padding(
                   padding: const EdgeInsets.all(16),
-                  child: itemInfo == null || itemInfo.shelf == 'box'
+                  child: itemInfo.shelf == 'box'
                       ? Text(
                           LocaleKeys.item_inBox.tr(),
                           style: TextStyle(fontSize: 16),

@@ -7,17 +7,12 @@ abstract class StorageNotifier<T extends Storage>
     extends AsyncNotifier<Map<int, T>> {
   late final BaseDAO dao;
 
-  /// Chargement initial
   @override
   Future<Map<int, T>> build() async {
     dao = ref.read(daoProvider);
     final items = await loadFromDb();
     return {for (final item in items) item.id!: item};
   }
-
-  // ======================
-  // API DAO à implémenter
-  // ======================
 
   Future<List<T>> loadFromDb();
   Future<int> insertToDb(T item);

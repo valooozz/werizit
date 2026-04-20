@@ -1,7 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:werizit/core/providers/items_provider.dart';
+import 'package:werizit/core/providers/item/item_provider.dart';
+import 'package:werizit/core/providers/item/item_selector.dart';
 import 'package:werizit/core/providers/shelf/shelf_provider.dart';
 import 'package:werizit/core/providers/shelf/shelf_selector.dart';
 import 'package:werizit/core/utils/snackbar_utils.dart';
@@ -24,12 +25,6 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
   final Set<int> _selectedItemIds = {};
   bool _isSelectionMode = false;
   bool get _isWardrobe => widget.shelfId == -2;
-
-  @override
-  void initState() {
-    super.initState();
-    Future.microtask(() => ref.read(itemsProvider.notifier).loadItems());
-  }
 
   // -------------------------------------
   // --------------- Shelf ---------------
@@ -69,8 +64,8 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
 
   Future<void> _addItem(String name) async {
     await ref
-        .read(itemsProvider.notifier)
-        .addItem(Item(name: name, shelf: widget.shelfId, taken: false));
+        .read(itemProvider.notifier)
+        .add(Item(name: name, shelf: widget.shelfId, taken: false));
     showAppSnackBar(LocaleKeys.item_added.tr());
   }
 
@@ -96,7 +91,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     );
 
     if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
-      await ref.read(itemsProvider.notifier).putItemsIntoBox(selectedItemIds);
+      await ref.read(itemProvider.notifier).putIntoBox(selectedItemIds);
       showAppSnackBar(
         LocaleKeys.box_added.tr(args: [selectedItemIds.length.toString()]),
       );
@@ -115,8 +110,8 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
 
     if (selectedItemIds != null && selectedItemIds.isNotEmpty) {
       await ref
-          .read(itemsProvider.notifier)
-          .dropItemsFromBox(selectedItemIds, widget.shelfId);
+          .read(itemProvider.notifier)
+          .dropFromBox(selectedItemIds, widget.shelfId);
       showAppSnackBar(
         LocaleKeys.box_dropped.tr(args: [selectedItemIds.length.toString()]),
       );
@@ -158,8 +153,8 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     if (_selectedItemIds.isEmpty) return;
 
     await ref
-        .read(itemsProvider.notifier)
-        .deleteItems(_selectedItemIds.toList());
+        .read(itemProvider.notifier)
+        .removeSeveral(_selectedItemIds.toList());
     showAppSnackBar(
       LocaleKeys.item_deleted_multiple.tr(
         args: [_selectedItemIds.length.toString()],
@@ -171,9 +166,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
   Future<void> _moveSelectedItemsToBox() async {
     if (_selectedItemIds.isEmpty) return;
 
-    await ref
-        .read(itemsProvider.notifier)
-        .putItemsIntoBox(_selectedItemIds.toList());
+    await ref.read(itemProvider.notifier).putIntoBox(_selectedItemIds.toList());
     showAppSnackBar(
       LocaleKeys.box_added.tr(args: [_selectedItemIds.length.toString()]),
     );
@@ -184,8 +177,10 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
     if (_selectedItemIds.length != 1) return;
 
     final itemId = _selectedItemIds.first;
-    final items = ref.read(itemsProvider);
-    final item = items.firstWhere((i) => i.id == itemId);
+    final itemsAsync = ref.read(itemByIdProvider(itemId));
+    final item = itemsAsync.value;
+
+    if (item == null) return;
 
     TextFieldDialog.show(
       context,
@@ -194,7 +189,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
       cancelText: LocaleKeys.common_cancel.tr(),
       confirmText: LocaleKeys.common_rename.tr(),
       onConfirm: (text) async {
-        await ref.read(itemsProvider.notifier).renameItem(itemId, text);
+        await ref.read(itemProvider.notifier).rename(itemId, text);
         showAppSnackBar(LocaleKeys.item_renamed.tr());
         _exitSelectionMode();
       },
@@ -211,58 +206,82 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
 
     return shelfAsync.when(
       data: (shelf) {
-        final allItems = ref.watch(itemsProvider);
-        final shelfItems = allItems.where((i) => i.shelf == shelf.id).toList();
-        final boxItems = allItems.where((i) => i.shelf == -1).toList();
+        final shelfItemsAsync = ref.watch(itemsByShelfProvider(widget.shelfId));
 
-        return BaseScreen(
-          title: _getTitle(shelf.name),
-          onAdd: _isSelectionMode ? null : () => _showAddDialog(shelf.name),
-          onRename: _isSelectionMode
-              ? _selectedItemIds.length == 1
-                    ? _renameSelectedItem
-                    : null
-              : _isWardrobe
-              ? null
-              : () => _showRenameDialog(shelf.name),
-          onDelete: _isSelectionMode
-              ? _deleteSelectedItems
-              : _isWardrobe
-              ? null
-              : _deleteShelf,
-          onAddToBox: _isSelectionMode
-              ? _moveSelectedItemsToBox
-              : shelfItems.isEmpty
-              ? null
-              : () => _addItemsToBox(shelfItems),
-          onDropFromBox: _isSelectionMode
-              ? null
-              : boxItems.isEmpty
-              ? null
-              : () => _dropItemsFromBox(boxItems),
-          onBack: _isSelectionMode ? _exitSelectionMode : null,
-          deleteConfirmationTitle: _isSelectionMode
-              ? LocaleKeys.item_confirm_delete_multiple.tr(
-                  args: [_selectedItemIds.length.toString()],
-                )
-              : null,
-          deleteConfirmationMessage: _isSelectionMode
-              ? LocaleKeys.common_delete_warning.tr()
-              : null,
-          showHome: !(_isSelectionMode || _isWardrobe),
-          showImportExport: false,
-          body: shelfItems.isEmpty
-              ? Center(child: Text(LocaleKeys.storage_noItem.tr()))
-              : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: ItemsDisplay(
-                    items: shelfItems,
-                    selectedItems: _selectedItemIds,
-                    isSelectionMode: _isSelectionMode,
-                    onToggleSelection: _toggleItemSelection,
-                    onItemLongPress: _enterSelectionMode,
-                  ),
-                ),
+        final boxItemsAsync = ref.watch(itemsInBoxProvider);
+
+        return shelfItemsAsync.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (e, _) => Text("Erreur"),
+          data: (shelfItems) {
+            return boxItemsAsync.when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (e, _) => Text("Erreur"),
+              data: (boxItems) {
+                return BaseScreen(
+                  title: _getTitle(shelf.name),
+
+                  onAdd: _isSelectionMode
+                      ? null
+                      : () => _showAddDialog(shelf.name),
+
+                  onRename: _isSelectionMode
+                      ? _selectedItemIds.length == 1
+                            ? _renameSelectedItem
+                            : null
+                      : _isWardrobe
+                      ? null
+                      : () => _showRenameDialog(shelf.name),
+
+                  onDelete: _isSelectionMode
+                      ? _deleteSelectedItems
+                      : _isWardrobe
+                      ? null
+                      : _deleteShelf,
+
+                  onAddToBox: _isSelectionMode
+                      ? _moveSelectedItemsToBox
+                      : shelfItems.isEmpty
+                      ? null
+                      : () => _addItemsToBox(shelfItems),
+
+                  onDropFromBox: _isSelectionMode
+                      ? null
+                      : boxItems.isEmpty
+                      ? null
+                      : () => _dropItemsFromBox(boxItems),
+
+                  onBack: _isSelectionMode ? _exitSelectionMode : null,
+
+                  deleteConfirmationTitle: _isSelectionMode
+                      ? LocaleKeys.item_confirm_delete_multiple.tr(
+                          args: [_selectedItemIds.length.toString()],
+                        )
+                      : null,
+
+                  deleteConfirmationMessage: _isSelectionMode
+                      ? LocaleKeys.common_delete_warning.tr()
+                      : null,
+
+                  showHome: !(_isSelectionMode || _isWardrobe),
+                  showImportExport: false,
+
+                  body: shelfItems.isEmpty
+                      ? Center(child: Text(LocaleKeys.storage_noItem.tr()))
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: ItemsDisplay(
+                            items: shelfItems,
+                            selectedItems: _selectedItemIds,
+                            isSelectionMode: _isSelectionMode,
+                            onToggleSelection: _toggleItemSelection,
+                            onItemLongPress: _enterSelectionMode,
+                          ),
+                        ),
+                );
+              },
+            );
+          },
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),

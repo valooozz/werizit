@@ -8,6 +8,11 @@ class Item implements Thing {
   final int? shelf;
   final bool taken;
 
+  // ================================
+  // shelf = -1 => Item in Box
+  // shelf = -2 => Item in Wardrobe
+  // ================================
+
   const Item({
     this.id,
     required this.name,

@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:werizit/core/providers/items_provider.dart';
+import 'package:werizit/core/providers/item/item_provider.dart';
 import 'package:werizit/core/providers/trips_provider.dart';
 import 'package:werizit/core/utils/snackbar_utils.dart';
 import 'package:werizit/data/models/item.dart';
@@ -45,13 +45,13 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     if (confirmed != true || !mounted) return;
 
     Navigator.pop(context);
-    await ref.read(itemsProvider.notifier).deleteItem(widget.item.id!);
+    await ref.read(itemProvider.notifier).remove(widget.item.id!);
     showAppSnackBar(LocaleKeys.item_deleted.tr());
   }
 
   void _addItemToBox() async {
     Navigator.pop(context);
-    await ref.read(itemsProvider.notifier).putItemsIntoBox([widget.item.id!]);
+    await ref.read(itemProvider.notifier).putIntoBox([widget.item.id!]);
     showAppSnackBar(LocaleKeys.box_added.tr(args: ['1']));
   }
 
@@ -63,9 +63,7 @@ class _ItemCardState extends ConsumerState<ItemCard> {
       cancelText: LocaleKeys.common_cancel.tr(),
       confirmText: LocaleKeys.common_rename.tr(),
       onConfirm: (text) async {
-        await ref
-            .read(itemsProvider.notifier)
-            .renameItem(widget.item.id!, text);
+        await ref.read(itemProvider.notifier).rename(widget.item.id!, text);
         showAppSnackBar(LocaleKeys.item_renamed.tr());
       },
     );

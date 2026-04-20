@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:werizit/core/providers/items_provider.dart';
+import 'package:werizit/core/providers/item/item_provider.dart';
 import 'package:werizit/core/providers/trips_provider.dart';
 import 'package:werizit/core/utils/snackbar_utils.dart';
 import 'package:werizit/data/models/item.dart';
@@ -76,8 +76,6 @@ class TripCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final allItems = ref.watch(itemsProvider);
-
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       color: Theme.of(context).colorScheme.primaryContainer,
@@ -88,7 +86,21 @@ class TripCard extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              onPressed: () => _showLinkDialog(context, ref, allItems),
+              onPressed: () async {
+                final itemsAsync = ref.read(itemProvider);
+
+                await itemsAsync.when(
+                  data: (items) async {
+                    await _showLinkDialog(context, ref, items.values.toList());
+                  },
+                  loading: () async {
+                    showAppSnackBar("Chargement...");
+                  },
+                  error: (e, _) async {
+                    showAppSnackBar("Erreur");
+                  },
+                );
+              },
               icon: const Icon(Icons.link),
             ),
             IconButton(
