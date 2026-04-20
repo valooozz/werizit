@@ -2,7 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/core/providers/item/item_provider.dart';
-import 'package:werizit/core/providers/trips_provider.dart';
+import 'package:werizit/core/providers/trip/trip_provider.dart';
+import 'package:werizit/core/providers/trip/trip_selector.dart';
 import 'package:werizit/core/utils/snackbar_utils.dart';
 import 'package:werizit/data/models/item.dart';
 import 'package:werizit/data/models/trip.dart';
@@ -74,11 +75,8 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     WidgetRef ref,
     Item item,
   ) async {
-    final trips = ref.read(tripsProvider);
-
-    final startSelectedTrips = trips
-        .where((trip) => trip.itemIds!.contains(item.id))
-        .map((m) => m.id!);
+    final trips = ref.read(tripsListProvider);
+    final startSelectedTrips = ref.read(selectedTripIdsProvider);
 
     final selectedTripIds = await showDialog<List<int>>(
       context: context,
@@ -100,7 +98,7 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     final tripsToAdd = newSet.difference(oldSet).toList();
     final tripsToRemove = oldSet.difference(newSet).toList();
     await ref
-        .read(tripsProvider.notifier)
+        .read(tripProvider.notifier)
         .updateItemLinks(item.id!, tripsToAdd, tripsToRemove);
     showAppSnackBar(LocaleKeys.item_linked.tr(args: [widget.item.name]));
   }

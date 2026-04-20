@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/core/providers/item/item_provider.dart';
 import 'package:werizit/core/providers/item/item_selector.dart';
-import 'package:werizit/core/providers/trips_provider.dart';
+import 'package:werizit/core/providers/trip/trip_provider.dart';
+import 'package:werizit/core/providers/trip/trip_selector.dart';
 import 'package:werizit/data/models/item.dart';
 import 'package:werizit/data/models/trip.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
@@ -47,7 +48,7 @@ class PrepareTripScreen extends ConsumerWidget {
       return;
     }
 
-    await ref.read(tripsProvider.notifier).updateSelectedTrips(selectedTripIds);
+    await ref.read(tripProvider.notifier).updateSelectedTrips(selectedTripIds);
   }
 
   void _onItemPress(WidgetRef ref, Item item) {
@@ -64,10 +65,8 @@ class PrepareTripScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final allTrips = ref.watch(tripsProvider).toList();
-    final selectedTrips = ref.watch(
-      tripsProvider.select((trips) => trips.where((t) => t.selected).toList()),
-    );
+    final allTrips = ref.watch(tripsListProvider);
+    final selectedTrips = ref.watch(selectedTripsProvider);
 
     final itemIds = _getUniqueItemsFromTrips(selectedTrips);
     final itemsToTakeAsync = ref.watch(itemsByIdProvider(itemIds));

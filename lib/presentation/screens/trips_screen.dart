@@ -1,7 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:werizit/core/providers/trips_provider.dart';
+import 'package:werizit/core/providers/trip/trip_provider.dart';
+import 'package:werizit/core/providers/trip/trip_selector.dart';
 import 'package:werizit/core/utils/snackbar_utils.dart';
 import 'package:werizit/data/models/trip.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
@@ -13,8 +14,8 @@ class TripsScreen extends ConsumerWidget {
 
   Future<void> _addItem(WidgetRef ref, String name) async {
     await ref
-        .read(tripsProvider.notifier)
-        .addTrip(Trip(name: name, selected: false));
+        .read(tripProvider.notifier)
+        .add(Trip(name: name, selected: false));
     showAppSnackBar(LocaleKeys.trips_added.tr());
   }
 
@@ -31,7 +32,7 @@ class TripsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final trips = ref.watch(tripsProvider).toList();
+    final trips = ref.watch(tripsListProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(LocaleKeys.trips_title.tr())),
