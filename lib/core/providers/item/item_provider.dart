@@ -1,7 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/core/providers/dao_provider.dart';
 import 'package:werizit/data/dao/base_dao.dart';
-import 'package:werizit/data/models/item.dart';
+import 'package:werizit/data/models/thing/item.dart';
+import 'package:werizit/data/models/thing/item_draft.dart';
 
 final itemProvider = AsyncNotifierProvider<ItemNotifier, Map<int, Item>>(
   ItemNotifier.new,
@@ -14,14 +15,19 @@ class ItemNotifier extends AsyncNotifier<Map<int, Item>> {
   Future<Map<int, Item>> build() async {
     dao = ref.read(daoProvider);
     final items = await dao.getItems();
-    return {for (final item in items) item.id!: item};
+    return {for (final item in items) item.id: item};
   }
 
-  Future<void> add(Item item) async {
+  Future<void> add(ItemDraft draft) async {
     final current = state.value ?? {};
 
-    final newId = await dao.insertItem(item);
-    final newItem = item.copyWith(id: newId);
+    final newId = await dao.insertItem(draft);
+    final newItem = Item(
+      id: newId,
+      name: draft.name,
+      shelf: draft.shelf,
+      taken: draft.taken,
+    );
 
     state = AsyncData({...current, newId: newItem});
   }

@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:werizit/data/models/thing.dart';
+import 'package:werizit/data/models/thing/thing.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 
 class SelectDialog<T extends Thing> extends StatefulWidget {
@@ -49,7 +49,7 @@ class _SelectDialogState<T extends Thing> extends State<SelectDialog<T>> {
       if (_selectedIds.length == widget.items.length) {
         _selectedIds.clear();
       } else {
-        _selectedIds.addAll(widget.items.map((e) => e.id!).toList());
+        _selectedIds.addAll(widget.items.map((e) => e.id).toList());
       }
     });
   }
@@ -104,7 +104,7 @@ class _SelectDialogState<T extends Thing> extends State<SelectDialog<T>> {
                 maxLines: 2,
               ),
               value: isSelected,
-              onChanged: (_) => _toggleSelection(item.id!),
+              onChanged: (_) => _toggleSelection(item.id),
             );
           },
         ),

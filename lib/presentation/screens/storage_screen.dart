@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:werizit/core/utils/snackbar_utils.dart';
-import 'package:werizit/data/models/storage.dart';
+import 'package:werizit/data/models/storage/storage.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:werizit/presentation/screens/base_screen.dart';
 import 'package:werizit/presentation/screens/prepare_trip_screen.dart';

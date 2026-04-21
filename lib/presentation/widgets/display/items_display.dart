@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:werizit/data/models/item.dart';
+import 'package:werizit/data/models/thing/item.dart';
 import 'package:werizit/presentation/widgets/cards/item_card.dart';
 
 class ItemsDisplay extends StatelessWidget {
@@ -32,9 +32,9 @@ class ItemsDisplay extends StatelessWidget {
           item: item,
           isSelected: isSelected,
           isSelectionMode: isSelectionMode,
-          onToggleSelection: () => onToggleSelection!(item.id!),
+          onToggleSelection: () => onToggleSelection!(item.id),
           onLongPress: onItemLongPress != null
-              ? () => onItemLongPress!(item.id!)
+              ? () => onItemLongPress!(item.id)
               : null,
         );
       },

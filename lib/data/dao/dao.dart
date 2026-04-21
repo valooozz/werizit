@@ -1,20 +1,26 @@
 import 'package:werizit/data/dao/base_dao.dart';
-import 'package:werizit/data/models/item_info.dart';
-import 'package:werizit/data/models/trip.dart';
+import 'package:werizit/data/models/furniture/furniture_draft.dart';
+import 'package:werizit/data/models/house/house_draft.dart';
+import 'package:werizit/data/models/room/room_draft.dart';
+import 'package:werizit/data/models/shelf/shelf_draft.dart';
+import 'package:werizit/data/models/thing/item_draft.dart';
+import 'package:werizit/data/models/thing/item_info.dart';
+import 'package:werizit/data/models/thing/trip.dart';
+import 'package:werizit/data/models/thing/trip_draft.dart';
 
 import '../db/database_helper.dart';
-import '../models/furniture.dart';
-import '../models/house.dart';
-import '../models/item.dart';
-import '../models/room.dart';
-import '../models/shelf.dart';
+import '../models/furniture/furniture.dart';
+import '../models/house/house.dart';
+import '../models/room/room.dart';
+import '../models/shelf/shelf.dart';
+import '../models/thing/item.dart';
 
 class DAO implements BaseDAO {
   final dbHelper = DatabaseHelper.instance;
 
   // ---------- HOUSE ----------
   @override
-  Future<int> insertHouse(House house) async =>
+  Future<int> insertHouse(HouseDraft house) async =>
       await dbHelper.insert('House', house.toMap());
 
   @override
@@ -46,7 +52,7 @@ class DAO implements BaseDAO {
 
   // ---------- ROOM ----------
   @override
-  Future<int> insertRoom(Room room) async =>
+  Future<int> insertRoom(RoomDraft room) async =>
       await dbHelper.insert('Room', room.toMap());
 
   @override
@@ -85,7 +91,7 @@ class DAO implements BaseDAO {
 
   // ---------- FURNITURE ----------
   @override
-  Future<int> insertFurniture(Furniture f) async =>
+  Future<int> insertFurniture(FurnitureDraft f) async =>
       await dbHelper.insert('Furniture', f.toMap());
 
   @override
@@ -128,7 +134,7 @@ class DAO implements BaseDAO {
 
   // ---------- SHELF ----------
   @override
-  Future<int> insertShelf(Shelf shelf) async =>
+  Future<int> insertShelf(ShelfDraft shelf) async =>
       await dbHelper.insert('Shelf', shelf.toMap());
 
   @override
@@ -171,7 +177,7 @@ class DAO implements BaseDAO {
 
   // ---------- ITEM ----------
   @override
-  Future<int> insertItem(Item item) async =>
+  Future<int> insertItem(ItemDraft item) async =>
       await dbHelper.insert('Item', item.toMap());
 
   @override
@@ -289,7 +295,7 @@ class DAO implements BaseDAO {
 
   // ---------- TRIP ----------
   @override
-  Future<int> insertTrip(Trip trip) async {
+  Future<int> insertTrip(TripDraft trip) async {
     return await dbHelper.insert('Trip', trip.toMap());
   }
 

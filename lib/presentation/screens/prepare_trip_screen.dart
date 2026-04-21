@@ -5,8 +5,8 @@ import 'package:werizit/core/providers/item/item_provider.dart';
 import 'package:werizit/core/providers/item/item_selector.dart';
 import 'package:werizit/core/providers/trip/trip_provider.dart';
 import 'package:werizit/core/providers/trip/trip_selector.dart';
-import 'package:werizit/data/models/item.dart';
-import 'package:werizit/data/models/trip.dart';
+import 'package:werizit/data/models/thing/item.dart';
+import 'package:werizit/data/models/thing/trip.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:werizit/presentation/widgets/cards/item_card.dart';
 import 'package:werizit/presentation/widgets/dialog/select_dialog.dart';
@@ -17,7 +17,7 @@ class PrepareTripScreen extends ConsumerWidget {
   List<int> _getUniqueItemsFromTrips(List<Trip> trips) {
     Set<int> setResult = {};
     for (final trip in trips) {
-      setResult = {...setResult, ...trip.itemIds!.toSet()};
+      setResult = {...setResult, ...trip.itemIds.toSet()};
     }
     List<int> listResult = setResult.toList();
     listResult.sort();
@@ -31,7 +31,7 @@ class PrepareTripScreen extends ConsumerWidget {
   ) async {
     final startSelectedTrips = trips
         .where((trip) => trip.selected)
-        .map((m) => m.id!);
+        .map((m) => m.id);
 
     final selectedTripIds = await showDialog<List<int>>(
       context: context,
@@ -53,9 +53,9 @@ class PrepareTripScreen extends ConsumerWidget {
 
   void _onItemPress(WidgetRef ref, Item item) {
     if (item.taken) {
-      ref.read(itemProvider.notifier).untake(item.id!);
+      ref.read(itemProvider.notifier).untake(item.id);
     } else {
-      ref.read(itemProvider.notifier).take(item.id!);
+      ref.read(itemProvider.notifier).take(item.id);
     }
   }
 

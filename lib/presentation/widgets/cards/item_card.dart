@@ -5,8 +5,8 @@ import 'package:werizit/core/providers/item/item_provider.dart';
 import 'package:werizit/core/providers/trip/trip_provider.dart';
 import 'package:werizit/core/providers/trip/trip_selector.dart';
 import 'package:werizit/core/utils/snackbar_utils.dart';
-import 'package:werizit/data/models/item.dart';
-import 'package:werizit/data/models/trip.dart';
+import 'package:werizit/data/models/thing/item.dart';
+import 'package:werizit/data/models/thing/trip.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:werizit/presentation/widgets/dialog/confirm_dialog.dart';
 import 'package:werizit/presentation/widgets/dialog/item_info_dialog.dart';
@@ -46,13 +46,13 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     if (confirmed != true || !mounted) return;
 
     Navigator.pop(context);
-    await ref.read(itemProvider.notifier).remove(widget.item.id!);
+    await ref.read(itemProvider.notifier).remove(widget.item.id);
     showAppSnackBar(LocaleKeys.item_deleted.tr());
   }
 
   void _addItemToBox() async {
     Navigator.pop(context);
-    await ref.read(itemProvider.notifier).putIntoBox([widget.item.id!]);
+    await ref.read(itemProvider.notifier).putIntoBox([widget.item.id]);
     showAppSnackBar(LocaleKeys.box_added.tr(args: ['1']));
   }
 
@@ -64,7 +64,7 @@ class _ItemCardState extends ConsumerState<ItemCard> {
       cancelText: LocaleKeys.common_cancel.tr(),
       confirmText: LocaleKeys.common_rename.tr(),
       onConfirm: (text) async {
-        await ref.read(itemProvider.notifier).rename(widget.item.id!, text);
+        await ref.read(itemProvider.notifier).rename(widget.item.id, text);
         showAppSnackBar(LocaleKeys.item_renamed.tr());
       },
     );
@@ -99,7 +99,7 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     final tripsToRemove = oldSet.difference(newSet).toList();
     await ref
         .read(tripProvider.notifier)
-        .updateItemLinks(item.id!, tripsToAdd, tripsToRemove);
+        .updateItemLinks(item.id, tripsToAdd, tripsToRemove);
     showAppSnackBar(LocaleKeys.item_linked.tr(args: [widget.item.name]));
   }
 
@@ -117,7 +117,7 @@ class _ItemCardState extends ConsumerState<ItemCard> {
     showDialog(
       context: context,
       builder: (context) => ItemInfoDialog(
-        itemId: widget.item.id!,
+        itemId: widget.item.id,
         actions: [
           if (widget.item.shelf != -1)
             IconButton(

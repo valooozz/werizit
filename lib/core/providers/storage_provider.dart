@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/core/providers/dao_provider.dart';
 import 'package:werizit/data/dao/base_dao.dart';
-import 'package:werizit/data/models/storage.dart';
+import 'package:werizit/data/models/storage/storage.dart';
+import 'package:werizit/data/models/storage/storage_draft.dart';
 
-abstract class StorageNotifier<T extends Storage>
+abstract class StorageNotifier<T extends Storage, D extends StorageDraft>
     extends AsyncNotifier<Map<int, T>> {
   late final BaseDAO dao;
 
@@ -11,19 +12,20 @@ abstract class StorageNotifier<T extends Storage>
   Future<Map<int, T>> build() async {
     dao = ref.read(daoProvider);
     final items = await loadFromDb();
-    return {for (final item in items) item.id!: item};
+    return {for (final item in items) item.id: item};
   }
 
   Future<List<T>> loadFromDb();
-  Future<int> insertToDb(T item);
+  Future<int> insertToDb(D draft);
   Future<void> renameInDb(int id, String newName);
   Future<void> deleteFromDb(int id);
+  T fromDraft(D draft, int id);
 
-  Future<void> add(T item) async {
+  Future<void> add(D draft) async {
     final current = state.value ?? {};
 
-    final newId = await insertToDb(item);
-    final newItem = item.copyWith(id: newId) as T;
+    final newId = await insertToDb(draft);
+    final newItem = fromDraft(draft, newId);
 
     state = AsyncData({...current, newId: newItem});
   }

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/core/providers/furniture/furniture_provider.dart';
-import 'package:werizit/data/models/furniture.dart';
+import 'package:werizit/data/models/furniture/furniture.dart';
 
 final furnitureByIdProvider = Provider.family<AsyncValue<Furniture>, int>((
   ref,

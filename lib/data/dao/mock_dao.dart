@@ -2,13 +2,19 @@ import 'dart:math';
 
 import 'package:werizit/data/dao/base_dao.dart';
 import 'package:werizit/data/dao/mock_data.dart';
-import 'package:werizit/data/models/furniture.dart';
-import 'package:werizit/data/models/house.dart';
-import 'package:werizit/data/models/item.dart';
-import 'package:werizit/data/models/item_info.dart';
-import 'package:werizit/data/models/room.dart';
-import 'package:werizit/data/models/shelf.dart';
-import 'package:werizit/data/models/trip.dart';
+import 'package:werizit/data/models/furniture/furniture.dart';
+import 'package:werizit/data/models/furniture/furniture_draft.dart';
+import 'package:werizit/data/models/house/house.dart';
+import 'package:werizit/data/models/house/house_draft.dart';
+import 'package:werizit/data/models/room/room.dart';
+import 'package:werizit/data/models/room/room_draft.dart';
+import 'package:werizit/data/models/shelf/shelf.dart';
+import 'package:werizit/data/models/shelf/shelf_draft.dart';
+import 'package:werizit/data/models/thing/item.dart';
+import 'package:werizit/data/models/thing/item_draft.dart';
+import 'package:werizit/data/models/thing/item_info.dart';
+import 'package:werizit/data/models/thing/trip.dart';
+import 'package:werizit/data/models/thing/trip_draft.dart';
 
 class MockDAO implements BaseDAO {
   final _houses = <int, House>{};
@@ -33,51 +39,51 @@ class MockDAO implements BaseDAO {
     final house1 = House(id: _generateId(), name: 'Maison principale');
     final house2 = House(id: _generateId(), name: 'Appartement de vacances');
     final house3 = House(id: _generateId(), name: 'Chalet à la montagne');
-    _houses[house1.id!] = house1;
-    _houses[house2.id!] = house2;
-    _houses[house3.id!] = house3;
+    _houses[house1.id] = house1;
+    _houses[house2.id] = house2;
+    _houses[house3.id] = house3;
 
     // ---------- Pièces ----------
-    final salon = Room(id: _generateId(), name: 'Salon', house: house1.id!);
-    final cuisine = Room(id: _generateId(), name: 'Cuisine', house: house1.id!);
+    final salon = Room(id: _generateId(), name: 'Salon', house: house1.id);
+    final cuisine = Room(id: _generateId(), name: 'Cuisine', house: house1.id);
     final chambre = Room(
       id: _generateId(),
       name: 'Chambre principale',
-      house: house1.id!,
+      house: house1.id,
     );
     final salleDeBain = Room(
       id: _generateId(),
       name: 'Salle de bain',
-      house: house1.id!,
+      house: house1.id,
     );
-    final bureau = Room(id: _generateId(), name: 'Bureau', house: house1.id!);
+    final bureau = Room(id: _generateId(), name: 'Bureau', house: house1.id);
 
-    final salonVac = Room(id: _generateId(), name: 'Salon', house: house2.id!);
+    final salonVac = Room(id: _generateId(), name: 'Salon', house: house2.id);
     final cuisineVac = Room(
       id: _generateId(),
       name: 'Cuisine',
-      house: house2.id!,
+      house: house2.id,
     );
     final chambreVac = Room(
       id: _generateId(),
       name: 'Chambre',
-      house: house2.id!,
+      house: house2.id,
     );
 
     final salonChalet = Room(
       id: _generateId(),
       name: 'Salon rustique',
-      house: house3.id!,
+      house: house3.id,
     );
     final chambreChalet = Room(
       id: _generateId(),
       name: 'Chambre d\'hôte',
-      house: house3.id!,
+      house: house3.id,
     );
     final cuisineChalet = Room(
       id: _generateId(),
       name: 'Cuisine boisée',
-      house: house3.id!,
+      house: house3.id,
     );
 
     final rooms = [
@@ -94,55 +100,55 @@ class MockDAO implements BaseDAO {
       cuisineChalet,
     ];
     for (final r in rooms) {
-      _rooms[r.id!] = r;
+      _rooms[r.id] = r;
     }
 
     // ---------- Meubles ----------
     final meubles = [
-      Furniture(id: _generateId(), name: 'Meuble TV', room: salon.id!),
-      Furniture(id: _generateId(), name: 'Bibliothèque', room: salon.id!),
-      Furniture(id: _generateId(), name: 'Canapé avec coffre', room: salon.id!),
+      Furniture(id: _generateId(), name: 'Meuble TV', room: salon.id),
+      Furniture(id: _generateId(), name: 'Bibliothèque', room: salon.id),
+      Furniture(id: _generateId(), name: 'Canapé avec coffre', room: salon.id),
       Furniture(
         id: _generateId(),
         name: 'Placard de cuisine',
-        room: cuisine.id!,
+        room: cuisine.id,
       ),
-      Furniture(id: _generateId(), name: 'Buffet', room: cuisine.id!),
-      Furniture(id: _generateId(), name: 'Commode', room: chambre.id!),
-      Furniture(id: _generateId(), name: 'Table de chevet', room: chambre.id!),
-      Furniture(id: _generateId(), name: 'Armoire', room: chambre.id!),
+      Furniture(id: _generateId(), name: 'Buffet', room: cuisine.id),
+      Furniture(id: _generateId(), name: 'Commode', room: chambre.id),
+      Furniture(id: _generateId(), name: 'Table de chevet', room: chambre.id),
+      Furniture(id: _generateId(), name: 'Armoire', room: chambre.id),
       Furniture(
         id: _generateId(),
         name: 'Meuble sous lavabo',
-        room: salleDeBain.id!,
+        room: salleDeBain.id,
       ),
-      Furniture(id: _generateId(), name: 'Bureau principal', room: bureau.id!),
-      Furniture(id: _generateId(), name: 'Étagère murale', room: bureau.id!),
-      Furniture(id: _generateId(), name: 'Buffet de salon', room: salonVac.id!),
-      Furniture(id: _generateId(), name: 'Placard mural', room: cuisineVac.id!),
+      Furniture(id: _generateId(), name: 'Bureau principal', room: bureau.id),
+      Furniture(id: _generateId(), name: 'Étagère murale', room: bureau.id),
+      Furniture(id: _generateId(), name: 'Buffet de salon', room: salonVac.id),
+      Furniture(id: _generateId(), name: 'Placard mural', room: cuisineVac.id),
       Furniture(
         id: _generateId(),
         name: 'Commode en bois',
-        room: chambreVac.id!,
+        room: chambreVac.id,
       ),
       Furniture(
         id: _generateId(),
         name: 'Meuble TV rustique',
-        room: salonChalet.id!,
+        room: salonChalet.id,
       ),
       Furniture(
         id: _generateId(),
         name: 'Placard bois',
-        room: cuisineChalet.id!,
+        room: cuisineChalet.id,
       ),
       Furniture(
         id: _generateId(),
         name: 'Armoire ancienne',
-        room: chambreChalet.id!,
+        room: chambreChalet.id,
       ),
     ];
     for (final f in meubles) {
-      _furniture[f.id!] = f;
+      _furniture[f.id] = f;
     }
 
     // ---------- Étagères / Tiroirs ----------
@@ -151,109 +157,105 @@ class MockDAO implements BaseDAO {
       Shelf(
         id: _generateId(),
         name: 'Étagère supérieure',
-        furniture: meubles[0].id!,
+        furniture: meubles[0].id,
       ),
       Shelf(
         id: _generateId(),
         name: 'Étagère inférieure',
-        furniture: meubles[0].id!,
+        furniture: meubles[0].id,
       ),
-      Shelf(
-        id: _generateId(),
-        name: 'Rayon du haut',
-        furniture: meubles[1].id!,
-      ),
-      Shelf(id: _generateId(), name: 'Rayon du bas', furniture: meubles[1].id!),
+      Shelf(id: _generateId(), name: 'Rayon du haut', furniture: meubles[1].id),
+      Shelf(id: _generateId(), name: 'Rayon du bas', furniture: meubles[1].id),
       Shelf(
         id: _generateId(),
         name: 'Coffre principal',
-        furniture: meubles[2].id!,
+        furniture: meubles[2].id,
       ),
 
       // Cuisine maison principale
       Shelf(
         id: _generateId(),
         name: 'Placard du haut',
-        furniture: meubles[3].id!,
+        furniture: meubles[3].id,
       ),
       Shelf(
         id: _generateId(),
         name: 'Placard du bas',
-        furniture: meubles[3].id!,
+        furniture: meubles[3].id,
       ),
       Shelf(
         id: _generateId(),
         name: 'Tiroir à couverts',
-        furniture: meubles[4].id!,
+        furniture: meubles[4].id,
       ),
       Shelf(
         id: _generateId(),
         name: 'Tiroir à nappes',
-        furniture: meubles[4].id!,
+        furniture: meubles[4].id,
       ),
 
       // Chambre principale
       Shelf(
         id: _generateId(),
         name: 'Tiroir principal',
-        furniture: meubles[5].id!,
+        furniture: meubles[5].id,
       ),
       Shelf(
         id: _generateId(),
         name: 'Tiroir supérieur',
-        furniture: meubles[6].id!,
+        furniture: meubles[6].id,
       ),
       Shelf(
         id: _generateId(),
         name: 'Espace penderie',
-        furniture: meubles[7].id!,
+        furniture: meubles[7].id,
       ),
 
       // Bureau
       Shelf(
         id: _generateId(),
         name: 'Tiroir du bureau',
-        furniture: meubles[9].id!,
+        furniture: meubles[9].id,
       ),
       Shelf(
         id: _generateId(),
         name: 'Étagère documents',
-        furniture: meubles[10].id!,
+        furniture: meubles[10].id,
       ),
 
       // Appartement de vacances
       Shelf(
         id: _generateId(),
         name: 'Tiroir principal',
-        furniture: meubles[12].id!,
+        furniture: meubles[12].id,
       ),
       Shelf(
         id: _generateId(),
         name: 'Rayon du haut',
-        furniture: meubles[11].id!,
+        furniture: meubles[11].id,
       ),
       Shelf(
         id: _generateId(),
         name: 'Espace penderie',
-        furniture: meubles[14].id!,
+        furniture: meubles[14].id,
       ),
 
       // Chalet
-      Shelf(id: _generateId(), name: 'Étagère TV', furniture: meubles[14].id!),
+      Shelf(id: _generateId(), name: 'Étagère TV', furniture: meubles[14].id),
       Shelf(
         id: _generateId(),
         name: 'Tiroir cuisine',
-        furniture: meubles[15].id!,
+        furniture: meubles[15].id,
       ),
       Shelf(
         id: _generateId(),
         name: 'Penderie bois',
-        furniture: meubles[16].id!,
+        furniture: meubles[16].id,
       ),
     ];
 
     for (final s in shelves) {
-      _shelves[s.id!] = s;
+      _shelves[s.id] = s;
     }
 
     // Wardrobe
@@ -262,7 +264,7 @@ class MockDAO implements BaseDAO {
     // ---------- Items ----------
 
     final items = <Item>[];
-    final shelfIds = shelves.map((s) => s.id!).toList();
+    final shelfIds = shelves.map((s) => s.id).toList();
     final random = Random();
 
     for (final name in itemNames) {
@@ -273,7 +275,7 @@ class MockDAO implements BaseDAO {
     }
 
     for (final i in items) {
-      _items[i.id!] = i;
+      _items[i.id] = i;
     }
 
     // ---------- TRIPS DEMO ----------
@@ -289,19 +291,19 @@ class MockDAO implements BaseDAO {
       selected: false,
       itemIds: [],
     );
-    _trips[trip1.id!] = trip1;
-    _trips[trip2.id!] = trip2;
+    _trips[trip1.id] = trip1;
+    _trips[trip2.id] = trip2;
 
     // Quelques items liés
-    _tripItems[trip1.id!] = {_items.keys.first, _items.keys.last};
-    _tripItems[trip2.id!] = {_items.keys.elementAt(1)};
+    _tripItems[trip1.id] = {_items.keys.first, _items.keys.last};
+    _tripItems[trip2.id] = {_items.keys.elementAt(1)};
   }
 
   // ---------- HOUSE ----------
   @override
-  Future<int> insertHouse(House house) async {
+  Future<int> insertHouse(HouseDraft house) async {
     final id = _generateId();
-    _houses[id] = house.copyWith(id: id);
+    _houses[id] = House(id: id, name: house.name);
     return id;
   }
 
@@ -333,9 +335,9 @@ class MockDAO implements BaseDAO {
 
   // ---------- ROOM ----------
   @override
-  Future<int> insertRoom(Room room) async {
+  Future<int> insertRoom(RoomDraft room) async {
     final id = _generateId();
-    _rooms[id] = room.copyWith(id: id);
+    _rooms[id] = Room(id: id, name: room.name, house: room.house);
     return id;
   }
 
@@ -370,9 +372,9 @@ class MockDAO implements BaseDAO {
 
   // ---------- FURNITURE ----------
   @override
-  Future<int> insertFurniture(Furniture f) async {
+  Future<int> insertFurniture(FurnitureDraft f) async {
     final id = _generateId();
-    _furniture[id] = f.copyWith(id: id);
+    _furniture[id] = Furniture(id: id, name: f.name, room: f.room);
     return id;
   }
 
@@ -406,9 +408,9 @@ class MockDAO implements BaseDAO {
 
   // ---------- SHELF ----------
   @override
-  Future<int> insertShelf(Shelf shelf) async {
+  Future<int> insertShelf(ShelfDraft shelf) async {
     final id = _generateId();
-    _shelves[id] = shelf.copyWith(id: id);
+    _shelves[id] = Shelf(id: id, name: shelf.name, furniture: shelf.furniture);
     return id;
   }
 
@@ -441,9 +443,14 @@ class MockDAO implements BaseDAO {
 
   // ---------- ITEM ----------
   @override
-  Future<int> insertItem(Item item) async {
+  Future<int> insertItem(ItemDraft item) async {
     final id = _generateId();
-    _items[id] = item.copyWith(id: id);
+    _items[id] = Item(
+      id: id,
+      name: item.name,
+      shelf: item.shelf,
+      taken: item.taken,
+    );
     return id;
   }
 
@@ -487,7 +494,7 @@ class MockDAO implements BaseDAO {
     final room = furniture != null ? _rooms[furniture.room] : null;
     final house = room != null ? _houses[room.house] : null;
     return ItemInfo(
-      id: i.id!,
+      id: i.id,
       name: i.name,
       house: house?.name ?? '-',
       room: room?.name ?? '-',
@@ -539,9 +546,14 @@ class MockDAO implements BaseDAO {
 
   // ---------- TRIP ----------
   @override
-  Future<int> insertTrip(Trip trip) async {
+  Future<int> insertTrip(TripDraft trip) async {
     final id = _generateId();
-    _trips[id] = trip.copyWith(id: id);
+    _trips[id] = Trip(
+      id: id,
+      name: trip.name,
+      selected: trip.selected,
+      itemIds: [],
+    );
     _tripItems[id] = {};
     return id;
   }
@@ -596,7 +608,7 @@ class MockDAO implements BaseDAO {
   Future<void> linkTripsToItems(List<int> tripIds, List<int> itemIds) async {
     for (final tripId in tripIds) {
       for (final itemId in itemIds) {
-        _trips[tripId]!.itemIds!.add(itemId);
+        _trips[tripId]!.itemIds.add(itemId);
         final set = _tripItems.putIfAbsent(tripId, () => <int>{});
         set.add(itemId);
       }
@@ -610,7 +622,7 @@ class MockDAO implements BaseDAO {
   ) async {
     for (final tripId in tripIds) {
       for (final itemId in itemIds) {
-        _trips[tripId]!.itemIds!.remove(itemId);
+        _trips[tripId]!.itemIds.remove(itemId);
         final set = _tripItems.putIfAbsent(tripId, () => <int>{});
         set.remove(itemId);
       }

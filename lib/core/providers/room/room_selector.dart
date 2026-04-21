@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/core/providers/room/room_provider.dart';
-import 'package:werizit/data/models/room.dart';
+import 'package:werizit/data/models/room/room.dart';
 
 final roomByIdProvider = Provider.family<AsyncValue<Room>, int>((ref, id) {
   final roomsAsync = ref.watch(roomProvider);

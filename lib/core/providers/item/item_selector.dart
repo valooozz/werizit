@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/core/providers/dao_provider.dart';
 import 'package:werizit/core/providers/item/item_provider.dart';
-import 'package:werizit/data/models/item.dart';
-import 'package:werizit/data/models/item_info.dart';
+import 'package:werizit/data/models/thing/item.dart';
+import 'package:werizit/data/models/thing/item_info.dart';
 
 final itemByIdProvider = Provider.family<AsyncValue<Item>, int>((ref, id) {
   final itemsAsync = ref.watch(itemProvider);

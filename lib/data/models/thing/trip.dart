@@ -1,18 +1,18 @@
-import 'package:werizit/data/models/thing.dart';
+import 'package:werizit/data/models/thing/thing.dart';
 
 class Trip implements Thing {
   @override
-  final int? id;
+  final int id;
   @override
   final String name;
   final bool selected;
-  final List<int>? itemIds;
+  final List<int> itemIds;
 
   const Trip({
-    this.id,
+    required this.id,
     required this.name,
     required this.selected,
-    this.itemIds,
+    required this.itemIds,
   });
 
   factory Trip.fromMap(Map<String, dynamic> map) {

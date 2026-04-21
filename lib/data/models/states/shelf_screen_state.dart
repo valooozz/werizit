@@ -1,5 +1,5 @@
-import 'package:werizit/data/models/item.dart';
-import 'package:werizit/data/models/shelf.dart';
+import 'package:werizit/data/models/shelf/shelf.dart';
+import 'package:werizit/data/models/thing/item.dart';
 
 class ShelfScreenState {
   final Shelf shelf;

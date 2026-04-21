@@ -1,7 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/core/providers/dao_provider.dart';
 import 'package:werizit/data/dao/base_dao.dart';
-import 'package:werizit/data/models/trip.dart';
+import 'package:werizit/data/models/thing/trip.dart';
+import 'package:werizit/data/models/thing/trip_draft.dart';
 
 final tripProvider = AsyncNotifierProvider<TripNotifier, Map<int, Trip>>(
   TripNotifier.new,
@@ -14,14 +15,19 @@ class TripNotifier extends AsyncNotifier<Map<int, Trip>> {
   Future<Map<int, Trip>> build() async {
     dao = ref.read(daoProvider);
     final trips = await dao.getTrips();
-    return {for (final trip in trips) trip.id!: trip};
+    return {for (final trip in trips) trip.id: trip};
   }
 
-  Future<void> add(Trip trip) async {
+  Future<void> add(TripDraft draft) async {
     final current = state.requireValue;
 
-    final newId = await dao.insertTrip(trip);
-    final newTrip = trip.copyWith(id: newId);
+    final newId = await dao.insertTrip(draft);
+    final newTrip = Trip(
+      id: newId,
+      name: draft.name,
+      selected: draft.selected,
+      itemIds: [],
+    );
 
     state = AsyncData({...current, newId: newTrip});
   }
@@ -57,7 +63,7 @@ class TripNotifier extends AsyncNotifier<Map<int, Trip>> {
     await dao.linkTripsToItems([tripId], itemIdsToAdd);
     await dao.unlinkTripsFromItems([tripId], itemIdsToRemove);
 
-    final updatedItemIds = [...?trip.itemIds];
+    final updatedItemIds = [...trip.itemIds];
     updatedItemIds.addAll(itemIdsToAdd);
     updatedItemIds.removeWhere((id) => itemIdsToRemove.contains(id));
 
@@ -83,7 +89,7 @@ class TripNotifier extends AsyncNotifier<Map<int, Trip>> {
       final trip = updated[tripId];
       if (trip == null) continue;
 
-      final newItemIds = [...?trip.itemIds];
+      final newItemIds = [...trip.itemIds];
       newItemIds.add(itemId);
 
       updated[tripId] = trip.copyWith(itemIds: newItemIds);
@@ -93,7 +99,7 @@ class TripNotifier extends AsyncNotifier<Map<int, Trip>> {
       final trip = updated[tripId];
       if (trip == null) continue;
 
-      final newItemIds = [...?trip.itemIds];
+      final newItemIds = [...trip.itemIds];
       newItemIds.remove(itemId);
 
       updated[tripId] = trip.copyWith(itemIds: newItemIds);

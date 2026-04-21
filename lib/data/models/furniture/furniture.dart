@@ -1,8 +1,8 @@
-import 'package:werizit/data/models/storage.dart';
+import 'package:werizit/data/models/storage/storage.dart';
 
 class Furniture extends Storage {
   final int room;
-  const Furniture({super.id, required super.name, required this.room});
+  const Furniture({required super.id, required super.name, required this.room});
 
   factory Furniture.fromMap(Map<String, dynamic> map) =>
       Furniture(id: map['id'], name: map['name'], room: map['room']);

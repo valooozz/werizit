@@ -4,7 +4,8 @@ import 'package:werizit/core/providers/house/house_provider.dart';
 import 'package:werizit/core/providers/house/house_selector.dart';
 import 'package:werizit/core/providers/room/room_provider.dart';
 import 'package:werizit/core/providers/room/room_selector.dart';
-import 'package:werizit/data/models/room.dart';
+import 'package:werizit/data/models/room/room.dart';
+import 'package:werizit/data/models/room/room_draft.dart';
 import 'package:werizit/presentation/screens/storage_screen.dart';
 
 import 'room_screen.dart';
@@ -20,21 +21,21 @@ class HouseScreen extends ConsumerWidget {
 
     return houseAsync.when(
       data: (house) {
-        final rooms = ref.watch(roomsByHouseProvider(house.id!));
+        final rooms = ref.watch(roomsByHouseProvider(house.id));
 
         return StorageScreen<Room>(
           parentStorage: house,
           storages: rooms,
           onAdd: (name) => ref
               .read(roomProvider.notifier)
-              .add(Room(name: name, house: house.id!)),
+              .add(RoomDraft(name: name, house: house.id)),
           onRename: (newName) =>
-              ref.read(houseProvider.notifier).rename(house.id!, newName),
-          onDelete: () => ref.read(houseProvider.notifier).remove(house.id!),
+              ref.read(houseProvider.notifier).rename(house.id, newName),
+          onDelete: () => ref.read(houseProvider.notifier).remove(house.id),
           onTap: (room) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => RoomScreen(roomId: room.id!)),
+              MaterialPageRoute(builder: (_) => RoomScreen(roomId: room.id)),
             );
           },
         );

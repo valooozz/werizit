@@ -1,8 +1,8 @@
-import 'package:werizit/data/models/thing.dart';
+import 'package:werizit/data/models/thing/thing.dart';
 
 class Item implements Thing {
   @override
-  final int? id;
+  final int id;
   @override
   final String name;
   final int? shelf;
@@ -14,7 +14,7 @@ class Item implements Thing {
   // ================================
 
   const Item({
-    this.id,
+    required this.id,
     required this.name,
     required this.shelf,
     required this.taken,

@@ -6,7 +6,8 @@ import 'package:werizit/core/providers/item/item_selector.dart';
 import 'package:werizit/core/providers/shelf/shelf_provider.dart';
 import 'package:werizit/core/providers/shelf/shelf_selector.dart';
 import 'package:werizit/core/utils/snackbar_utils.dart';
-import 'package:werizit/data/models/item.dart';
+import 'package:werizit/data/models/thing/item.dart';
+import 'package:werizit/data/models/thing/item_draft.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:werizit/presentation/screens/base_screen.dart';
 import 'package:werizit/presentation/widgets/dialog/select_dialog.dart';
@@ -65,7 +66,7 @@ class _ShelfScreenState extends ConsumerState<ShelfScreen> {
   Future<void> _addItem(String name) async {
     await ref
         .read(itemProvider.notifier)
-        .add(Item(name: name, shelf: widget.shelfId, taken: false));
+        .add(ItemDraft(name: name, shelf: widget.shelfId, taken: false));
     showAppSnackBar(LocaleKeys.item_added.tr());
   }
 

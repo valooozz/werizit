@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/core/providers/trip/trip_provider.dart';
-import 'package:werizit/data/models/trip.dart';
+import 'package:werizit/data/models/thing/trip.dart';
 
 final tripsListProvider = Provider<List<Trip>>((ref) {
   final asyncTrips = ref.watch(tripProvider);
@@ -23,10 +23,10 @@ final selectedTripsProvider = Provider<List<Trip>>((ref) {
 
 final selectedTripIdsProvider = Provider<List<int>>((ref) {
   final selected = ref.watch(selectedTripsProvider);
-  return selected.map((t) => t.id!).toList();
+  return selected.map((t) => t.id).toList();
 });
 
 final tripsByItemIdProvider = Provider.family<List<Trip>, int>((ref, itemId) {
   final trips = ref.watch(tripsListProvider);
-  return trips.where((trip) => trip.itemIds!.contains(itemId)).toList();
+  return trips.where((trip) => trip.itemIds.contains(itemId)).toList();
 });

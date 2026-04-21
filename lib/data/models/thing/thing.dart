@@ -1,4 +1,4 @@
 abstract class Thing {
-  int? get id;
+  int get id;
   String get name;
 }

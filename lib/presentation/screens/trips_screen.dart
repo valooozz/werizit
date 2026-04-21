@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/core/providers/trip/trip_provider.dart';
 import 'package:werizit/core/providers/trip/trip_selector.dart';
 import 'package:werizit/core/utils/snackbar_utils.dart';
-import 'package:werizit/data/models/trip.dart';
+import 'package:werizit/data/models/thing/trip_draft.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:werizit/presentation/widgets/cards/trip_card.dart';
 import 'package:werizit/presentation/widgets/dialog/text_field_dialog.dart';
@@ -15,7 +15,7 @@ class TripsScreen extends ConsumerWidget {
   Future<void> _addItem(WidgetRef ref, String name) async {
     await ref
         .read(tripProvider.notifier)
-        .add(Trip(name: name, selected: false));
+        .add(TripDraft(name: name, selected: false));
     showAppSnackBar(LocaleKeys.trips_added.tr());
   }
 

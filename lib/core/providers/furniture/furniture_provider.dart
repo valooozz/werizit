@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:werizit/data/models/furniture.dart';
+import 'package:werizit/data/models/furniture/furniture.dart';
+import 'package:werizit/data/models/furniture/furniture_draft.dart';
 
 import '../storage_provider.dart';
 
@@ -8,12 +9,12 @@ final furnitureProvider =
       FurnitureNotifier.new,
     );
 
-class FurnitureNotifier extends StorageNotifier<Furniture> {
+class FurnitureNotifier extends StorageNotifier<Furniture, FurnitureDraft> {
   @override
   Future<List<Furniture>> loadFromDb() => dao.getFurnitures();
 
   @override
-  Future<int> insertToDb(Furniture item) => dao.insertFurniture(item);
+  Future<int> insertToDb(FurnitureDraft item) => dao.insertFurniture(item);
 
   @override
   Future<void> renameInDb(int id, String newName) =>
@@ -21,4 +22,8 @@ class FurnitureNotifier extends StorageNotifier<Furniture> {
 
   @override
   Future<void> deleteFromDb(int id) => dao.deleteFurniture(id);
+
+  @override
+  Furniture fromDraft(FurnitureDraft draft, int id) =>
+      Furniture(id: id, name: draft.name, room: draft.room);
 }

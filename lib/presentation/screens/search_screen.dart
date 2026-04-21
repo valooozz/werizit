@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/core/providers/dao_provider.dart';
-import 'package:werizit/data/models/item.dart';
+import 'package:werizit/data/models/thing/item.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:werizit/presentation/widgets/display/items_display.dart';
 

@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/core/providers/item/item_provider.dart';
 import 'package:werizit/core/providers/shelf/shelf_provider.dart';
-import 'package:werizit/data/models/shelf.dart';
+import 'package:werizit/data/models/shelf/shelf.dart';
 import 'package:werizit/data/models/states/shelf_screen_state.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 

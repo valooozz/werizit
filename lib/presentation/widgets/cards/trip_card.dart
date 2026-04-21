@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:werizit/core/providers/item/item_provider.dart';
 import 'package:werizit/core/providers/trip/trip_provider.dart';
 import 'package:werizit/core/utils/snackbar_utils.dart';
-import 'package:werizit/data/models/item.dart';
-import 'package:werizit/data/models/trip.dart';
+import 'package:werizit/data/models/thing/item.dart';
+import 'package:werizit/data/models/thing/trip.dart';
 import 'package:werizit/generated/locale_keys.g.dart';
 import 'package:werizit/presentation/widgets/dialog/confirm_dialog.dart';
 import 'package:werizit/presentation/widgets/dialog/select_dialog.dart';
@@ -25,7 +25,7 @@ class TripCard extends ConsumerWidget {
 
     if (confirmed != true) return;
 
-    await ref.read(tripProvider.notifier).remove(trip.id!);
+    await ref.read(tripProvider.notifier).remove(trip.id);
     showAppSnackBar(LocaleKeys.trips_deleted.tr());
   }
 
@@ -37,7 +37,7 @@ class TripCard extends ConsumerWidget {
       cancelText: LocaleKeys.common_cancel.tr(),
       confirmText: LocaleKeys.common_rename.tr(),
       onConfirm: (text) async {
-        await ref.read(tripProvider.notifier).rename(trip.id!, text);
+        await ref.read(tripProvider.notifier).rename(trip.id, text);
         showAppSnackBar(LocaleKeys.trips_renamed.tr());
       },
     );
@@ -55,12 +55,12 @@ class TripCard extends ConsumerWidget {
         items: items,
         validButtonLabel: LocaleKeys.trips_link.tr(),
         dialogTitle: LocaleKeys.item_select.tr(),
-        startSelectedIds: {...?startSelectedItemIds},
+        startSelectedIds: {...startSelectedItemIds},
         cantBeEmpty: false,
       ),
     );
 
-    if (selectedItemIds == null || startSelectedItemIds == null) {
+    if (selectedItemIds == null) {
       return;
     }
 
@@ -70,7 +70,7 @@ class TripCard extends ConsumerWidget {
     final itemsToRemove = oldSet.difference(newSet).toList();
     await ref
         .read(tripProvider.notifier)
-        .updateTripLinks(trip.id!, itemsToAdd, itemsToRemove);
+        .updateTripLinks(trip.id, itemsToAdd, itemsToRemove);
     showAppSnackBar(LocaleKeys.trips_linked.tr(args: [trip.name]));
   }
 
